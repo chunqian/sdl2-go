@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/chunqian/memory v0.0.0-20220911093103-d39ec27fef93
-	github.com/chunqian/tinylog v0.0.0-20220911024855-2ab1d50db285
+	github.com/chunqian/tinylog v0.0.0-20220925021251-4fb4b5a07353
 )
 
 require (

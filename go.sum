@@ -1,7 +1,7 @@
 github.com/chunqian/memory v0.0.0-20220911093103-d39ec27fef93 h1:5h7M10u2oExSSJpXkylRjb8LN6FbOO2t8dyRrK6gqo8=
 github.com/chunqian/memory v0.0.0-20220911093103-d39ec27fef93/go.mod h1:zmRgPBkVnNjci7NQkhbOetncfT4H2XW1HUcvoxmNl9Q=
-github.com/chunqian/tinylog v0.0.0-20220911024855-2ab1d50db285 h1:niOHWiIyjFdDn93Wd7yVJlUiZK5PNjT3wKJZtPwFCR0=
-github.com/chunqian/tinylog v0.0.0-20220911024855-2ab1d50db285/go.mod h1:z4za+zJiIIN45kWlbGFFe7N1y92BbsL4M+fZR6eRPZI=
+github.com/chunqian/tinylog v0.0.0-20220925021251-4fb4b5a07353 h1:152xNFiS6/FPtZD/JBBAWG+io70Vz/kWkyc+vKBNLiE=
+github.com/chunqian/tinylog v0.0.0-20220925021251-4fb4b5a07353/go.mod h1:z4za+zJiIIN45kWlbGFFe7N1y92BbsL4M+fZR6eRPZI=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
