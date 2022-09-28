@@ -61,11 +61,11 @@ func SDL_RWseek(rwops *SDL_RWops, offset int64, whence int32) int64 {
 
 // Read reads from a data source.
 func SDL_RWread(rwops *SDL_RWops, buf []byte) int {
-	return rwops.read(buf, 1, uint(len(buf)))
+	return rwops.reading(buf, 1, uint(len(buf)))
 }
 
 // Read reads from a data source (native).
-func (rwops *SDL_RWops) read(buf []byte, size, maxnum uint) int {
+func (rwops *SDL_RWops) reading(buf []byte, size, maxnum uint) int {
 	if rwops == nil || buf == nil {
 		return 0
 	}
@@ -85,11 +85,11 @@ func SDL_RWtell(rwops *SDL_RWops) int64 {
 
 // Write writes to the RWops data stream.
 func SDL_RWwrite(rwops *SDL_RWops, buf []byte) int {
-	return rwops.write(buf, 1, uint(len(buf)))
+	return rwops.writing(buf, 1, uint(len(buf)))
 }
 
 // Write writes to the RWops data stream (native).
-func (rwops *SDL_RWops) write(buf []byte, size, num uint) int {
+func (rwops *SDL_RWops) writing(buf []byte, size, num uint) int {
 	if rwops == nil || buf == nil {
 		return 0
 	}

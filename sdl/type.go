@@ -10,6 +10,7 @@ import (
 	"unsafe"
 )
 
+// c basic
 type (
 	cBool   = C.char   // int8
 	cChar   = C.char   // byte
@@ -31,25 +32,57 @@ type (
 	cUint64  = C.uint64_t  // uint64
 	cUintPtr = C.uintptr_t // uintptr
 
-	cSchar  = C.schar  // int8
-	cUchar  = C.uchar  // uint8
-	cShort  = C.short  // int16
-	cUshort = C.ushort // uint16
-
 	cLong      = C.long      // int32
 	cUlong     = C.ulong     // int32
 	cLonglong  = C.longlong  // int64
 	cUlonglong = C.ulonglong // uint64
 )
 
+// c enum
+type (
+	cSDL_bool           = C.SDL_bool
+	cSDL_errorcode      = C.SDL_errorcode
+	cSDL_BlendMode      = C.SDL_BlendMode
+	cSDL_BlendOperation = C.SDL_BlendOperation
+	cSDL_BlendFactor    = C.SDL_BlendFactor
+	cSDL_ScaleMode      = C.SDL_ScaleMode
+	cSDL_RendererFlip   = C.SDL_RendererFlip
+	cSDL_EventType      = C.SDL_EventType
+	cSDL_eventaction    = C.SDL_eventaction
+)
+
+// c struct
+type (
+	SDL_BlitMap        C.SDL_BlitMap
+	SDL_Cursor         C.SDL_Cursor
+	SDL_Renderer       C.SDL_Renderer
+	SDL_SysWMmsg       C.SDL_SysWMmsg
+	SDL_Texture        C.SDL_Texture
+	SDL_Thread         C.SDL_Thread
+	SDL_Window         C.SDL_Window
+	SDL_cond           C.SDL_cond
+	SDL_hid_device     C.SDL_hid_device
+	SDL_mutex          C.SDL_mutex
+	SDL_semaphore      C.SDL_semaphore
+	SDL_AudioStream    C.SDL_AudioStream
+	SDL_GameController C.SDL_GameController
+	SDL_Haptic         C.SDL_Haptic
+	SDL_Joystick       C.SDL_Joystick
+	SDL_Sensor         C.SDL_Sensor
+	SDL_RWops          C.SDL_RWops
+)
+
+// c #define
 const (
+	SDL_MAJOR_VERSION = 2
+	SDL_MINOR_VERSION = 0
+	SDL_PATCHLEVEL    = 22
+
 	SDL_WINDOWPOS_UNDEFINED_MASK int32 = 0x1FFF0000
 	SDL_WINDOWPOS_UNDEFINED      int32 = SDL_WINDOWPOS_UNDEFINED_MASK | 0
 	SDL_WINDOWPOS_CENTERED_MASK  int32 = 0x2FFF0000
 	SDL_WINDOWPOS_CENTERED       int32 = SDL_WINDOWPOS_CENTERED_MASK | 0
-)
 
-const (
 	SDL_INIT_TIMER          uint32 = 0x00000001
 	SDL_INIT_AUDIO          uint32 = 0x00000010
 	SDL_INIT_VIDEO          uint32 = 0x00000020
@@ -60,6 +93,12 @@ const (
 	SDL_INIT_NOPARACHUTE    uint32 = 0x00008000
 	SDL_INIT_SENSOR         uint32 = 0x00100000
 	SDL_INIT_EVERYTHING     uint32 = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER | SDL_INIT_SENSOR
+
+	SDL_SWSURFACE    = 0
+	SDL_PREALLOC     = 0x00000001
+	SDL_RLEACCEL     = 0x00000002
+	SDL_DONTFREE     = 0x00000004
+	SDL_SIMD_ALIGNED = 0x00000008
 )
 
 const (
@@ -68,7 +107,6 @@ const (
 )
 
 type SDL_bool = int32
-type cSDL_bool = C.SDL_bool
 
 const (
 	SDL_ENOMEM      SDL_errorcode = 0
@@ -80,23 +118,12 @@ const (
 )
 
 type SDL_errorcode = int32
-type cSDL_errorcode = C.SDL_errorcode
 
 const (
 	RW_SEEK_SET = 0
 	RW_SEEK_CUR = 1
 	RW_SEEK_END = 2
 )
-
-type SDL_RWops struct {
-	size_  func(*SDL_RWops) int64
-	seek_  func(*SDL_RWops, int64, int32) int64
-	read_  func(*SDL_RWops, unsafe.Pointer, uint64, uint64) uint64
-	write_ func(*SDL_RWops, unsafe.Pointer, uint64, uint64) uint64
-	close_ func(*SDL_RWops) int32
-	type_  uint32
-	hidden [3]unsafe.Pointer
-}
 
 type SDL_AudioFormat = uint16
 
@@ -370,7 +397,6 @@ const (
 )
 
 type SDL_BlendMode = int32
-type cSDL_BlendMode = C.SDL_BlendMode
 
 const (
 	SDL_BLENDOPERATION_ADD          SDL_BlendOperation = 1
@@ -381,7 +407,6 @@ const (
 )
 
 type SDL_BlendOperation = int32
-type cSDL_BlendOperation = C.SDL_BlendOperation
 
 const (
 	SDL_BLENDFACTOR_ZERO                SDL_BlendFactor = 1
@@ -397,15 +422,6 @@ const (
 )
 
 type SDL_BlendFactor = int32
-type cSDL_BlendFactor = C.SDL_BlendFactor
-
-const (
-	SDL_SWSURFACE    = 0
-	SDL_PREALLOC     = 0x00000001
-	SDL_RLEACCEL     = 0x00000002
-	SDL_DONTFREE     = 0x00000004
-	SDL_SIMD_ALIGNED = 0x00000008
-)
 
 type SDL_Surface struct {
 	flags        uint32
@@ -1211,27 +1227,6 @@ const (
 
 type SDL_JoystickPowerLevel = int32
 
-type SDL_VirtualJoystickDesc struct {
-	version        uint16
-	type_          uint16
-	naxes          uint16
-	nbuttons       uint16
-	nhats          uint16
-	vendor_id      uint16
-	product_id     uint16
-	padding        uint16
-	button_mask    uint32
-	axis_mask      uint32
-	name           *int8
-	userdata       unsafe.Pointer
-	Update         func(unsafe.Pointer)
-	SetPlayerIndex func(unsafe.Pointer, int32)
-	Rumble         func(unsafe.Pointer, uint16, uint16) int32
-	RumbleTriggers func(unsafe.Pointer, uint16, uint16) int32
-	SetLED         func(unsafe.Pointer, uint8, uint8, uint8) int32
-	SendEffect     func(unsafe.Pointer, unsafe.Pointer, int32) int32
-}
-
 type SDL_SensorID = int32
 
 const (
@@ -1239,29 +1234,29 @@ const (
 	SDL_SENSOR_UNKNOWN SDL_SensorType = 0
 	SDL_SENSOR_ACCEL   SDL_SensorType = 1
 	SDL_SENSOR_GYRO    SDL_SensorType = 2
-	SDL_SENSOR_ACCEL_L SDL_SensorType = 3
-	SDL_SENSOR_GYRO_L  SDL_SensorType = 4
-	SDL_SENSOR_ACCEL_R SDL_SensorType = 5
-	SDL_SENSOR_GYRO_R  SDL_SensorType = 6
+	// SDL_SENSOR_ACCEL_L SDL_SensorType = 3
+	// SDL_SENSOR_GYRO_L  SDL_SensorType = 4
+	// SDL_SENSOR_ACCEL_R SDL_SensorType = 5
+	// SDL_SENSOR_GYRO_R  SDL_SensorType = 6
 )
 
 type SDL_SensorType = int32
 
 const (
-	SDL_CONTROLLER_TYPE_UNKNOWN                      SDL_GameControllerType = 0
-	SDL_CONTROLLER_TYPE_XBOX360                      SDL_GameControllerType = 1
-	SDL_CONTROLLER_TYPE_XBOXONE                      SDL_GameControllerType = 2
-	SDL_CONTROLLER_TYPE_PS3                          SDL_GameControllerType = 3
-	SDL_CONTROLLER_TYPE_PS4                          SDL_GameControllerType = 4
-	SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO          SDL_GameControllerType = 5
-	SDL_CONTROLLER_TYPE_VIRTUAL                      SDL_GameControllerType = 6
-	SDL_CONTROLLER_TYPE_PS5                          SDL_GameControllerType = 7
-	SDL_CONTROLLER_TYPE_AMAZON_LUNA                  SDL_GameControllerType = 8
-	SDL_CONTROLLER_TYPE_GOOGLE_STADIA                SDL_GameControllerType = 9
-	SDL_CONTROLLER_TYPE_NVIDIA_SHIELD                SDL_GameControllerType = 10
-	SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_LEFT  SDL_GameControllerType = 11
-	SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT SDL_GameControllerType = 12
-	SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_PAIR  SDL_GameControllerType = 13
+	SDL_CONTROLLER_TYPE_UNKNOWN             SDL_GameControllerType = 0
+	SDL_CONTROLLER_TYPE_XBOX360             SDL_GameControllerType = 1
+	SDL_CONTROLLER_TYPE_XBOXONE             SDL_GameControllerType = 2
+	SDL_CONTROLLER_TYPE_PS3                 SDL_GameControllerType = 3
+	SDL_CONTROLLER_TYPE_PS4                 SDL_GameControllerType = 4
+	SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO SDL_GameControllerType = 5
+	SDL_CONTROLLER_TYPE_VIRTUAL             SDL_GameControllerType = 6
+	SDL_CONTROLLER_TYPE_PS5                 SDL_GameControllerType = 7
+	SDL_CONTROLLER_TYPE_AMAZON_LUNA         SDL_GameControllerType = 8
+	SDL_CONTROLLER_TYPE_GOOGLE_STADIA       SDL_GameControllerType = 9
+	// SDL_CONTROLLER_TYPE_NVIDIA_SHIELD                SDL_GameControllerType = 10
+	// SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_LEFT  SDL_GameControllerType = 11
+	// SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT SDL_GameControllerType = 12
+	// SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_PAIR  SDL_GameControllerType = 13
 )
 
 type SDL_GameControllerType = int32
@@ -1274,8 +1269,6 @@ const (
 )
 
 type SDL_GameControllerBindType = int32
-
-type SDL_GameControllerButtonBind = C.SDL_GameControllerButtonBind
 
 const (
 	SDL_CONTROLLER_AXIS_INVALID      SDL_GameControllerAxis = -1
@@ -1981,8 +1974,6 @@ const (
 
 type SDL_ScaleMode = int32
 
-type cSDL_ScaleMode = C.SDL_ScaleMode
-
 const (
 	SDL_TEXTUREACCESS_STATIC    SDL_TextureAccess = 0
 	SDL_TEXTUREACCESS_STREAMING SDL_TextureAccess = 1
@@ -2006,7 +1997,6 @@ const (
 )
 
 type SDL_RendererFlip = int32
-type cSDL_RendererFlip = C.SDL_RendererFlip
 
 const (
 	ShapeModeDefault              WindowShapeMode = 0
@@ -2029,12 +2019,6 @@ type SDL_WindowShapeMode struct {
 type SDL_TimerCallback = func(uint32, unsafe.Pointer) uint32
 type SDL_TimerID = int32
 
-const (
-	SDL_MAJOR_VERSION = C.SDL_MAJOR_VERSION
-	SDL_MINOR_VERSION = C.SDL_MINOR_VERSION
-	SDL_PATCHLEVEL    = C.SDL_PATCHLEVEL
-)
-
 type SDL_version struct {
 	Major uint8
 	Minor uint8
@@ -2046,622 +2030,7 @@ type SDL_Locale struct {
 	country  *int8
 }
 
-type SDL_BlitInfo struct {
-	src       *uint8
-	src_w     int32
-	src_h     int32
-	src_pitch int32
-	src_skip  int32
-	dst       *uint8
-	dst_w     int32
-	dst_h     int32
-	dst_pitch int32
-	dst_skip  int32
-	src_fmt   *SDL_PixelFormat
-	dst_fmt   *SDL_PixelFormat
-	table     *uint8
-	flags     int32
-	colorkey  uint32
-	r         uint8
-	g         uint8
-	b         uint8
-	a         uint8
-}
-
-type SDL_BlitFunc = func(*SDL_BlitInfo)
-
-type SDL_BlitFuncEntry struct {
-	src_format uint32
-	dst_format uint32
-	flags      int32
-	cpu        int32
-	func_      func(*SDL_BlitInfo)
-}
-
-type SDL_BlitMap struct {
-	dst                 *SDL_Surface
-	identity            int32
-	blit                func(*SDL_Surface, *SDL_Rect, *SDL_Surface, *SDL_Rect) int32
-	data                unsafe.Pointer
-	info                SDL_BlitInfo
-	dst_palette_version uint32
-	src_palette_version uint32
-}
-
-type SDL_MouseID = uint32
-
-type SDL_Cursor struct {
-	next       *SDL_Cursor
-	driverdata unsafe.Pointer
-}
-
-type SDL_MouseInputSource struct {
-	mouseID     uint32
-	buttonstate uint32
-}
-
-type SDL_MouseClickState struct {
-	last_x         int32
-	last_y         int32
-	last_timestamp uint32
-	click_count    uint8
-}
-
-type SDL_Mouse struct {
-	CreateCursor                 func(*SDL_Surface, int32, int32) *SDL_Cursor
-	CreateSystemCursor           func(int32) *SDL_Cursor
-	ShowCursor                   func(*SDL_Cursor) int32
-	MoveCursor                   func(*SDL_Cursor)
-	FreeCursor                   func(*SDL_Cursor)
-	WarpMouse                    func(*SDL_Window, int32, int32)
-	WarpMouseGlobal              func(int32, int32) int32
-	SetRelativeMouseMode         func(int32) int32
-	CaptureMouse                 func(*SDL_Window) int32
-	GetGlobalMouseState          func(*int32, *int32) uint32
-	mouseID                      uint32
-	focus                        *SDL_Window
-	x                            int32
-	y                            int32
-	xdelta                       int32
-	ydelta                       int32
-	last_x                       int32
-	last_y                       int32
-	accumulated_wheel_x          float32
-	accumulated_wheel_y          float32
-	has_position                 int32
-	relative_mode                int32
-	relative_mode_warp           int32
-	relative_mode_warp_motion    int32
-	enable_normal_speed_scale    int32
-	normal_speed_scale           float32
-	enable_relative_speed_scale  int32
-	relative_speed_scale         float32
-	enable_relative_system_scale int32
-	num_system_scale_values      int32
-	system_scale_values          *float32
-	scale_accum_x                float32
-	scale_accum_y                float32
-	double_click_time            uint32
-	double_click_radius          int32
-	touch_mouse_events           int32
-	mouse_touch_events           int32
-	was_touch_mouse_events       int32
-	auto_capture                 int32
-	capture_desired              int32
-	capture_window               *SDL_Window
-	num_sources                  int32
-	sources                      *SDL_MouseInputSource
-	num_clickstates              int32
-	clickstate                   *SDL_MouseClickState
-	cursors                      *SDL_Cursor
-	def_cursor                   *SDL_Cursor
-	cur_cursor                   *SDL_Cursor
-	cursor_shown                 int32
-	driverdata                   unsafe.Pointer
-}
-
-type SDL_SW_YUVTexture struct {
-	format        uint32
-	target_format uint32
-	w             int32
-	h             int32
-	pixels        *uint8
-	pitches       [3]uint16
-	planes        [3]*uint8
-	stretch       *SDL_Surface
-	display       *SDL_Surface
-}
-
-type SDL_DRect struct {
-	x float64
-	y float64
-	w float64
-	h float64
-}
-
-type SDL_Texture struct {
-	magic                   unsafe.Pointer
-	format                  uint32
-	access                  int32
-	w                       int32
-	h                       int32
-	modMode                 int32
-	blendMode               int32
-	scaleMode               int32
-	color                   SDL_Color
-	renderer                *SDL_Renderer
-	native                  *SDL_Texture
-	yuv                     *SDL_SW_YUVTexture
-	pixels                  unsafe.Pointer
-	pitch                   int32
-	locked_rect             SDL_Rect
-	locked_surface          *SDL_Surface
-	last_command_generation uint32
-	driverdata              unsafe.Pointer
-	userdata                unsafe.Pointer
-	prev                    *SDL_Texture
-	next                    *SDL_Texture
-}
-
-const (
-	SDL_RENDERCMD_NO_OP        SDL_RenderCommandType = 0
-	SDL_RENDERCMD_SETVIEWPORT  SDL_RenderCommandType = 1
-	SDL_RENDERCMD_SETCLIPRECT  SDL_RenderCommandType = 2
-	SDL_RENDERCMD_SETDRAWCOLOR SDL_RenderCommandType = 3
-	SDL_RENDERCMD_CLEAR        SDL_RenderCommandType = 4
-	SDL_RENDERCMD_DRAW_POINTS  SDL_RenderCommandType = 5
-	SDL_RENDERCMD_DRAW_LINES   SDL_RenderCommandType = 6
-	SDL_RENDERCMD_FILL_RECTS   SDL_RenderCommandType = 7
-	SDL_RENDERCMD_COPY         SDL_RenderCommandType = 8
-	SDL_RENDERCMD_COPY_EX      SDL_RenderCommandType = 9
-	SDL_RENDERCMD_GEOMETRY     SDL_RenderCommandType = 10
-)
-
-type SDL_RenderCommandType = int32
-
-type SDL_RenderCommand = C.SDL_RenderCommand
-
-type SDL_VertexSolid struct {
-	position SDL_FPoint
-	color    SDL_Color
-}
-
-const (
-	SDL_RENDERLINEMETHOD_POINTS   SDL_RenderLineMethod = 0
-	SDL_RENDERLINEMETHOD_LINES    SDL_RenderLineMethod = 1
-	SDL_RENDERLINEMETHOD_GEOMETRY SDL_RenderLineMethod = 2
-)
-
-type SDL_RenderLineMethod = int32
-
-type SDL_Renderer struct {
-	magic                        unsafe.Pointer
-	WindowEvent                  func(*SDL_Renderer, *SDL_WindowEvent)
-	GetOutputSize                func(*SDL_Renderer, *int32, *int32) int32
-	SupportsBlendMode            func(*SDL_Renderer, int32) int32
-	CreateTexture                func(*SDL_Renderer, *SDL_Texture) int32
-	QueueSetViewport             func(*SDL_Renderer, *SDL_RenderCommand) int32
-	QueueSetDrawColor            func(*SDL_Renderer, *SDL_RenderCommand) int32
-	QueueDrawPoints              func(*SDL_Renderer, *SDL_RenderCommand, *SDL_FPoint, int32) int32
-	QueueDrawLines               func(*SDL_Renderer, *SDL_RenderCommand, *SDL_FPoint, int32) int32
-	QueueFillRects               func(*SDL_Renderer, *SDL_RenderCommand, *SDL_FRect, int32) int32
-	QueueCopy                    func(*SDL_Renderer, *SDL_RenderCommand, *SDL_Texture, *SDL_Rect, *SDL_FRect) int32
-	QueueCopyEx                  func(*SDL_Renderer, *SDL_RenderCommand, *SDL_Texture, *SDL_Rect, *SDL_FRect, float64, *SDL_FPoint, int32, float32, float32) int32
-	QueueGeometry                func(*SDL_Renderer, *SDL_RenderCommand, *SDL_Texture, *float32, int32, *SDL_Color, int32, *float32, int32, int32, unsafe.Pointer, int32, int32, float32, float32) int32
-	RunCommandQueue              func(*SDL_Renderer, *SDL_RenderCommand, unsafe.Pointer, uint64) int32
-	UpdateTexture                func(*SDL_Renderer, *SDL_Texture, *SDL_Rect, unsafe.Pointer, int32) int32
-	LockTexture                  func(*SDL_Renderer, *SDL_Texture, *SDL_Rect, *unsafe.Pointer, *int32) int32
-	UnlockTexture                func(*SDL_Renderer, *SDL_Texture)
-	SetTextureScaleMode          func(*SDL_Renderer, *SDL_Texture, int32)
-	SetRenderTarget              func(*SDL_Renderer, *SDL_Texture) int32
-	RenderReadPixels             func(*SDL_Renderer, *SDL_Rect, uint32, unsafe.Pointer, int32) int32
-	RenderPresent                func(*SDL_Renderer)
-	DestroyTexture               func(*SDL_Renderer, *SDL_Texture)
-	DestroyRenderer              func(*SDL_Renderer)
-	SetVSync                     func(*SDL_Renderer, int32) int32
-	GL_BindTexture               func(*SDL_Renderer, *SDL_Texture, *float32, *float32) int32
-	GL_UnbindTexture             func(*SDL_Renderer, *SDL_Texture) int32
-	GetMetalLayer                func(*SDL_Renderer) unsafe.Pointer
-	GetMetalCommandEncoder       func(*SDL_Renderer) unsafe.Pointer
-	info                         SDL_RendererInfo
-	window                       *SDL_Window
-	hidden                       int32
-	logical_w                    int32
-	logical_h                    int32
-	logical_w_backup             int32
-	logical_h_backup             int32
-	integer_scale                int32
-	viewport                     SDL_DRect
-	viewport_backup              SDL_DRect
-	clip_rect                    SDL_DRect
-	clip_rect_backup             SDL_DRect
-	clipping_enabled             int32
-	clipping_enabled_backup      int32
-	scale                        SDL_FPoint
-	scale_backup                 SDL_FPoint
-	dpi_scale                    SDL_FPoint
-	relative_scaling             int32
-	line_method                  int32
-	xrel                         float32
-	yrel                         float32
-	textures                     *SDL_Texture
-	target                       *SDL_Texture
-	target_mutex                 unsafe.Pointer // *SDL_mutex
-	color                        SDL_Color
-	blendMode                    int32
-	always_batch                 int32
-	batching                     int32
-	render_commands              *SDL_RenderCommand
-	render_commands_tail         *SDL_RenderCommand
-	render_commands_pool         *SDL_RenderCommand
-	render_command_generation    uint32
-	last_queued_color            uint32
-	last_queued_viewport         SDL_DRect
-	last_queued_cliprect         SDL_DRect
-	last_queued_cliprect_enabled int32
-	color_queued                 int32
-	viewport_queued              int32
-	cliprect_queued              int32
-	vertex_data                  unsafe.Pointer
-	vertex_data_used             uint64
-	vertex_data_allocation       uint64
-	driverdata                   unsafe.Pointer
-}
-
-type SDL_RenderDriver struct {
-	CreateRenderer func(*SDL_Window, uint32) *SDL_Renderer
-	info           SDL_RendererInfo
-}
-
-const (
-	SDL_SYSWM_UNKNOWN  SDL_SYSWM_TYPE = 0
-	SDL_SYSWM_WINDOWS  SDL_SYSWM_TYPE = 1
-	SDL_SYSWM_X11      SDL_SYSWM_TYPE = 2
-	SDL_SYSWM_DIRECTFB SDL_SYSWM_TYPE = 3
-	SDL_SYSWM_COCOA    SDL_SYSWM_TYPE = 4
-	SDL_SYSWM_UIKIT    SDL_SYSWM_TYPE = 5
-	SDL_SYSWM_WAYLAND  SDL_SYSWM_TYPE = 6
-	SDL_SYSWM_MIR      SDL_SYSWM_TYPE = 7
-	SDL_SYSWM_WINRT    SDL_SYSWM_TYPE = 8
-	SDL_SYSWM_ANDROID  SDL_SYSWM_TYPE = 9
-	SDL_SYSWM_VIVANTE  SDL_SYSWM_TYPE = 10
-	SDL_SYSWM_OS2      SDL_SYSWM_TYPE = 11
-	SDL_SYSWM_HAIKU    SDL_SYSWM_TYPE = 12
-	SDL_SYSWM_KMSDRM   SDL_SYSWM_TYPE = 13
-	SDL_SYSWM_RISCOS   SDL_SYSWM_TYPE = 14
-)
-
-type SDL_SYSWM_TYPE = int32
-
-type SDL_SysWMmsg = C.SDL_SysWMmsg
-
-type SDL_SysWMinfo = C.SDL_SysWMinfo
-
-type SDL_WindowShaper struct {
-	window     *SDL_Window
-	userx      uint32
-	usery      uint32
-	mode       SDL_WindowShapeMode
-	hasshape   int32
-	driverdata unsafe.Pointer
-}
-
-type SDL_ShapeDriver struct {
-	CreateShaper      func(*SDL_Window) *SDL_WindowShaper
-	SetWindowShape    func(*SDL_WindowShaper, *SDL_Surface, *SDL_WindowShapeMode) int32
-	ResizeWindowShape func(*SDL_Window) int32
-}
-
-type SDL_WindowUserData struct {
-	name *int8
-	data unsafe.Pointer
-	next *SDL_WindowUserData
-}
-
-type SDL_Window struct {
-	magic                 unsafe.Pointer
-	id                    uint32
-	title                 *int8
-	icon                  *SDL_Surface
-	x                     int32
-	y                     int32
-	w                     int32
-	h                     int32
-	min_w                 int32
-	min_h                 int32
-	max_w                 int32
-	max_h                 int32
-	flags                 uint32
-	last_fullscreen_flags uint32
-	display_index         uint32
-	windowed              SDL_Rect
-	fullscreen_mode       SDL_DisplayMode
-	opacity               float32
-	brightness            float32
-	gamma                 *uint16
-	saved_gamma           *uint16
-	surface               *SDL_Surface
-	surface_valid         int32
-	is_hiding             int32
-	is_destroying         int32
-	is_dropping           int32
-	mouse_rect            SDL_Rect
-	shaper                *SDL_WindowShaper
-	hit_test              func(*SDL_Window, *SDL_Point, unsafe.Pointer) int32
-	hit_test_data         unsafe.Pointer
-	data                  *SDL_WindowUserData
-	driverdata            unsafe.Pointer
-	prev                  *SDL_Window
-	next                  *SDL_Window
-}
-
-type SDL_VideoDisplay struct {
-	name              *int8
-	max_display_modes int32
-	num_display_modes int32
-	display_modes     *SDL_DisplayMode
-	desktop_mode      SDL_DisplayMode
-	current_mode      SDL_DisplayMode
-	orientation       int32
-	fullscreen_window *SDL_Window
-	device            unsafe.Pointer // *SDL_VideoDevice
-	driverdata        unsafe.Pointer
-}
-
-const (
-	VIDEO_DEVICE_QUIRK_DISABLE_DISPLAY_MODE_SWITCHING       DeviceQuirkFlags = 1
-	VIDEO_DEVICE_QUIRK_DISABLE_UNSET_FULLSCREEN_ON_MINIMIZE DeviceQuirkFlags = 2
-)
-
-type DeviceQuirkFlags = int32
-
-type SDL_DataQueuePacket struct {
-	datalen  uint64
-	startpos uint64
-	next     *SDL_DataQueuePacket
-	data     [0]uint8
-}
-
-type SDL_DataQueue struct {
-	head         *SDL_DataQueuePacket
-	tail         *SDL_DataQueuePacket
-	pool         *SDL_DataQueuePacket
-	packet_size  uint64
-	queued_bytes uint64
-}
-
-type SDL_ResampleAudioStreamFunc = func(*SDL_AudioStream, unsafe.Pointer, int32, unsafe.Pointer, int32) int32
-type SDL_ResetAudioStreamResamplerFunc = func(*SDL_AudioStream)
-type SDL_CleanupAudioStreamResamplerFunc = func(*SDL_AudioStream)
-
-type SDL_AudioStream struct {
-	cvt_before_resampling     SDL_AudioCVT
-	cvt_after_resampling      SDL_AudioCVT
-	queue                     *SDL_DataQueue
-	first_run                 int32
-	staging_buffer            *uint8
-	staging_buffer_size       int32
-	staging_buffer_filled     int32
-	work_buffer_base          *uint8
-	work_buffer_len           int32
-	src_sample_frame_size     int32
-	src_format                uint16
-	src_channels              uint8
-	src_rate                  int32
-	dst_sample_frame_size     int32
-	dst_format                uint16
-	dst_channels              uint8
-	dst_rate                  int32
-	rate_incr                 float64
-	pre_resample_channels     uint8
-	packetlen                 int32
-	resampler_padding_samples int32
-	resampler_padding         *float32
-	resampler_state           unsafe.Pointer
-	resampler_func            func(*SDL_AudioStream, unsafe.Pointer, int32, unsafe.Pointer, int32) int32
-	reset_resampler_func      func(*SDL_AudioStream)
-	cleanup_resampler_func    func(*SDL_AudioStream)
-}
-
-type SDL_ExtendedGameControllerBind = C.SDL_ExtendedGameControllerBind
-
-const (
-	SDL_CONTROLLER_MAPPING_PRIORITY_DEFAULT SDL_ControllerMappingPriority = 0
-	SDL_CONTROLLER_MAPPING_PRIORITY_API     SDL_ControllerMappingPriority = 1
-	SDL_CONTROLLER_MAPPING_PRIORITY_USER    SDL_ControllerMappingPriority = 2
-)
-
-type SDL_ControllerMappingPriority = int32
-
-type ControllerMapping_t struct {
-	guid     SDL_GUID
-	name     *int8
-	mapping  *int8
-	priority int32
-	next     *ControllerMapping_t
-}
-
-type SDL_GameController struct {
-	magic             unsafe.Pointer
-	joystick          *SDL_Joystick
-	ref_count         int32
-	name              *int8
-	num_bindings      int32
-	bindings          *SDL_ExtendedGameControllerBind
-	last_match_axis   **SDL_ExtendedGameControllerBind
-	last_hat_mask     *uint8
-	guide_button_down uint32
-	next              *SDL_GameController
-}
-
-type haptic_effect struct {
-	effect   SDL_HapticEffect
-	hweffect unsafe.Pointer // *haptic_hweffect
-}
-
-type SDL_Haptic struct {
-	index         uint8
-	effects       *haptic_effect
-	neffects      int32
-	nplaying      int32
-	supported     uint32
-	naxes         int32
-	hwdata        unsafe.Pointer // *haptic_hwdata
-	ref_count     int32
-	rumble_id     int32
-	rumble_effect SDL_HapticEffect
-	next          *SDL_Haptic
-}
-
-const (
-	EMappingKind_None   EMappingKind = 0
-	EMappingKind_Button EMappingKind = 1
-	EMappingKind_Axis   EMappingKind = 2
-	EMappingKind_Hat    EMappingKind = 3
-)
-
-type EMappingKind = int32
-
-type SDL_InputMapping struct {
-	kind   int32
-	target uint8
-}
-
-type SDL_GamepadMapping struct {
-	a             SDL_InputMapping
-	b             SDL_InputMapping
-	x             SDL_InputMapping
-	y             SDL_InputMapping
-	back          SDL_InputMapping
-	guide         SDL_InputMapping
-	start         SDL_InputMapping
-	leftstick     SDL_InputMapping
-	rightstick    SDL_InputMapping
-	leftshoulder  SDL_InputMapping
-	rightshoulder SDL_InputMapping
-	dpup          SDL_InputMapping
-	dpdown        SDL_InputMapping
-	dpleft        SDL_InputMapping
-	dpright       SDL_InputMapping
-	misc1         SDL_InputMapping
-	paddle1       SDL_InputMapping
-	paddle2       SDL_InputMapping
-	paddle3       SDL_InputMapping
-	paddle4       SDL_InputMapping
-	leftx         SDL_InputMapping
-	lefty         SDL_InputMapping
-	rightx        SDL_InputMapping
-	righty        SDL_InputMapping
-	lefttrigger   SDL_InputMapping
-	righttrigger  SDL_InputMapping
-}
-
-type SDL_JoystickAxisInfo struct {
-	initial_value         int16
-	value                 int16
-	zero                  int16
-	has_initial_value     int32
-	has_second_value      int32
-	sent_initial_value    int32
-	sending_initial_value int32
-}
-
-type SDL_JoystickTouchpadFingerInfo struct {
-	state    uint8
-	x        float32
-	y        float32
-	pressure float32
-}
-
-type SDL_JoystickTouchpadInfo struct {
-	nfingers int32
-	fingers  *SDL_JoystickTouchpadFingerInfo
-}
-
-type SDL_JoystickSensorInfo struct {
-	type_   int32
-	enabled int32
-	rate    float32
-	data    [3]float32
-}
-
-type balldelta struct {
-	dx int32
-	dy int32
-}
-
-type SDL_Joystick struct {
-	magic                     unsafe.Pointer
-	instance_id               int32
-	name                      *int8
-	path                      *int8
-	serial                    *int8
-	guid                      SDL_GUID
-	firmware_version          uint16
-	naxes                     int32
-	axes                      *SDL_JoystickAxisInfo
-	nhats                     int32
-	hats                      *uint8
-	nballs                    int32
-	balls                     *balldelta
-	nbuttons                  int32
-	buttons                   *uint8
-	ntouchpads                int32
-	touchpads                 *SDL_JoystickTouchpadInfo
-	nsensors                  int32
-	nsensors_enabled          int32
-	sensors                   *SDL_JoystickSensorInfo
-	low_frequency_rumble      uint16
-	high_frequency_rumble     uint16
-	rumble_expiration         uint32
-	left_trigger_rumble       uint16
-	right_trigger_rumble      uint16
-	trigger_rumble_expiration uint32
-	led_red                   uint8
-	led_green                 uint8
-	led_blue                  uint8
-	led_expiration            uint32
-	attached                  int32
-	is_game_controller        int32
-	delayed_guide_button      int32
-	epowerlevel               int32
-	driver                    unsafe.Pointer // *SDL_JoystickDriver
-	hwdata                    unsafe.Pointer // *joystick_hwdata
-	ref_count                 int32
-	next                      *SDL_Joystick
-}
-
-type SDL_Sensor struct {
-	instance_id       int32
-	name              *int8
-	type_             int32
-	non_portable_type int32
-	data              [16]float32
-	driver            *SDL_SensorDriver
-	hwdata            unsafe.Pointer // *sensor_hwdata
-	ref_count         int32
-	next              *SDL_Sensor
-}
-
-type SDL_SensorDriver struct {
-	Init                     func() int32
-	GetCount                 func() int32
-	Detect                   func()
-	GetDeviceName            func(int32) *int8
-	GetDeviceType            func(int32) int32
-	GetDeviceNonPortableType func(int32) int32
-	GetDeviceInstanceID      func(int32) int32
-	Open                     func(*SDL_Sensor, int32) int32
-	Update                   func(*SDL_Sensor)
-	Close                    func(*SDL_Sensor)
-	Quit                     func()
-}
-
-type (
-	cSDL_EventType   = C.Uint32
-	cSDL_eventaction = C.SDL_eventaction
-)
-
+// 空接口
 type emptyInterface struct {
 	typ  unsafe.Pointer
 	word unsafe.Pointer
@@ -2675,13 +2044,8 @@ type SDL_DataStructures interface {
 	SDL_DisplayMode |
 		SDL_WindowShapeParams |
 		SDL_WindowShapeMode |
-		SDL_WindowShaper |
-		SDL_WindowUserData |
 		SDL_Window |
-		SDL_DRect |
-		SDL_SW_YUVTexture |
 		SDL_Texture |
-		SDL_RenderCommand |
 		SDL_Renderer |
 		SDL_Surface |
 		SDL_RWops |

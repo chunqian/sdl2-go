@@ -145,30 +145,30 @@ func SDL_PeepEvents(events []SDL_Event, numevents int, action SDL_eventaction, m
 		return 0
 	}
 
-	cRet := C.SDL_PeepEvents((&events[0]).cSDL_Event(), cInt(numevents), cSDL_eventaction(action), cSDL_EventType(minType), cSDL_EventType(maxType))
+	cRet := C.SDL_PeepEvents((&events[0]).cSDL_Event(), cInt(numevents), cSDL_eventaction(action), cUint(minType), cUint(maxType))
 	return int(cRet)
 }
 
 // Check for the existence of a certain event type in the event queue.
 func SDL_HasEvent(eventType SDL_EventType) bool {
-	cRet := C.SDL_HasEvent(cSDL_EventType(eventType))
+	cRet := C.SDL_HasEvent(cUint(eventType))
 	return cRet != 0
 }
 
 // Check for the existence of certain event types in the event queue.
 func SDL_HasEvents(minType SDL_EventType, maxType SDL_EventType) bool {
-	cRet := C.SDL_HasEvents(cSDL_EventType(minType), cSDL_EventType(maxType))
+	cRet := C.SDL_HasEvents(cUint(minType), cUint(maxType))
 	return cRet != 0
 }
 
 // Clear events of a specific type from the event queue.
 func SDL_FlushEvent(eventType SDL_EventType) {
-	C.SDL_FlushEvent(cSDL_EventType(eventType))
+	C.SDL_FlushEvent(cUint(eventType))
 }
 
 // Clear events of a range of types from the event queue.
 func SDL_FlushEvents(minType SDL_EventType, maxType SDL_EventType) {
-	C.SDL_FlushEvents(cSDL_EventType(minType), cSDL_EventType(maxType))
+	C.SDL_FlushEvents(cUint(minType), cUint(maxType))
 }
 
 // Poll for currently pending events.
@@ -339,7 +339,7 @@ func SDL_FilterEvents(filter SDL_EventFilter, userdata interface{}) {
 
 // Set the state of processing events by type.
 func SDL_EventState(eventType SDL_EventType, state int) uint8 {
-	cRet := C.SDL_EventState(cSDL_EventType(eventType), cInt(state))
+	cRet := C.SDL_EventState(cUint(eventType), cInt(state))
 	return uint8(cRet)
 }
 
