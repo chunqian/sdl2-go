@@ -17,7 +17,7 @@ func (surface *SDL_Surface) cSDL_Surface() *C.SDL_Surface {
 
 // MustLock reports whether the surface must be locked for access.
 func (surface *SDL_Surface) MustLock() bool {
-	if (surface.flags & SDL_RLEACCEL) != 0 {
+	if (surface.Flags & SDL_RLEACCEL) != 0 {
 		return true
 	}
 	return false
@@ -317,20 +317,15 @@ func (surface *SDL_Surface) BytesPerPixel() int {
 	return int(surface.Format.BytesPerPixel)
 }
 
-// Pixels returns the actual pixel data of the surface.
-func (surface *SDL_Surface) Pixels() []byte {
+// Data returns the actual pixel data of the surface.
+func (surface *SDL_Surface) Data() []byte {
 	var b []byte
 	length := int(surface.H) * int(surface.Pitch)
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 	sliceHeader.Cap = int(length)
 	sliceHeader.Len = int(length)
-	sliceHeader.Data = uintptr(surface.pixels)
+	sliceHeader.Data = uintptr(surface.Pixels)
 	return b
-}
-
-// Data returns the pointer to the actual pixel data of the surface.
-func (surface *SDL_Surface) Data() unsafe.Pointer {
-	return surface.pixels
 }
 
 // Duplicate creates a new surface identical to the existing surface
@@ -396,7 +391,7 @@ func (surface *SDL_Surface) Bounds() image.Rectangle {
 
 // At returns the pixel color at (x, y)
 func (surface *SDL_Surface) At(x, y int) color.Color {
-	pix := surface.Pixels()
+	pix := surface.Data()
 	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
 	var r, g, b, a uint8
 	SDL_GetRGBA(*((*uint32)(unsafe.Pointer(&pix[i]))), surface.Format, &r, &g, &b, &a)
@@ -407,7 +402,7 @@ func (surface *SDL_Surface) At(x, y int) color.Color {
 // convert c to the appropriate color. This method is required for the
 // draw.Image interface. The surface may require locking before calling Set.
 func (surface *SDL_Surface) Set(x, y int, c color.Color) {
-	pix := surface.Pixels()
+	pix := surface.Data()
 	i := int32(y)*surface.Pitch + int32(x)*int32(surface.Format.BytesPerPixel)
 	switch surface.Format.Format {
 	case SDL_PIXELFORMAT_ARGB8888:

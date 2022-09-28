@@ -178,7 +178,7 @@ func SDL_UpdateTexture[T SDL_PixelsArray](texture *SDL_Texture, rect *SDL_Rect, 
 	cRet := C.SDL_UpdateTexture(
 		texture.cSDL_Texture(),
 		rect.cSDL_Rect(),
-		emptyInterface.word,
+		emptyInterface.Word,
 		cInt(pitch))
 
 	return int(cRet)
@@ -213,7 +213,7 @@ func SDL_UpdateYUVTexture(texture *SDL_Texture, rect *SDL_Rect, yPlane []byte, y
 func SDL_LockTexture[T SDL_PixelsArray](texture *SDL_Texture, rect *SDL_Rect, pixels *T, pitch *int32) int {
 	emptyInterface := (*emptyInterface)(unsafe.Pointer(pixels))
 	cPitch := (*cInt)(unsafe.Pointer(pitch))
-	cRet := C.SDL_LockTexture(texture.cSDL_Texture(), rect.cSDL_Rect(), &emptyInterface.word, cPitch)
+	cRet := C.SDL_LockTexture(texture.cSDL_Texture(), rect.cSDL_Rect(), &emptyInterface.Word, cPitch)
 
 	return int(cRet)
 }

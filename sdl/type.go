@@ -129,31 +129,31 @@ type SDL_AudioFormat = uint16
 
 // type SDL_AudioCallback = func(unsafe.Pointer, *uint8, int32)
 type SDL_AudioSpec struct {
-	freq     int32
-	format   uint16
-	channels uint8
-	silence  uint8
-	samples  uint16
-	padding  uint16
-	size     uint32
-	callback func(unsafe.Pointer, *uint8, int32)
-	userdata unsafe.Pointer
+	Freq     int32
+	Format   uint16
+	Channels uint8
+	Silence  uint8
+	Samples  uint16
+	Padding  uint16
+	Size     uint32
+	Callback func(unsafe.Pointer, *uint8, int32)
+	Userdata unsafe.Pointer
 }
 
 type SDL_AudioFilter = func(*SDL_AudioCVT, uint16)
 
 type SDL_AudioCVT struct {
-	needed       int32
-	srcFormat    uint16
-	dstFormat    uint16
-	rateIncr     float64
-	Buf          *uint8
-	Len          int32
-	LenCVT       int32
-	LenMult      int32
-	lenRatio     float64
-	filters      [10]func(*SDL_AudioCVT, uint16)
-	filter_index int32
+	Needed      int32
+	SrcFormat   uint16
+	DstFormat   uint16
+	RateIncr    float64
+	Buf         *uint8
+	Len         int32
+	LenCVT      int32
+	LenMult     int32
+	LenRatio    float64
+	Filters     [10]func(*SDL_AudioCVT, uint16)
+	FilterIndex int32
 }
 
 type SDL_AudioDeviceID = uint32
@@ -325,28 +325,28 @@ var (
 type SDL_PixelFormatEnum = uint32
 
 // type SDL_Color struct {
-// 	r uint8
-// 	g uint8
-// 	b uint8
-// 	a uint8
+// 	R uint8
+// 	G uint8
+// 	B uint8
+// 	A uint8
 // }
 
 // Color represents a color. This implements image/color.Color interface.
 type SDL_Color color.RGBA
 
 type SDL_Palette struct {
-	ncolors  int32
-	colors   *SDL_Color
-	version  uint32
-	refcount int32
+	Ncolors  int32
+	Colors   *SDL_Color
+	Version  uint32
+	Refcount int32
 }
 
 type SDL_PixelFormat struct {
 	Format        uint32
-	palette       *SDL_Palette
+	Palette       *SDL_Palette
 	BitsPerPixel  uint8
 	BytesPerPixel uint8
-	padding       [2]uint8
+	Padding       [2]uint8
 	Rmask         uint32
 	Gmask         uint32
 	Bmask         uint32
@@ -359,8 +359,8 @@ type SDL_PixelFormat struct {
 	Gshift        uint8
 	Bshift        uint8
 	Ashift        uint8
-	refcount      int32
-	next          *SDL_PixelFormat
+	Refcount      int32
+	Next          *SDL_PixelFormat
 }
 
 type SDL_Point struct {
@@ -424,18 +424,18 @@ const (
 type SDL_BlendFactor = int32
 
 type SDL_Surface struct {
-	flags        uint32
-	Format       *SDL_PixelFormat
-	W            int32
-	H            int32
-	Pitch        int32
-	pixels       unsafe.Pointer
-	userdata     unsafe.Pointer
-	locked       int32
-	list_blitmap unsafe.Pointer
-	clip_rect    SDL_Rect
-	map_         *SDL_BlitMap
-	refcount     int32
+	Flags       uint32
+	Format      *SDL_PixelFormat
+	W           int32
+	H           int32
+	Pitch       int32
+	Pixels      unsafe.Pointer
+	Userdata    unsafe.Pointer
+	Locked      int32
+	ListBlitmap unsafe.Pointer
+	ClipRect    SDL_Rect
+	Map         *SDL_BlitMap
+	Refcount    int32
 }
 
 type SDL_blit = func(*SDL_Surface, *SDL_Rect, *SDL_Surface, *SDL_Rect) int32
@@ -449,11 +449,11 @@ const (
 
 type SDL_YUV_CONVERSION_MODE = int32
 type SDL_DisplayMode struct {
-	format       uint32
-	w            int32
-	h            int32
-	refresh_rate int32
-	driverdata   unsafe.Pointer
+	Format      uint32
+	W           int32
+	H           int32
+	RefreshRate int32
+	Driverdata  unsafe.Pointer
 }
 
 const (
@@ -1162,10 +1162,10 @@ const (
 type SDL_Keymod = uint32
 
 type SDL_Keysym struct {
-	scancode int32
-	sym      int32
-	mod      uint16
-	unused   uint32
+	Scancode int32
+	Sym      int32
+	Mod      uint16
+	Unused   uint32
 }
 
 const (
@@ -1194,7 +1194,7 @@ const (
 type SDL_MouseWheelDirection = int32
 
 type SDL_GUID struct {
-	data [16]uint8
+	Data [16]uint8
 }
 
 type SDL_JoystickGUID = SDL_GUID
@@ -1285,8 +1285,8 @@ type SDL_GameControllerButtonBindHat struct {
 
 // button or axis or hat
 type SDL_GameControllerButtonBindPadding struct {
-	padding1 int32
-	padding2 int32
+	Padding1 int32
+	Padding2 int32
 }
 
 type SDL_GameControllerButtonBind struct {
@@ -1348,10 +1348,10 @@ const (
 type SDL_TouchDeviceType = int32
 
 type SDL_Finger struct {
-	id       int64
-	x        float32
-	y        float32
-	pressure float32
+	Id       int64
+	X        float32
+	Y        float32
+	Pressure float32
 }
 type SDL_GestureID = int64
 
@@ -1436,298 +1436,298 @@ const (
 type SDL_EventType = uint32
 
 type SDL_CommonEvent struct {
-	type_     uint32
-	timestamp uint32
+	Type      uint32
+	Timestamp uint32
 }
 
 type SDL_DisplayEvent struct {
-	type_     uint32
-	timestamp uint32
-	display   uint32
-	event     uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
-	data1     int32
+	Type      uint32
+	Timestamp uint32
+	Display   uint32
+	Event     uint8
+	Padding1  uint8
+	Padding2  uint8
+	Padding3  uint8
+	Data1     int32
 }
 
 type SDL_WindowEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	event     uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
-	data1     int32
-	data2     int32
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Event     uint8
+	Padding1  uint8
+	Padding2  uint8
+	Padding3  uint8
+	Data1     int32
+	Data2     int32
 }
 
 type SDL_KeyboardEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	state     uint8
-	repeat    uint8
-	padding2  uint8
-	padding3  uint8
-	keysym    SDL_Keysym
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	State     uint8
+	Repeat    uint8
+	Padding2  uint8
+	Padding3  uint8
+	Keysym    SDL_Keysym
 }
 
 type SDL_TextEditingEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	text      [32]int8
-	start     int32
-	length    int32
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Text      [32]int8
+	Start     int32
+	Length    int32
 }
 
 type SDL_TextEditingExtEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	text      *int8
-	start     int32
-	length    int32
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Text      *int8
+	Start     int32
+	Length    int32
 }
 
 type SDL_TextInputEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	text      [32]int8
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Text      [32]int8
 }
 
 type SDL_MouseMotionEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	which     uint32
-	state     uint32
-	x         int32
-	y         int32
-	xrel      int32
-	yrel      int32
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Which     uint32
+	State     uint32
+	X         int32
+	Y         int32
+	XRel      int32
+	YRel      int32
 }
 
 type SDL_MouseButtonEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	which     uint32
-	button    uint8
-	state     uint8
-	clicks    uint8
-	padding1  uint8
-	x         int32
-	y         int32
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Which     uint32
+	Button    uint8
+	State     uint8
+	Clicks    uint8
+	Padding1  uint8
+	X         int32
+	Y         int32
 }
 
 type SDL_MouseWheelEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	which     uint32
-	x         int32
-	y         int32
-	direction uint32
-	preciseX  float32
-	preciseY  float32
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Which     uint32
+	X         int32
+	Y         int32
+	Direction uint32
+	PreciseX  float32
+	PreciseY  float32
 }
 
 type SDL_JoyAxisEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	axis      uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
-	value     int16
-	padding4  uint16
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Axis      uint8
+	Padding1  uint8
+	Padding2  uint8
+	Padding3  uint8
+	Value     int16
+	Padding4  uint16
 }
 
 type SDL_JoyBallEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	ball      uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
-	xrel      int16
-	yrel      int16
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Ball      uint8
+	Padding1  uint8
+	Padding2  uint8
+	Padding3  uint8
+	XRel      int16
+	YRel      int16
 }
 
 type SDL_JoyHatEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	hat       uint8
-	value     uint8
-	padding1  uint8
-	padding2  uint8
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Hat       uint8
+	Value     uint8
+	Padding1  uint8
+	Padding2  uint8
 }
 
 type SDL_JoyButtonEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	button    uint8
-	state     uint8
-	padding1  uint8
-	padding2  uint8
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Button    uint8
+	State     uint8
+	Padding1  uint8
+	Padding2  uint8
 }
 
 type SDL_JoyDeviceEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
+	Type      uint32
+	Timestamp uint32
+	Which     int32
 }
 
 type SDL_JoyBatteryEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	level     int32
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Level     int32
 }
 
 type SDL_ControllerAxisEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	axis      uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
-	value     int16
-	padding4  uint16
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Axis      uint8
+	Padding1  uint8
+	Padding2  uint8
+	Padding3  uint8
+	Value     int16
+	Padding4  uint16
 }
 
 type SDL_ControllerButtonEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	button    uint8
-	state     uint8
-	padding1  uint8
-	padding2  uint8
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Button    uint8
+	State     uint8
+	Padding1  uint8
+	Padding2  uint8
 }
 
 type SDL_ControllerDeviceEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
+	Type      uint32
+	Timestamp uint32
+	Which     int32
 }
 
 type SDL_ControllerTouchpadEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	touchpad  int32
-	finger    int32
-	x         float32
-	y         float32
-	pressure  float32
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Touchpad  int32
+	Finger    int32
+	X         float32
+	Y         float32
+	Pressure  float32
 }
 
 type SDL_ControllerSensorEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	sensor    int32
-	data      [3]float32
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Sensor    int32
+	Data      [3]float32
 }
 
 type SDL_AudioDeviceEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     uint32
-	iscapture uint8
-	padding1  uint8
-	padding2  uint8
-	padding3  uint8
+	Type      uint32
+	Timestamp uint32
+	Which     uint32
+	Iscapture uint8
+	Padding1  uint8
+	Padding2  uint8
+	Padding3  uint8
 }
 
 type SDL_TouchFingerEvent struct {
-	type_     uint32
-	timestamp uint32
-	touchId   int64
-	fingerId  int64
-	x         float32
-	y         float32
-	dx        float32
-	dy        float32
-	pressure  float32
-	windowID  uint32
+	Type      uint32
+	Timestamp uint32
+	TouchId   int64
+	FingerId  int64
+	X         float32
+	Y         float32
+	Dx        float32
+	Dy        float32
+	Pressure  float32
+	WindowID  uint32
 }
 
 type SDL_MultiGestureEvent struct {
-	type_      uint32
-	timestamp  uint32
-	touchId    int64
-	dTheta     float32
-	dDist      float32
-	x          float32
-	y          float32
-	numFingers uint16
-	padding    uint16
+	Type       uint32
+	Timestamp  uint32
+	TouchId    int64
+	DTheta     float32
+	DDist      float32
+	X          float32
+	Y          float32
+	NumFingers uint16
+	Padding    uint16
 }
 
 type SDL_DollarGestureEvent struct {
-	type_      uint32
-	timestamp  uint32
-	touchId    int64
-	gestureId  int64
-	numFingers uint32
-	error      float32
-	x          float32
-	y          float32
+	Type       uint32
+	Timestamp  uint32
+	TouchId    int64
+	GestureId  int64
+	NumFingers uint32
+	Error      float32
+	X          float32
+	Y          float32
 }
 
 type SDL_DropEvent struct {
-	type_     uint32
-	timestamp uint32
-	file      *int8
-	windowID  uint32
+	Type      uint32
+	Timestamp uint32
+	File      *int8
+	WindowID  uint32
 }
 
 type SDL_SensorEvent struct {
-	type_     uint32
-	timestamp uint32
-	which     int32
-	data      [6]float32
+	Type      uint32
+	Timestamp uint32
+	Which     int32
+	Data      [6]float32
 }
 
 type SDL_QuitEvent struct {
-	type_     uint32
-	timestamp uint32
+	Type      uint32
+	Timestamp uint32
 }
 
 type SDL_OSEvent struct {
-	type_     uint32
-	timestamp uint32
+	Type      uint32
+	Timestamp uint32
 }
 
 type SDL_UserEvent struct {
-	type_     uint32
-	timestamp uint32
-	windowID  uint32
-	code      int32
-	data1     unsafe.Pointer
-	data2     unsafe.Pointer
+	Type      uint32
+	Timestamp uint32
+	WindowID  uint32
+	Code      int32
+	Data1     unsafe.Pointer
+	Data2     unsafe.Pointer
 }
 
 type SDL_SysWMEvent struct {
-	type_     uint32
-	timestamp uint32
-	msg       *SDL_SysWMmsg
+	Type      uint32
+	Timestamp uint32
+	Msg       *SDL_SysWMmsg
 }
 
 type SDL_Event struct {
 	Type    uint32
-	padding [56]uint8 // padding
+	Padding [56]uint8 // padding
 }
 
 const (
@@ -1741,93 +1741,93 @@ type SDL_eventaction = int32
 // type SDL_EventFilter = func(unsafe.Pointer, *SDL_Event) int32
 
 type SDL_HapticDirection struct {
-	type_ uint8
-	dir   [3]int32
+	Type uint8
+	Dir  [3]int32
 }
 
 type SDL_HapticConstant struct {
-	type_         uint16
-	direction     SDL_HapticDirection
-	length        uint32
-	delay         uint16
-	button        uint16
-	interval      uint16
-	level         int16
-	attack_length uint16
-	attack_level  uint16
-	fade_length   uint16
-	fade_level    uint16
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Level        int16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
 type SDL_HapticPeriodic struct {
-	type_         uint16
-	direction     SDL_HapticDirection
-	length        uint32
-	delay         uint16
-	button        uint16
-	interval      uint16
-	period        uint16
-	magnitude     int16
-	offset        int16
-	phase         uint16
-	attack_length uint16
-	attack_level  uint16
-	fade_length   uint16
-	fade_level    uint16
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Period       uint16
+	Magnitude    int16
+	Offset       int16
+	Phase        uint16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
 type SDL_HapticCondition struct {
-	type_       uint16
-	direction   SDL_HapticDirection
-	length      uint32
-	delay       uint16
-	button      uint16
-	interval    uint16
-	right_sat   [3]uint16
-	left_sat    [3]uint16
-	right_coeff [3]int16
-	left_coeff  [3]int16
-	deadband    [3]uint16
-	center      [3]int16
+	Type       uint16
+	Direction  SDL_HapticDirection
+	Length     uint32
+	Delay      uint16
+	Button     uint16
+	Interval   uint16
+	RightSat   [3]uint16
+	LeftSat    [3]uint16
+	RightCoeff [3]int16
+	LeftCoeff  [3]int16
+	Deadband   [3]uint16
+	Center     [3]int16
 }
 
 type SDL_HapticRamp struct {
-	type_         uint16
-	direction     SDL_HapticDirection
-	length        uint32
-	delay         uint16
-	button        uint16
-	interval      uint16
-	start         int16
-	end           int16
-	attack_length uint16
-	attack_level  uint16
-	fade_length   uint16
-	fade_level    uint16
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Start        int16
+	End          int16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
 type SDL_HapticLeftRight struct {
-	type_           uint16
-	length          uint32
-	large_magnitude uint16
-	small_magnitude uint16
+	Type           uint16
+	Length         uint32
+	LargeMagnitude uint16
+	SmallMagnitude uint16
 }
 
 type SDL_HapticCustom struct {
-	type_         uint16
-	direction     SDL_HapticDirection
-	length        uint32
-	delay         uint16
-	button        uint16
-	interval      uint16
-	channels      uint8
-	period        uint16
-	samples       uint16
-	data          *uint16
-	attack_length uint16
-	attack_level  uint16
-	fade_length   uint16
-	fade_level    uint16
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Channels     uint8
+	Period       uint16
+	Samples      uint16
+	Data         *uint16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
 }
 
 type SDL_HapticEffect struct {
@@ -1835,20 +1835,20 @@ type SDL_HapticEffect struct {
 }
 
 type SDL_hid_device_info struct {
-	path                *int8
-	vendor_id           uint16
-	product_id          uint16
-	serial_number       *int32
-	release_number      uint16
-	manufacturer_string *int32
-	product_string      *int32
-	usage_page          uint16
-	usage               uint16
-	interface_number    int32
-	interface_class     int32
-	interface_subclass  int32
-	interface_protocol  int32
-	next                *SDL_hid_device_info
+	Path               *int8
+	VendorId           uint16
+	ProductId          uint16
+	SerialNumber       *int32
+	ReleaseNumber      uint16
+	ManufacturerString *int32
+	ProductString      *int32
+	UsagePage          uint16
+	Usage              uint16
+	InterfaceNumber    int32
+	InterfaceClass     int32
+	InterfaceSubclass  int32
+	InterfaceProtocol  int32
+	Next               *SDL_hid_device_info
 }
 
 const (
@@ -1918,15 +1918,15 @@ const (
 type SDL_MessageBoxButtonFlags = int32
 
 type SDL_MessageBoxButtonData struct {
-	flags    uint32
-	buttonid int32
-	text     *int8
+	Flags    uint32
+	Buttonid int32
+	Text     *int8
 }
 
 type SDL_MessageBoxColor struct {
-	r uint8
-	g uint8
-	b uint8
+	R uint8
+	G uint8
+	B uint8
 }
 
 const (
@@ -1941,17 +1941,17 @@ const (
 type SDL_MessageBoxColorType = int32
 
 type SDL_MessageBoxColorScheme struct {
-	colors [5]SDL_MessageBoxColor
+	Colors [5]SDL_MessageBoxColor
 }
 
 type SDL_MessageBoxData struct {
-	flags       uint32
-	window      *SDL_Window
-	title       *int8
-	message     *int8
-	numbuttons  int32
-	buttons     *SDL_MessageBoxButtonData
-	colorScheme *SDL_MessageBoxColorScheme
+	Flags       uint32
+	Window      *SDL_Window
+	Title       *int8
+	Message     *int8
+	Numbuttons  int32
+	Buttons     *SDL_MessageBoxButtonData
+	ColorScheme *SDL_MessageBoxColorScheme
 }
 
 type SDL_MetalView = unsafe.Pointer
@@ -1976,18 +1976,18 @@ const (
 type SDL_RendererFlags = int32
 
 type SDL_RendererInfo struct {
-	name                *int8
-	flags               uint32
-	num_texture_formats uint32
-	texture_formats     [16]uint32
-	max_texture_width   int32
-	max_texture_height  int32
+	Name              *int8
+	Flags             uint32
+	NumTextureFormats uint32
+	TextureFormats    [16]uint32
+	MaxTextureWidth   int32
+	MaxTextureHeight  int32
 }
 
 type SDL_Vertex struct {
-	position  SDL_FPoint
-	color     SDL_Color
-	tex_coord SDL_FPoint
+	Position SDL_FPoint
+	Color    SDL_Color
+	TexCoord SDL_FPoint
 }
 
 const (
@@ -2032,12 +2032,12 @@ const (
 type WindowShapeMode = int32
 
 type SDL_WindowShapeParams struct {
-	colorKey SDL_Color
+	ColorKey SDL_Color
 }
 
 type SDL_WindowShapeMode struct {
-	mode       int32
-	parameters SDL_WindowShapeParams
+	Mode       int32
+	Parameters SDL_WindowShapeParams
 }
 
 type SDL_TimerCallback = func(uint32, unsafe.Pointer) uint32
@@ -2050,14 +2050,14 @@ type SDL_version struct {
 }
 
 type SDL_Locale struct {
-	language *int8
-	country  *int8
+	Language *int8
+	Country  *int8
 }
 
 // 空接口
 type emptyInterface struct {
-	typ  unsafe.Pointer
-	word unsafe.Pointer
+	Typ  unsafe.Pointer
+	Word unsafe.Pointer
 }
 
 type SDL_PixelsArray interface {
