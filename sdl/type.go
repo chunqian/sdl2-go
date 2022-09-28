@@ -1270,6 +1270,30 @@ const (
 
 type SDL_GameControllerBindType = int32
 
+type SDL_GameControllerButtonBindButton struct {
+	Button int32
+}
+
+type SDL_GameControllerButtonBindAxis struct {
+	Axis int32
+}
+
+type SDL_GameControllerButtonBindHat struct {
+	Hat     int32
+	HatMask int32
+}
+
+// button or axis or hat
+type SDL_GameControllerButtonBindPadding struct {
+	padding1 int32
+	padding2 int32
+}
+
+type SDL_GameControllerButtonBind struct {
+	BindType int32
+	Value    SDL_GameControllerButtonBindPadding
+}
+
 const (
 	SDL_CONTROLLER_AXIS_INVALID      SDL_GameControllerAxis = -1
 	SDL_CONTROLLER_AXIS_LEFTX        SDL_GameControllerAxis = 0
@@ -2129,8 +2153,19 @@ type SDL_EventStructures interface {
 		SDL_Event
 }
 
-func SDL_EventConvert[T SDL_EventStructures, T2 SDL_EventStructures](event *T, _ T2) *T2 {
-	return (*T2)(unsafe.Pointer(event))
+func SDL_EventConvert[T SDL_EventStructures, T2 SDL_EventStructures](e *T, _ T2) *T2 {
+	return (*T2)(unsafe.Pointer(e))
+}
+
+type SDL_ConvertStructures interface {
+	SDL_GameControllerButtonBindPadding |
+		SDL_GameControllerButtonBindButton |
+		SDL_GameControllerButtonBindAxis |
+		SDL_GameControllerButtonBindHat
+}
+
+func SDL_Convert[T SDL_ConvertStructures, T2 SDL_ConvertStructures](s *T, _ T2) *T2 {
+	return (*T2)(unsafe.Pointer(s))
 }
 
 func init() {
