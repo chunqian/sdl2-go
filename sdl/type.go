@@ -32,6 +32,11 @@ type (
 	cUint64  = C.uint64_t  // uint64
 	cUintPtr = C.uintptr_t // uintptr
 
+	cSchar  = C.schar  // int8
+	cUchar  = C.uchar  // uint8
+	cShort  = C.short  // int16
+	cUshort = C.ushort // uint16
+
 	cLong      = C.long      // int32
 	cUlong     = C.ulong     // int32
 	cLonglong  = C.longlong  // int64
