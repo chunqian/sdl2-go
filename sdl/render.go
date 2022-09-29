@@ -622,7 +622,7 @@ func SDL_RenderGeometryRaw(renderer *SDL_Renderer, texture *SDL_Texture, xy []fl
 	cTexture := cSDL_Texture(texture)
 	cXY := (*cFloat)(&xy[0])
 	cXYStride := cInt(xyStride)
-	cColor := (*C.SDL_Color)(unsafe.Pointer(&color[0]))
+	cColor := cSDL_Color(&color[0])
 	cColorStride := cInt(colorStride)
 	cUV := (*cFloat)(&uv[0])
 	cUVStride := cInt(uvStride)

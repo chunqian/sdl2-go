@@ -17,7 +17,11 @@ func cSDL_Palette(palette *SDL_Palette) *C.SDL_Palette {
 	return (*C.SDL_Palette)(unsafe.Pointer(palette))
 }
 
-func (c SDL_Color) cSDL_Color() uint32 {
+func cSDL_Color(c *SDL_Color) *C.SDL_Color {
+	return (*C.SDL_Color)(unsafe.Pointer(c))
+}
+
+func pixelColor(c SDL_Color) uint32 {
 	var v uint32
 	v |= uint32(c.R) << 24
 	v |= uint32(c.G) << 16
@@ -83,12 +87,12 @@ func SDL_SetPaletteColors(palette *SDL_Palette, colors []SDL_Color) int {
 	if colors == nil {
 		return -1
 	}
-	var ptr *C.SDL_Color
+	var ptr *SDL_Color
 	if len(colors) > 0 {
-		ptr = (*C.SDL_Color)(unsafe.Pointer(&colors[0]))
+		ptr = &colors[0]
 	}
 
-	cRet := C.SDL_SetPaletteColors((*C.SDL_Palette)(unsafe.Pointer(palette)), ptr, 0, cInt(len(colors)))
+	cRet := C.SDL_SetPaletteColors(cSDL_Palette(palette), cSDL_Color(ptr), 0, cInt(len(colors)))
 	return int(cRet)
 }
 
