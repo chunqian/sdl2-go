@@ -660,7 +660,7 @@ func StringColor(renderer *SDL_Renderer, x, y int32, s string, color SDL_Color) 
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cS) // memory free
 
 	cColor := cUint32(gfxColor(color))
-	return C.stringColor(cSDL_Renderer(renderer), cX, cY, (*cChar)(unsafe.Pointer(cS)), cColor) == 0
+	return C.stringColor(cSDL_Renderer(renderer), cX, cY, cS.(*cChar), cColor) == 0
 }
 
 func StringRGBA(renderer *SDL_Renderer, x, y int32, s string, r, g, b, a uint8) bool {
@@ -674,7 +674,7 @@ func StringRGBA(renderer *SDL_Renderer, x, y int32, s string, r, g, b, a uint8) 
 	cG := cUint8(g)
 	cB := cUint8(b)
 	cA := cUint8(a)
-	return C.stringRGBA(cSDL_Renderer(renderer), cX, cY, (*cChar)(unsafe.Pointer(cS)), cR, cG, cB, cA) == 0
+	return C.stringRGBA(cSDL_Renderer(renderer), cX, cY, cS.(*cChar), cR, cG, cB, cA) == 0
 }
 
 func SDL_imageFilterMMXdetect() bool {

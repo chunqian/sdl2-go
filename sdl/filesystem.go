@@ -19,7 +19,7 @@ func SDL_GetPrefPath(org, app string) string {
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cOrg)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cApp)
 
-	cVal := C.SDL_GetPrefPath(cOrg, cApp)
+	cVal := C.SDL_GetPrefPath(cOrg.(*cChar), cApp.(*cChar))
 	defer C.free(unsafe.Pointer(cVal))
 
 	return SDL_GoString(cVal)

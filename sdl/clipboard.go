@@ -10,7 +10,7 @@ func SDL_SetClipboardText(text string) int {
 	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
 
-	cRet := C.SDL_SetClipboardText(cText)
+	cRet := C.SDL_SetClipboardText(cText.(*cChar))
 	return int(cRet)
 }
 

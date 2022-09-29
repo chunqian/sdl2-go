@@ -19,7 +19,8 @@ func SDL_RWFromFile(file, mode string) *SDL_RWops {
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cMode) // memory free
 
-	return (*SDL_RWops)(unsafe.Pointer(C.SDL_RWFromFile(cFile, cMode)))
+	cRW := C.SDL_RWFromFile(cFile.(*cChar), cMode.(*cChar))
+	return (*SDL_RWops)(unsafe.Pointer(cRW))
 }
 
 func SDL_RWFromMem(mem []byte) *SDL_RWops {

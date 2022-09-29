@@ -35,7 +35,7 @@ func SDL_SetError(err error) {
 	cstr := SDL_CreateCString(SDL_GetMemoryPool(), err.Error())
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cstr)
 
-	C.SDL_SetErrorWrapper(cstr)
+	C.SDL_SetErrorWrapper(cstr.(*cChar))
 }
 
 func SDL_ClearError() {

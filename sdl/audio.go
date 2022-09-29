@@ -51,7 +51,7 @@ func SDL_AudioInit(driverName string) int {
 	cDriverName := SDL_CreateCString(SDL_GetMemoryPool(), driverName)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cDriverName) // memory free
 
-	cRet := C.SDL_AudioInit(cDriverName)
+	cRet := C.SDL_AudioInit(cDriverName.(*cChar))
 	return int(cRet)
 }
 
@@ -86,7 +86,7 @@ func SDL_OpenAudioDevice(device string, isCapture int32, desired, obtained *SDL_
 	if device == "" {
 		cDevice = nil
 	}
-	cId := C.SDL_OpenAudioDevice(cDevice, cInt(isCapture), cSDL_AudioSpec(desired), cSDL_AudioSpec(obtained), cInt(allowedChanges))
+	cId := C.SDL_OpenAudioDevice(cDevice.(*cChar), cInt(isCapture), cSDL_AudioSpec(desired), cSDL_AudioSpec(obtained), cInt(allowedChanges))
 	return SDL_AudioDeviceID(cId)
 }
 
@@ -129,7 +129,7 @@ func SDL_LoadWAV(file string, spec *SDL_AudioSpec, audioBuf *[]uint8, audioLen *
 
 	cAudioBuf := (**cUint8)(unsafe.Pointer(audioBuf))
 	cAudioLen := (*cUint32)(unsafe.Pointer(audioLen))
-	cAudioSpec := C.SDL_LoadWAV_RW(C.SDL_RWFromFile(cFile, cRB), 1, cSDL_AudioSpec(spec), cAudioBuf, cAudioLen)
+	cAudioSpec := C.SDL_LoadWAV_RW(C.SDL_RWFromFile(cFile.(*cChar), cRB.(*cChar)), 1, cSDL_AudioSpec(spec), cAudioBuf, cAudioLen)
 	audioSpec := (*SDL_AudioSpec)(unsafe.Pointer(cAudioSpec))
 
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(audioBuf))

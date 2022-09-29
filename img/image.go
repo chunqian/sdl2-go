@@ -43,7 +43,7 @@ func IMG_LoadTyped_RW(src *SDL_RWops, freesrc SDL_bool, type_ string) *SDL_Surfa
 	cType := SDL_CreateCString(SDL_GetMemoryPool(), type_)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cType) // memory free
 
-	cSurface := C.IMG_LoadTyped_RW(cSrc, cFreesrc, (*cChar)(unsafe.Pointer(cType)))
+	cSurface := C.IMG_LoadTyped_RW(cSrc, cFreesrc, cType.(*cChar))
 	return (*SDL_Surface)(unsafe.Pointer(cSurface))
 }
 
@@ -51,7 +51,7 @@ func IMG_Load(file string) *SDL_Surface {
 	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cSurface := C.IMG_Load((*cChar)(unsafe.Pointer(cFile)))
+	cSurface := C.IMG_Load(cFile.(*cChar))
 	return (*SDL_Surface)(unsafe.Pointer(cSurface))
 }
 
@@ -68,7 +68,7 @@ func IMG_LoadTexture(renderer *SDL_Renderer, file string) *SDL_Texture {
 	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cSurface := C.IMG_LoadTexture(cRenderer, (*cChar)(unsafe.Pointer(cFile)))
+	cSurface := C.IMG_LoadTexture(cRenderer, cFile.(*cChar))
 	return (*SDL_Texture)(unsafe.Pointer(cSurface))
 }
 
@@ -254,7 +254,7 @@ func IMG_SavePNG(surface *SDL_Surface, file string) int {
 	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cRet := C.IMG_SavePNG(cSurface, (*cChar)(unsafe.Pointer(cFile)))
+	cRet := C.IMG_SavePNG(cSurface, cFile.(*cChar))
 	return int(cRet)
 }
 
