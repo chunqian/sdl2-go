@@ -9,10 +9,10 @@ import "C"
 const (
 	FPS_UPPER_LIMIT = 200
 	FPS_LOWER_LIMIT = 1
-	FPS_DEFAULT = 30
+	FPS_DEFAULT     = 30
 
 	SMOOTHING_OFF = 0
-	SMOOTHING_ON = 1
+	SMOOTHING_ON  = 1
 )
 
 type FPSmanager struct {
