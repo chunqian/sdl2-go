@@ -12,7 +12,6 @@ import (
 	. "github.com/chunqian/memory"
 )
 
-// go struct to c struct
 func (s *SDL_CommonEvent) cSDL_CommonEvent() *C.SDL_CommonEvent {
 	return (*C.SDL_CommonEvent)(unsafe.Pointer(s))
 }
@@ -133,13 +132,10 @@ func (s *SDL_Event) cSDL_Event() *C.SDL_Event {
 	return (*C.SDL_Event)(unsafe.Pointer(s))
 }
 
-// go function wapper for c function
-// Pump the event loop, gathering events from the input devices.
 func SDL_PumpEvents() {
 	C.SDL_PumpEvents()
 }
 
-// Check the event queue for messages and optionally return them.
 func SDL_PeepEvents(events []SDL_Event, numevents int, action SDL_eventaction, minType SDL_EventType, maxType SDL_EventType) int {
 	if events == nil {
 		return 0
@@ -149,47 +145,39 @@ func SDL_PeepEvents(events []SDL_Event, numevents int, action SDL_eventaction, m
 	return int(cRet)
 }
 
-// Check for the existence of a certain event type in the event queue.
 func SDL_HasEvent(eventType SDL_EventType) bool {
 	cRet := C.SDL_HasEvent(cUint(eventType))
 	return cRet != 0
 }
 
-// Check for the existence of certain event types in the event queue.
 func SDL_HasEvents(minType SDL_EventType, maxType SDL_EventType) bool {
 	cRet := C.SDL_HasEvents(cUint(minType), cUint(maxType))
 	return cRet != 0
 }
 
-// Clear events of a specific type from the event queue.
 func SDL_FlushEvent(eventType SDL_EventType) {
 	C.SDL_FlushEvent(cUint(eventType))
 }
 
-// Clear events of a range of types from the event queue.
 func SDL_FlushEvents(minType SDL_EventType, maxType SDL_EventType) {
 	C.SDL_FlushEvents(cUint(minType), cUint(maxType))
 }
 
-// Poll for currently pending events.
 func SDL_PollEvent(event *SDL_Event) bool {
 	cRet := C.SDL_PollEvent(event.cSDL_Event())
 	return cRet != 0
 }
 
-// Wait indefinitely for the next available event.
 func SDL_WaitEvent(event *SDL_Event) int {
 	cRet := C.SDL_WaitEvent(event.cSDL_Event())
 	return int(cRet)
 }
 
-// Wait until the specified timeout (in milliseconds) for the next available event.
 func SDL_WaitEventTimeout(event *SDL_Event, timeout int) int {
 	cRet := C.SDL_WaitEventTimeout(event.cSDL_Event(), cInt(timeout))
 	return int(cRet)
 }
 
-// Add an event to the event queue.
 func SDL_PushEvent(event *SDL_Event) {
 	C.SDL_PushEvent(event.cSDL_Event())
 }
@@ -208,7 +196,6 @@ var SDL_EventSpecific SDL_EventWatcher
 var SDL_event_watchers []*SDL_EventWatcher
 var SDL_event_watchers_count int = 0
 
-//export SDL_EventFilterWrapper
 func SDL_EventFilterWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
@@ -220,7 +207,6 @@ func SDL_EventFilterWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	return cInt(ret)
 }
 
-// Set up a filter to process all events before they change internal state and are posted to the internal event queue.
 func SDL_SetEventFilter(filter SDL_EventFilter, userdata interface{}) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
@@ -231,7 +217,6 @@ func SDL_SetEventFilter(filter SDL_EventFilter, userdata interface{}) {
 	C.SDL_SetEventFilter(C.SDL_EventFilter(C.SDL_EventFilterWrapper), nil)
 }
 
-// Query the current event filter.
 func SDL_GetEventFilter(filter *SDL_EventFilter, userdata *interface{}) bool {
 	var event_ok SDL_EventWatcher
 
@@ -259,7 +244,6 @@ func SDL_event_watchers_delete(watchers []*SDL_EventWatcher, watcher *SDL_EventW
 	return retWatchers
 }
 
-//export SDL_EventWatchWrapper
 func SDL_EventWatchWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
@@ -273,7 +257,6 @@ func SDL_EventWatchWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	return cInt(ret)
 }
 
-// Add a callback to be triggered when an event is added to the event queue.
 func SDL_AddEventWatch(filter SDL_EventFilter, userdata interface{}) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
@@ -290,7 +273,6 @@ func SDL_AddEventWatch(filter SDL_EventFilter, userdata interface{}) {
 	SDL_event_watchers = append(SDL_event_watchers, event_watchers)
 }
 
-// Remove an event watch callback added with SDL_AddEventWatch().
 func SDL_DelEventWatch(filter SDL_EventFilter, userdata interface{}) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
@@ -312,7 +294,6 @@ func SDL_DelEventWatch(filter SDL_EventFilter, userdata interface{}) {
 	}
 }
 
-//export SDL_FilterEventsWrapper
 func SDL_FilterEventsWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
@@ -324,7 +305,6 @@ func SDL_FilterEventsWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	return cInt(ret)
 }
 
-// Run a specific filter function on the current event queue, removing any events for which the filter returns 0.
 func SDL_FilterEvents(filter SDL_EventFilter, userdata interface{}) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
@@ -337,13 +317,11 @@ func SDL_FilterEvents(filter SDL_EventFilter, userdata interface{}) {
 	SDL_EventSpecific = SDL_EventWatcher{}
 }
 
-// Set the state of processing events by type.
 func SDL_EventState(eventType SDL_EventType, state int) uint8 {
 	cRet := C.SDL_EventState(cUint(eventType), cInt(state))
 	return uint8(cRet)
 }
 
-// Allocate a set of user-defined events, and return the beginning event number for that set of events.
 func SDL_RegisterEvents(numevents int) uint32 {
 	cRet := C.SDL_RegisterEvents(cInt(numevents))
 	return uint32(cRet)

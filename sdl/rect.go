@@ -25,8 +25,6 @@ func (p *SDL_FRect) cSDL_FRect() *C.SDL_FRect {
 	return (*C.SDL_FRect)(unsafe.Pointer(p))
 }
 
-// InRect reports whether the point resides inside a rectangle.
-// (https://wiki.libsdl.org/SDL_PointInRect)
 func SDL_PointInRect(p *SDL_Point, r *SDL_Rect) bool {
 	if (p.X >= r.X) && (p.X < (r.X + r.W)) &&
 		(p.Y >= r.Y) && (p.Y < (r.Y + r.H)) {
@@ -35,14 +33,10 @@ func SDL_PointInRect(p *SDL_Point, r *SDL_Rect) bool {
 	return false
 }
 
-// Empty reports whether a rectangle has no area.
-// (https://wiki.libsdl.org/SDL_RectEmpty)
 func SDL_RectEmpty(a *SDL_Rect) bool {
 	return a == nil || a.W <= 0 || a.H <= 0
 }
 
-// Equals reports whether two rectangles are equal.
-// (https://wiki.libsdl.org/SDL_RectEquals)
 func SDL_RectEquals(a *SDL_Rect, b *SDL_Rect) bool {
 	if (a != nil) && (b != nil) &&
 		(a.X == b.X) && (a.Y == b.Y) &&
@@ -52,8 +46,6 @@ func SDL_RectEquals(a *SDL_Rect, b *SDL_Rect) bool {
 	return false
 }
 
-// HasIntersection reports whether two rectangles intersect.
-// (https://wiki.libsdl.org/SDL_HasIntersection)
 func SDL_HasIntersection(a *SDL_Rect, b *SDL_Rect) bool {
 	if a == nil || b == nil {
 		return false
@@ -71,8 +63,6 @@ func SDL_HasIntersection(a *SDL_Rect, b *SDL_Rect) bool {
 	return true
 }
 
-// Intersect calculates the intersection of two rectangles.
-// (https://wiki.libsdl.org/SDL_IntersectRect)
 func SDL_IntersectRect(a *SDL_Rect, b *SDL_Rect, result *SDL_Rect) bool {
 	result = &SDL_Rect{}
 
@@ -116,8 +106,6 @@ func SDL_IntersectRect(a *SDL_Rect, b *SDL_Rect, result *SDL_Rect) bool {
 	return !SDL_RectEmpty(result)
 }
 
-// Union calculates the union of two rectangles.
-// (https://wiki.libsdl.org/SDL_UnionRect)
 func SDL_UnionRect(a *SDL_Rect, b *SDL_Rect, result *SDL_Rect) {
 	result = &SDL_Rect{}
 
@@ -165,8 +153,6 @@ func SDL_UnionRect(a *SDL_Rect, b *SDL_Rect, result *SDL_Rect) {
 	return
 }
 
-// EnclosePoints calculates a minimal rectangle that encloses a set of points.
-// (https://wiki.libsdl.org/SDL_EnclosePoints)
 func SDL_EnclosePoints(points []SDL_Point, count int32, clip *SDL_Rect, result *SDL_Rect) bool {
 	result = &SDL_Rect{}
 
@@ -263,8 +249,6 @@ func computeOutCode(rect *SDL_Rect, x, y int32) int {
 	return code
 }
 
-// IntersectLine calculates the intersection of a rectangle and a line segment.
-// (https://wiki.libsdl.org/SDL_IntersectRectAndLine)
 func SDL_IntersectRectAndLine(a *SDL_Rect, X1, Y1, X2, Y2 *int32) bool {
 	if SDL_RectEmpty(a) {
 		return false
@@ -380,7 +364,6 @@ func SDL_IntersectRectAndLine(a *SDL_Rect, X1, Y1, X2, Y2 *int32) bool {
 	return true
 }
 
-// InRect reports whether the point resides inside a rectangle.
 func SDL_PointInFRect(p *SDL_FPoint, r *SDL_FRect) bool {
 	if (p.X >= r.X) && (p.X < (r.X + r.W)) &&
 		(p.Y >= r.Y) && (p.Y < (r.Y + r.H)) {
@@ -389,13 +372,10 @@ func SDL_PointInFRect(p *SDL_FPoint, r *SDL_FRect) bool {
 	return false
 }
 
-// Empty reports whether a rectangle has no area.
 func SDL_FRectEmpty(a *SDL_FRect) bool {
 	return a == nil || a.W <= 0 || a.H <= 0
 }
 
-// EqualsEpsilon returns true if the two rectangles are equal, within some given epsilon.
-// (https://wiki.libsdl.org/SDL_FRectEqualsEpsilon)
 func SDL_FRectEqualsEpsilon(a *SDL_FRect, b *SDL_FRect, epsilon float32) bool {
 	if (a != nil) && (b != nil) && (a == b ||
 		(float32(math.Abs(float64(a.X-b.X))) <= epsilon) &&
@@ -407,8 +387,6 @@ func SDL_FRectEqualsEpsilon(a *SDL_FRect, b *SDL_FRect, epsilon float32) bool {
 	return false
 }
 
-// Equals reports whether two rectangles are equal.
-// (https://wiki.libsdl.org/SDL_RectEquals)
 func SDL_FRectEquals(a *SDL_FRect, b *SDL_FRect) bool {
 	if (a != nil) && (b != nil) &&
 		(a.X == b.X) && (a.Y == b.Y) &&
@@ -418,8 +396,6 @@ func SDL_FRectEquals(a *SDL_FRect, b *SDL_FRect) bool {
 	return false
 }
 
-// HasIntersection reports whether two rectangles intersect.
-// (https://wiki.libsdl.org/SDL_HasIntersection)
 func SDL_HasIntersectionF(a *SDL_FRect, b *SDL_FRect) bool {
 	if a == nil || b == nil {
 		return false
@@ -437,8 +413,6 @@ func SDL_HasIntersectionF(a *SDL_FRect, b *SDL_FRect) bool {
 	return true
 }
 
-// Intersect calculates the intersection of two rectangles.
-// (https://wiki.libsdl.org/SDL_IntersectRect)
 func SDL_IntersectFRect(a *SDL_FRect, b *SDL_FRect, result *SDL_FRect) bool {
 	result = &SDL_FRect{}
 
@@ -482,8 +456,6 @@ func SDL_IntersectFRect(a *SDL_FRect, b *SDL_FRect, result *SDL_FRect) bool {
 	return !SDL_FRectEmpty(result)
 }
 
-// Union calculates the union of two rectangles.
-// (https://wiki.libsdl.org/SDL_UnionRect)
 func SDL_UnionFRect(a *SDL_FRect, b *SDL_FRect, result *SDL_FRect) {
 	result = &SDL_FRect{}
 
@@ -531,8 +503,6 @@ func SDL_UnionFRect(a *SDL_FRect, b *SDL_FRect, result *SDL_FRect) {
 	return
 }
 
-// EncloseFPoints calculates a minimal rectangle that encloses a set of points with float precision.
-// (https://wiki.libsdl.org/SDL_EncloseFPoints)
 func SDL_EncloseFPoints(points []SDL_FPoint, count int32, clip *SDL_FRect, result *SDL_FRect) bool {
 	result = &SDL_FRect{}
 
@@ -636,8 +606,6 @@ func computeFOutCode(rect *SDL_FRect, x, y float32) int {
 	return code
 }
 
-// IntersectLine calculates the intersection of a rectangle and a line segment.
-// (https://wiki.libsdl.org/SDL_IntersectFRectAndLine)
 func SDL_IntersectFRectAndLine(a *SDL_FRect, X1, Y1, X2, Y2 *float32) bool {
 	if SDL_FRectEmpty(a) {
 		return false

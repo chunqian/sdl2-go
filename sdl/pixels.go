@@ -9,7 +9,6 @@ import (
 	"unsafe"
 )
 
-// cSDL_Color return uint32 representation of RGBA color.
 func (c SDL_Color) cSDL_Color() uint32 {
 	var v uint32
 	v |= uint32(c.R) << 24
@@ -28,9 +27,6 @@ func (palette *SDL_Palette) cSDL_Palette() *C.SDL_Palette {
 	return (*C.SDL_Palette)(unsafe.Pointer(palette))
 }
 
-// the following code is modified version of the code from bitbucket.org/dooots/go-sdl2
-
-// GetPixelFormatName returns the human readable name of a pixel format.
 func SDL_GetPixelFormatName(format uint) string {
 	cName := C.SDL_GetPixelFormatName(cUint32(format))
 	if cName == nil {
@@ -39,7 +35,6 @@ func SDL_GetPixelFormatName(format uint) string {
 	return SDL_GoString(cName)
 }
 
-// PixelFormatEnumToMasks converts one of the enumerated pixel formats to a bpp value and RGBA masks.
 func SDL_PixelFormatEnumToMasks(format uint, bpp *int, rmask, gmask, bmask, amask *uint32) bool {
 	cBool := C.SDL_PixelFormatEnumToMasks(
 		cUint32(format),
@@ -54,7 +49,6 @@ func SDL_PixelFormatEnumToMasks(format uint, bpp *int, rmask, gmask, bmask, amas
 	return true
 }
 
-// MasksToPixelFormatEnum converts a bpp value and RGBA masks to an enumerated pixel format.
 func MasksToPixelFormatEnum(bpp int, rmask, gmask, bmask, amask uint32) uint {
 	cRet := C.SDL_MasksToPixelFormatEnum(
 		cInt(bpp),
@@ -65,32 +59,27 @@ func MasksToPixelFormatEnum(bpp int, rmask, gmask, bmask, amask uint32) uint {
 	return uint(cRet)
 }
 
-// AllocFormat creates a PixelFormat structure corresponding to a pixel format.
 func SDL_AllocFormat(format uint32) *SDL_PixelFormat {
 	cPixelFormat := C.SDL_AllocFormat(cUint32(format))
 	pixelFormat := (*SDL_PixelFormat)(unsafe.Pointer(cPixelFormat))
 	return pixelFormat
 }
 
-// Free frees the PixelFormat structure allocated by AllocFormat().
 func SDL_FreeFormat(format *SDL_PixelFormat) {
 	C.SDL_FreeFormat((*C.SDL_PixelFormat)(unsafe.Pointer(format)))
 }
 
-// AllocPalette creates a palette structure with the specified number of color entries.
 func SDL_AllocPalette(ncolors int) *SDL_Palette {
 	cPalette := C.SDL_AllocPalette(cInt(ncolors))
 	palette := (*SDL_Palette)(unsafe.Pointer(cPalette))
 	return palette
 }
 
-// SetPalette sets the palette for the pixel format structure.
 func SDL_SetPixelFormatPalette(format *SDL_PixelFormat, palette *SDL_Palette) int {
 	cRet := C.SDL_SetPixelFormatPalette(format.cSDL_PixelFormat(), palette.cSDL_Palette())
 	return int(cRet)
 }
 
-// SetColors sets a range of colors in the palette.
 func SDL_SetPaletteColors(palette *SDL_Palette, colors []SDL_Color) int {
 	if colors == nil {
 		return -1
@@ -104,24 +93,20 @@ func SDL_SetPaletteColors(palette *SDL_Palette, colors []SDL_Color) int {
 	return int(cRet)
 }
 
-// Free frees the palette created with AllocPalette().
 func SDL_FreePalette(palette *SDL_Palette) {
 	C.SDL_FreePalette(palette.cSDL_Palette())
 }
 
-// MapRGB maps an RGB triple to an opaque pixel value for a given pixel format.
 func SDL_MapRGB(format *SDL_PixelFormat, r, g, b uint8) uint32 {
 	cRet := C.SDL_MapRGB(format.cSDL_PixelFormat(), cUint8(r), cUint8(g), cUint8(b))
 	return uint32(cRet)
 }
 
-// MapRGBA maps an RGBA quadruple to a pixel value for a given pixel format.
 func SDL_MapRGBA(format *SDL_PixelFormat, r, g, b, a uint8) uint32 {
 	cRet := C.SDL_MapRGBA(format.cSDL_PixelFormat(), cUint8(r), cUint8(g), cUint8(b), cUint8(a))
 	return uint32(cRet)
 }
 
-// GetRGB returns RGB values from a pixel in the specified format.
 func SDL_GetRGB(pixel uint32, format *SDL_PixelFormat, r, g, b *uint8) {
 	C.SDL_GetRGB(
 		cUint32(pixel),
@@ -131,7 +116,6 @@ func SDL_GetRGB(pixel uint32, format *SDL_PixelFormat, r, g, b *uint8) {
 		(*cUint8)(b))
 }
 
-// GetRGBA returns RGBA values from a pixel in the specified format.
 func SDL_GetRGBA(pixel uint32, format *SDL_PixelFormat, r, g, b, a *uint8) {
 	C.SDL_GetRGBA(
 		cUint32(pixel),
@@ -142,17 +126,14 @@ func SDL_GetRGBA(pixel uint32, format *SDL_PixelFormat, r, g, b, a *uint8) {
 		(*cUint8)(a))
 }
 
-// CalculateGammaRamp calculates a 256 entry gamma ramp for a gamma value.
 func SDL_CalculateGammaRamp(gamma float32, ramp *[256]uint16) {
 	C.SDL_CalculateGammaRamp(cFloat(gamma), (*cUint16)(unsafe.Pointer(&ramp[0])))
 }
 
-// BytesPerPixel returns the number of bytes per pixel for the given format
 func SDL_BytesPerPixel(format uint32) int {
 	return int(C.SDL_BytesPerPixel(cUint32(format)))
 }
 
-// BitsPerPixel returns the number of bits per pixel for the given format
 func SDL_BitsPerPixel(format uint32) int {
 	return int(C.SDL_BitsPerPixel(cUint32(format)))
 }

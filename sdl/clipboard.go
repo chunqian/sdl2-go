@@ -6,7 +6,6 @@ package sdl
 import "C"
 import "unsafe"
 
-// SetClipboardText puts UTF-8 text into the clipboard.
 func SDL_SetClipboardText(text string) int {
 	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
@@ -15,7 +14,6 @@ func SDL_SetClipboardText(text string) int {
 	return int(cRet)
 }
 
-// GetClipboardText returns UTF-8 text from the clipboard.
 func SDL_GetClipboardText() string {
 	cText := C.SDL_GetClipboardText()
 	if cText == nil {
@@ -27,7 +25,6 @@ func SDL_GetClipboardText() string {
 	return text
 }
 
-// HasClipboardText reports whether the clipboard exists and contains a text string that is non-empty.
 func SDL_HasClipboardText() bool {
 	cRet := C.SDL_HasClipboardText()
 	if int(cRet) > 0 {
