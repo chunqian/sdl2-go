@@ -7,28 +7,26 @@ import "C"
 import (
 	"reflect"
 	"unsafe"
-
-	. "github.com/chunqian/memory"
 )
 
-func (as *SDL_AudioSpec) cSDL_AudioSpec() *C.SDL_AudioSpec {
+func cSDL_AudioSpec(as *SDL_AudioSpec) *C.SDL_AudioSpec {
 	return (*C.SDL_AudioSpec)(unsafe.Pointer(as))
 }
 
-func (cvt *SDL_AudioCVT) cSDL_AudioCVT() *C.SDL_AudioCVT {
+func cSDL_AudioCVT(cvt *SDL_AudioCVT) *C.SDL_AudioCVT {
 	return (*C.SDL_AudioCVT)(unsafe.Pointer(cvt))
 }
 
-func (stream *SDL_AudioStream) cSDL_AudioStream() *C.SDL_AudioStream {
+func cSDL_AudioStream(stream *SDL_AudioStream) *C.SDL_AudioStream {
 	return (*C.SDL_AudioStream)(unsafe.Pointer(stream))
 }
 
 func (cvt *SDL_AudioCVT) AllocBuf(size uintptr) {
-	cvt.Buf = (*uint8)(MP_Malloc(SDL_GetMemoryPool(), uint32(size)))
+	cvt.Buf = (*uint8)(SDL_malloc(SDL_GetMemoryPool(), int(size)))
 }
 
 func (cvt *SDL_AudioCVT) FreeBuf() {
-	MP_Free(SDL_GetMemoryPool(), unsafe.Pointer(cvt.Buf))
+	SDL_free(SDL_GetMemoryPool(), unsafe.Pointer(cvt.Buf))
 }
 
 func (cvt SDL_AudioCVT) BufAsSlice() []byte {
@@ -67,7 +65,7 @@ func SDL_GetCurrentAudioDriver() string {
 }
 
 func SDL_OpenAudio(desired, obtained *SDL_AudioSpec) int {
-	cRet := C.SDL_OpenAudio(desired.cSDL_AudioSpec(), obtained.cSDL_AudioSpec())
+	cRet := C.SDL_OpenAudio(cSDL_AudioSpec(desired), cSDL_AudioSpec(obtained))
 	return int(cRet)
 }
 
@@ -88,7 +86,7 @@ func SDL_OpenAudioDevice(device string, isCapture int32, desired, obtained *SDL_
 	if device == "" {
 		cDevice = nil
 	}
-	cId := C.SDL_OpenAudioDevice(cDevice, cInt(isCapture), desired.cSDL_AudioSpec(), obtained.cSDL_AudioSpec(), cInt(allowedChanges))
+	cId := C.SDL_OpenAudioDevice(cDevice, cInt(isCapture), cSDL_AudioSpec(desired), cSDL_AudioSpec(obtained), cInt(allowedChanges))
 	return SDL_AudioDeviceID(cId)
 }
 
@@ -113,7 +111,7 @@ func SDL_PauseAudioDevice(dev SDL_AudioDeviceID, pauseOn int32) {
 func SDL_LoadWAV_RW(src *SDL_RWops, freeSrc int32, spec *SDL_AudioSpec, audioBuf *[]uint8, audioLen *uint32) *SDL_AudioSpec {
 	cAudioBuf := (**cUint8)(unsafe.Pointer(audioBuf))
 	cAudioLen := (*cUint32)(unsafe.Pointer(audioLen))
-	cAudioSpec := C.SDL_LoadWAV_RW(src.cSDL_RWops(), cInt(freeSrc), spec.cSDL_AudioSpec(), cAudioBuf, cAudioLen)
+	cAudioSpec := C.SDL_LoadWAV_RW(cSDL_RWops(src), cInt(freeSrc), cSDL_AudioSpec(spec), cAudioBuf, cAudioLen)
 	audioSpec := (*SDL_AudioSpec)(unsafe.Pointer(cAudioSpec))
 
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(audioBuf))
@@ -131,7 +129,7 @@ func SDL_LoadWAV(file string, spec *SDL_AudioSpec, audioBuf *[]uint8, audioLen *
 
 	cAudioBuf := (**cUint8)(unsafe.Pointer(audioBuf))
 	cAudioLen := (*cUint32)(unsafe.Pointer(audioLen))
-	cAudioSpec := C.SDL_LoadWAV_RW(C.SDL_RWFromFile(cFile, cRB), 1, spec.cSDL_AudioSpec(), cAudioBuf, cAudioLen)
+	cAudioSpec := C.SDL_LoadWAV_RW(C.SDL_RWFromFile(cFile, cRB), 1, cSDL_AudioSpec(spec), cAudioBuf, cAudioLen)
 	audioSpec := (*SDL_AudioSpec)(unsafe.Pointer(cAudioSpec))
 
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(audioBuf))
@@ -148,12 +146,12 @@ func SDL_FreeWAV(audioBuf []uint8) {
 }
 
 func SDL_BuildAudioCVT(cvt *SDL_AudioCVT, srcFormat SDL_AudioFormat, srcChannels uint8, srcRate int, dstFormat SDL_AudioFormat, dstChannels uint8, dstRate int) (converted int) {
-	cRet := C.SDL_BuildAudioCVT(cvt.cSDL_AudioCVT(), cUint16(srcFormat), cUint8(srcChannels), cInt(srcRate), cUint16(dstFormat), cUint8(dstChannels), cInt(dstRate))
+	cRet := C.SDL_BuildAudioCVT(cSDL_AudioCVT(cvt), cUint16(srcFormat), cUint8(srcChannels), cInt(srcRate), cUint16(dstFormat), cUint8(dstChannels), cInt(dstRate))
 	return int(cRet)
 }
 
 func SDL_ConvertAudio(cvt *SDL_AudioCVT) int {
-	cRet := C.SDL_ConvertAudio(cvt.cSDL_AudioCVT())
+	cRet := C.SDL_ConvertAudio(cSDL_AudioCVT(cvt))
 	return int(cRet)
 }
 
@@ -235,7 +233,7 @@ func SDL_AudioStreamPut(stream *SDL_AudioStream, buf []byte, bufLen int) int {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
 	cBuf := unsafe.Pointer(sliceHeader.Data)
 	// cLen := cInt(len(buf))
-	cRet := C.SDL_AudioStreamPut(stream.cSDL_AudioStream(), cBuf, cInt(bufLen))
+	cRet := C.SDL_AudioStreamPut(cSDL_AudioStream(stream), cBuf, cInt(bufLen))
 	return int(cRet)
 }
 
@@ -243,26 +241,26 @@ func SDL_AudioStreamGet(stream *SDL_AudioStream, buf []byte, bufLen int) int {
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
 	cBuf := unsafe.Pointer(sliceHeader.Data)
 	// cLen := cInt(len(buf))
-	cRet := C.SDL_AudioStreamGet(stream.cSDL_AudioStream(), cBuf, cInt(bufLen))
+	cRet := C.SDL_AudioStreamGet(cSDL_AudioStream(stream), cBuf, cInt(bufLen))
 	return int(cRet)
 }
 
 func SDL_AudioStreamAvailable(stream *SDL_AudioStream) int {
-	cRet := C.SDL_AudioStreamAvailable(stream.cSDL_AudioStream())
+	cRet := C.SDL_AudioStreamAvailable(cSDL_AudioStream(stream))
 	return int(cRet)
 }
 
 func SDL_AudioStreamFlush(stream *SDL_AudioStream) int {
-	cRet := C.SDL_AudioStreamFlush(stream.cSDL_AudioStream())
+	cRet := C.SDL_AudioStreamFlush(cSDL_AudioStream(stream))
 	return int(cRet)
 }
 
 func SDL_AudioStreamClear(stream *SDL_AudioStream) {
-	C.SDL_AudioStreamClear(stream.cSDL_AudioStream())
+	C.SDL_AudioStreamClear(cSDL_AudioStream(stream))
 }
 
 func SDL_AudoiStreamFree(stream *SDL_AudioStream) {
-	C.SDL_FreeAudioStream(stream.cSDL_AudioStream())
+	C.SDL_FreeAudioStream(cSDL_AudioStream(stream))
 }
 
 func SDL_AudioCallbackWrapper(_ unsafe.Pointer, stream *cUint8, streamLen cInt) {
@@ -284,17 +282,17 @@ func SDL_SetAudioCallback(audioSpec *SDL_AudioSpec, callback SDL_AudioCallback, 
 	SDL_AudioOK.callback = callback
 	SDL_AudioOK.userdata = userdata
 
-	cAudioSpec := audioSpec.cSDL_AudioSpec()
+	cAudioSpec := cSDL_AudioSpec(audioSpec)
 	cAudioSpec.callback = C.SDL_AudioCallback(C.SDL_AudioCallbackWrapper)
 }
 
 func SDL_GetAudioDeviceSpec(index int, isCapture int, spec *SDL_AudioSpec) int {
-	cRet := C.SDL_GetAudioDeviceSpec(cInt(index), cInt(isCapture), spec.cSDL_AudioSpec())
+	cRet := C.SDL_GetAudioDeviceSpec(cInt(index), cInt(isCapture), cSDL_AudioSpec(spec))
 	return int(cRet)
 }
 
 func SDL_GetDefaultAudioInfo(name *[]byte, spec *SDL_AudioSpec, isCapture int) int {
 	cName := (**cChar)(unsafe.Pointer(name))
-	cRet := C.SDL_GetDefaultAudioInfo(cName, spec.cSDL_AudioSpec(), cInt(isCapture))
+	cRet := C.SDL_GetDefaultAudioInfo(cName, cSDL_AudioSpec(spec), cInt(isCapture))
 	return int(cRet)
 }

@@ -9,20 +9,20 @@ import (
 	"unsafe"
 )
 
-func (p *SDL_Point) cSDL_Point() *C.SDL_Point {
+func cSDL_Point(p *SDL_Point) *C.SDL_Point {
 	return (*C.SDL_Point)(unsafe.Pointer(p))
 }
 
-func (p *SDL_Rect) cSDL_Rect() *C.SDL_Rect {
-	return (*C.SDL_Rect)(unsafe.Pointer(p))
+func cSDL_Rect(r *SDL_Rect) *C.SDL_Rect {
+	return (*C.SDL_Rect)(unsafe.Pointer(r))
 }
 
-func (p *SDL_FPoint) cSDL_FPoint() *C.SDL_FPoint {
-	return (*C.SDL_FPoint)(unsafe.Pointer(p))
+func cSDL_FPoint(fp *SDL_FPoint) *C.SDL_FPoint {
+	return (*C.SDL_FPoint)(unsafe.Pointer(fp))
 }
 
-func (p *SDL_FRect) cSDL_FRect() *C.SDL_FRect {
-	return (*C.SDL_FRect)(unsafe.Pointer(p))
+func cSDL_FRect(fr *SDL_FRect) *C.SDL_FRect {
+	return (*C.SDL_FRect)(unsafe.Pointer(fr))
 }
 
 func SDL_PointInRect(p *SDL_Point, r *SDL_Rect) bool {
