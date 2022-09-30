@@ -5,6 +5,7 @@ package sdl
 */
 import "C"
 import (
+	"reflect"
 	"unsafe"
 )
 
@@ -12,8 +13,11 @@ func cSDL_GUID(g *SDL_GUID) *C.SDL_GUID {
 	return (*C.SDL_GUID)(unsafe.Pointer(g))
 }
 
-func SDL_GUIDToString(guid SDL_GUID, pszGUID *byte, cbGUID int) {
-	cPszGUID := (*cChar)(unsafe.Pointer(pszGUID))
+func SDL_GUIDToString(guid SDL_GUID, pszGUID []byte, cbGUID int) {
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&pszGUID))
+	sh.Len = int(cbGUID)
+	sh.Cap = int(cbGUID)
+	cPszGUID := (*cChar)(unsafe.Pointer(sh.Data))
 	cGuid := cSDL_GUID(&guid)
 	C.SDL_GUIDToString(*cGuid, cPszGUID, cInt(cbGUID))
 }
