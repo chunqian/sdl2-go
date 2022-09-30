@@ -7,18 +7,22 @@
 #include <SDL_mixer.h>
 #endif // }
 
+// The internal format for a music chunk interpreted via mikmod
+typedef struct _Mix_Music Mix_Music;
+
 #if defined(SDL_SUPPORTED_MIDI_BACKENDS) // if {
 
 typedef int (SDLCALL *Mix_EachSoundFontCallback)(const char*, void*);
-extern int callEachSoundFont(char* str, void* udata);
+
+int callEachSoundFont(char* str, void* udata);
 #endif // }
 
-extern void callPostMixFunction(void *udata, Uint8 *stream, int length);
-extern void callHookMusic(void *udata, Uint8 *stream, int length);
-extern void callHookMusicFinished();
-extern void callChannelFinished(int channel);
-extern void callEffectFunc(int channel, void *stream, int len, void *udata);
-extern void callEffectDone(int channel, void *udata);
+void callPostMixFunction(void *udata, Uint8 *stream, int length);
+void callHookMusic(void *udata, Uint8 *stream, int length);
+void callHookMusicFinished();
+void callChannelFinished(int channel);
+void callEffectFunc(int channel, void *stream, int len, void *udata);
+void callEffectDone(int channel, void *udata);
 
 static inline Uint32 getChunkTimeMilliseconds(Mix_Chunk *chunk) {
     Uint32 points = 0;
