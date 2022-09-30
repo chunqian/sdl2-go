@@ -272,14 +272,14 @@ func SDL_AudioCallbackWrapper(_ unsafe.Pointer, stream *cUint8, streamLen cInt) 
 
 type SDL_AudioWatcher struct {
 	callback SDL_AudioCallback
-	userdata interface{}
+	userdata any
 }
 
 var SDL_AudioOK SDL_AudioWatcher
 
-type SDL_AudioCallback func(userdata interface{}, stream *uint8, streamLen int)
+type SDL_AudioCallback func(userdata any, stream *uint8, streamLen int)
 
-func SDL_SetAudioCallback(audioSpec *SDL_AudioSpec, callback SDL_AudioCallback, userdata interface{}) {
+func SDL_SetAudioCallback(audioSpec *SDL_AudioSpec, callback SDL_AudioCallback, userdata any) {
 	SDL_AudioOK.callback = callback
 	SDL_AudioOK.userdata = userdata
 

@@ -587,7 +587,7 @@ func SDL_RenderGeometry(renderer *SDL_Renderer, texture *SDL_Texture, vertices [
 	return int(cRet)
 }
 
-func SDL_RenderGeometryRaw(renderer *SDL_Renderer, texture *SDL_Texture, xy []float32, xyStride int, color []SDL_Color, colorStride int, uv []float32, uvStride int, numVertices int, indices interface{}) int {
+func SDL_RenderGeometryRaw(renderer *SDL_Renderer, texture *SDL_Texture, xy []float32, xyStride int, color []SDL_Color, colorStride int, uv []float32, uvStride int, numVertices int, indices any) int {
 	sizeIndices := 0
 	numIndices := 0
 	cIndices := unsafe.Pointer(nil)

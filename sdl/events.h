@@ -7,9 +7,11 @@
 #include <SDL_events.h>
 #endif // }
 
-int SDL_EventFilterWrapper(void* userdata, SDL_Event* event);
-int SDL_EventWatchWrapper(void* userdata, SDL_Event* event);
-int SDL_FilterEventsWrapper(void* userdata, SDL_Event* event);
+typedef int (*SDL_EventFilterCallback)(void* userdata, SDL_Event* event);
+
+int callEventFilter(void* userdata, SDL_Event* event);
+int callEventWatch(void* userdata, SDL_Event* event);
+int callFilterEvents(void* userdata, SDL_Event* event);
 
 #include "sdl_wrapper.h"
 

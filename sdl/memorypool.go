@@ -33,7 +33,7 @@ func SDL_free(mp *PX_memorypool, paddr unsafe.Pointer) {
 	MP_Free(mp, paddr)
 }
 
-func SDL_CreateCString(mp *PX_memorypool, s string) interface{} {
+func SDL_CreateCString(mp *PX_memorypool, s string) any {
 	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	n := PX_uint(sh.Len)
 	p := MP_Malloc(mp, n+1)
@@ -42,11 +42,11 @@ func SDL_CreateCString(mp *PX_memorypool, s string) interface{} {
 	return (*C.char)(p)
 }
 
-func SDL_DestroyCString(mp *PX_memorypool, cstr interface{}) {
+func SDL_DestroyCString(mp *PX_memorypool, cstr any) {
 	MP_Free(mp, unsafe.Pointer(cstr.(*C.char)))
 }
 
-func SDL_GoString(cstr interface{}) string {
+func SDL_GoString(cstr any) string {
 	len := PX_strlen((*PX_char)(unsafe.Pointer(cstr.(*C.char))))
 
 	sh := &reflect.SliceHeader{}

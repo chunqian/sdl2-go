@@ -64,11 +64,11 @@ func SDL_PushEvent(event *SDL_Event) {
 	C.SDL_PushEvent(cSDL_Event(event))
 }
 
-type SDL_EventFilter = func(interface{}, *SDL_Event) int32
+type SDL_EventFilterCallback = func(userdata any, event *SDL_Event) int32
 
 type SDL_EventWatcher struct {
-	callback SDL_EventFilter
-	userdata interface{}
+	callback SDL_EventFilterCallback
+	userdata any
 	removed  bool
 }
 
@@ -78,8 +78,8 @@ var SDL_EventSpecific SDL_EventWatcher
 var SDL_event_watchers []*SDL_EventWatcher
 var SDL_event_watchers_count int = 0
 
-//export SDL_EventFilterWrapper
-func SDL_EventFilterWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
+//export callEventFilter
+func callEventFilter(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
 
@@ -90,17 +90,17 @@ func SDL_EventFilterWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	return cInt(ret)
 }
 
-func SDL_SetEventFilter(filter SDL_EventFilter, userdata interface{}) {
+func SDL_SetEventFilter(filter SDL_EventFilterCallback, userdata any) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
 
 	SDL_EventOK.callback = filter
 	SDL_EventOK.userdata = userdata
 
-	C.SDL_SetEventFilter(C.SDL_EventFilter(C.SDL_EventFilterWrapper), nil)
+	C.SDL_SetEventFilter(C.SDL_EventFilterCallback(C.callEventFilter), nil)
 }
 
-func SDL_GetEventFilter(filter *SDL_EventFilter, userdata *interface{}) bool {
+func SDL_GetEventFilter(filter *SDL_EventFilterCallback, userdata *any) bool {
 	var event_ok SDL_EventWatcher
 
 	SDL_event_watchers_lock.Lock()
@@ -127,8 +127,8 @@ func SDL_event_watchers_delete(watchers []*SDL_EventWatcher, watcher *SDL_EventW
 	return retWatchers
 }
 
-//export SDL_EventWatchWrapper
-func SDL_EventWatchWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
+//export callEventWatch
+func callEventWatch(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
 
@@ -141,7 +141,7 @@ func SDL_EventWatchWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	return cInt(ret)
 }
 
-func SDL_AddEventWatch(filter SDL_EventFilter, userdata interface{}) {
+func SDL_AddEventWatch(filter SDL_EventFilterCallback, userdata any) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
 
@@ -152,12 +152,12 @@ func SDL_AddEventWatch(filter SDL_EventFilter, userdata interface{}) {
 	event_watchers.removed = false
 
 	if len(SDL_event_watchers) == 0 {
-		C.SDL_AddEventWatch(C.SDL_EventFilter(C.SDL_EventWatchWrapper), nil)
+		C.SDL_AddEventWatch(C.SDL_EventFilterCallback(C.callEventWatch), nil)
 	}
 	SDL_event_watchers = append(SDL_event_watchers, event_watchers)
 }
 
-func SDL_DelEventWatch(filter SDL_EventFilter, userdata interface{}) {
+func SDL_DelEventWatch(filter SDL_EventFilterCallback, userdata any) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
 
@@ -174,12 +174,12 @@ func SDL_DelEventWatch(filter SDL_EventFilter, userdata interface{}) {
 	}
 
 	if len(SDL_event_watchers) == 0 {
-		C.SDL_DelEventWatch(C.SDL_EventFilter(C.SDL_EventWatchWrapper), nil)
+		C.SDL_DelEventWatch(C.SDL_EventFilterCallback(C.callEventWatch), nil)
 	}
 }
 
-//export SDL_FilterEventsWrapper
-func SDL_FilterEventsWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
+//export callFilterEvents
+func callFilterEvents(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
 
@@ -190,14 +190,14 @@ func SDL_FilterEventsWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	return cInt(ret)
 }
 
-func SDL_FilterEvents(filter SDL_EventFilter, userdata interface{}) {
+func SDL_FilterEvents(filter SDL_EventFilterCallback, userdata any) {
 	SDL_event_watchers_lock.Lock()
 	defer SDL_event_watchers_lock.Unlock()
 
 	SDL_EventSpecific.callback = filter
 	SDL_EventSpecific.userdata = userdata
 
-	C.SDL_FilterEvents(C.SDL_EventFilter(C.SDL_FilterEventsWrapper), nil)
+	C.SDL_FilterEvents(C.SDL_EventFilterCallback(C.callFilterEvents), nil)
 	// clear
 	SDL_EventSpecific = SDL_EventWatcher{}
 }
