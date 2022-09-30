@@ -15,7 +15,7 @@ func SDL_SaveAllDollarTemplates(src *SDL_RWops) int {
 }
 
 func SDL_SaveDollarTemplate(g SDL_GestureID, src *SDL_RWops) int {
-	cRet := C.SDL_SaveDollarTemplate(ccSDL_GestureID(g), cSDL_RWops(src))
+	cRet := C.SDL_SaveDollarTemplate(cSDL_GestureID(g), cSDL_RWops(src))
 	return int(cRet)
 }
 
