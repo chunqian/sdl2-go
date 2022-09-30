@@ -24,7 +24,7 @@ void callChannelFinished(int channel);
 void callEffectFunc(int channel, void *stream, int len, void *udata);
 void callEffectDone(int channel, void *udata);
 
-static inline Uint32 getChunkTimeMilliseconds(Mix_Chunk *chunk) {
+static inline Uint32 Mix_GetChunkTimeMilliseconds(Mix_Chunk *chunk) {
     Uint32 points = 0;
     Uint32 frames = 0;
     int freq = 0;
