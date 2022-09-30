@@ -1,6 +1,6 @@
 package mix
 
 /*
-#include "mixer.h"
+#include "mixer_wrapper.h"
 */
 import "C"

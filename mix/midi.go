@@ -3,6 +3,7 @@
 package mix
 
 /*
-#include "midi.h"
+#define SDL_SUPPORTED_MIDI_BACKENDS
+#include "mixer_wrapper.h"
 */
 import "C"

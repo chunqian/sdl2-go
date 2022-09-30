@@ -1,4 +1,4 @@
-all: test-sdl test-gfx test-raster test-img test-ttf test-examples
+all: test-sdl test-gfx test-raster test-img test-ttf test-mix test-examples
 
 clean:
 	rm -f ./examples/bin/basic_window
@@ -17,6 +17,9 @@ test-img:
 
 test-ttf:
 	go build ./ttf/
+
+test-mix:
+	go build ./mix/
 
 test-examples:
 	go build -o ./examples/bin/basic_window ./examples/basic_window/
