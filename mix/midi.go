@@ -13,27 +13,27 @@ import (
 	. "github.com/chunqian/sdl2-go/sdl"
 )
 
-type SDL_SoundFontCallback = func(string, any) int
+type Mix_EachSoundFontCallback = func(string, any) int
 
-type SDL_SoundFontWatcher struct {
-	callback SDL_SoundFontCallback
+type Mix_SoundFontWatcher struct {
+	callback Mix_EachSoundFontCallback
 	data     any
 }
 
-var SDL_SoundFontOK SDL_SoundFontWatcher
+var Mix_SoundFontOK Mix_SoundFontWatcher
 
 //export callEachSoundFont
 func callEachSoundFont(cstr *cChar, _ unsafe.Pointer) cInt {
 	var ret int
-	if SDL_SoundFontOK.callback != nil {
-		ret = SDL_SoundFontOK.callback(SDL_GoString(cstr), SDL_SoundFontOK.data)
+	if Mix_SoundFontOK.callback != nil {
+		ret = Mix_SoundFontOK.callback(SDL_GoString(cstr), Mix_SoundFontOK.data)
 	}
 	return cInt(ret)
 }
 
-func Mix_EachSoundFont(callback SDL_SoundFontCallback, data any) int {
-	SDL_SoundFontOK.callback = callback
-	SDL_SoundFontOK.data = data
+func Mix_EachSoundFont(callback Mix_EachSoundFontCallback, data any) int {
+	Mix_SoundFontOK.callback = callback
+	Mix_SoundFontOK.data = data
 	cRet := C.Mix_EachSoundFont(C.Mix_EachSoundFontCallback(C.callEachSoundFont), nil)
 	return int(cRet)
 }

@@ -12,10 +12,17 @@ typedef struct _Mix_Music Mix_Music;
 
 #if defined(SDL_SUPPORTED_MIDI_BACKENDS) // if {
 
-typedef int (SDLCALL *Mix_EachSoundFontCallback)(const char*, void*);
+typedef int (*Mix_EachSoundFontCallback)(const char *, void *);
 
-int callEachSoundFont(char* str, void* udata);
+int callEachSoundFont(char *str, void *udata);
 #endif // }
+
+typedef void (*Mix_SetPostMixCallback)(void *udata, Uint8 *stream, int len);
+typedef void (*Mix_HookMusicCallback)(void *udata, Uint8 *stream, int len);
+typedef void (*Mix_HookMusicFinishedCallback)(void);
+typedef void (*Mix_ChannelFinishedCallback)(int channel);
+typedef void (*Mix_RegisterEffectCallback)(int chan, void *stream, int len, void *udata);
+typedef void (*Mix_RegisterEffectDoneCallback)(int chan, void *udata);
 
 void callPostMixFunction(void *udata, Uint8 *stream, int length);
 void callHookMusic(void *udata, Uint8 *stream, int length);
