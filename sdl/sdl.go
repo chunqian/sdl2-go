@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include "sdl_go.h"
+#include "sdl_wrapper.h"
 */
 import "C"
 import "runtime"

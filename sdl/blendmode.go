@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include "blendmode.h"
+#include "sdl_wrapper.h"
 */
 import "C"
 
@@ -13,5 +13,6 @@ func SDL_ComposeCustomBlendMode(srcColorFactor, dstColorFactor SDL_BlendFactor, 
 	cSrcAlphaFactor := cSDL_BlendFactor(srcAlphaFactor)
 	cDstAlphaFactor := cSDL_BlendFactor(dstAlphaFactor)
 	cAlphaOperation := cSDL_BlendOperation(alphaOperation)
-	return SDL_BlendMode(C.SDL_ComposeCustomBlendMode(cSrcColorFactor, cDstColorFactor, cColorOperation, cSrcAlphaFactor, cDstAlphaFactor, cAlphaOperation))
+	return SDL_BlendMode(C.SDL_ComposeCustomBlendMode(cSrcColorFactor, cDstColorFactor, cColorOperation,
+		cSrcAlphaFactor, cDstAlphaFactor, cAlphaOperation))
 }

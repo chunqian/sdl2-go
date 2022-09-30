@@ -1,7 +1,7 @@
 package sdl
 
 /*
-#include "surface.h"
+#include "sdl_wrapper.h"
 */
 import "C"
 import (

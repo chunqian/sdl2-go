@@ -7,6 +7,7 @@ import "C"
 import (
 	"encoding/binary"
 	"image/color"
+	"math"
 	"unsafe"
 )
 
@@ -54,6 +55,8 @@ type (
 	cSDL_RendererFlip   = C.SDL_RendererFlip
 	cSDL_EventType      = C.SDL_EventType
 	cSDL_eventaction    = C.SDL_eventaction
+	cSDL_SystemCursor   = C.SDL_SystemCursor
+	cSDL_TouchID        = C.SDL_TouchID
 )
 
 // c struct
@@ -104,6 +107,26 @@ const (
 	SDL_RLEACCEL     = 0x00000002
 	SDL_DONTFREE     = 0x00000004
 	SDL_SIMD_ALIGNED = 0x00000008
+
+	SDL_TOUCH_MOUSEID = math.MaxUint32
+	SDL_MOUSE_TOUCHID = int64(-1)
+)
+
+func SDL_BUTTON(x int) int {
+	return 1 << (x - 1)
+}
+
+var (
+	SDL_BUTTON_LEFT   = 1
+	SDL_BUTTON_MIDDLE = 2
+	SDL_BUTTON_RIGHT  = 3
+	SDL_BUTTON_X1     = 4
+	SDL_BUTTON_X2     = 5
+	SDL_BUTTON_LMASK  = SDL_BUTTON(SDL_BUTTON_LEFT)
+	SDL_BUTTON_MMASK  = SDL_BUTTON(SDL_BUTTON_MIDDLE)
+	SDL_BUTTON_RMASK  = SDL_BUTTON(SDL_BUTTON_RIGHT)
+	SDL_BUTTON_X1MASK = SDL_BUTTON(SDL_BUTTON_X1)
+	SDL_BUTTON_X2MASK = SDL_BUTTON(SDL_BUTTON_X2)
 )
 
 const (
