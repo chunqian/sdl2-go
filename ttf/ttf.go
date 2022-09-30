@@ -108,17 +108,14 @@ func TTF_RenderUTF8_Blended_Wrapped(font *TTF_Font, text string, fg SDL_Color, w
 	return surface
 }
 
-func TTF_SizeUTF8(font *TTF_Font, text string) (int, int) {
+func TTF_SizeUTF8(font *TTF_Font, text string, w, h *int32) int {
 	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
 
-	var w cInt
-	var h cInt
-	result := C.TTF_SizeUTF8(cTTF_Font(font), cText.(*cChar), &w, &h)
-	if result == 0 {
-		return int(w), int(h)
-	}
-	return int(w), int(h)
+	cW := (*cInt)(unsafe.Pointer(w))
+	cH := (*cInt)(unsafe.Pointer(h))
+	cRet := C.TTF_SizeUTF8(cTTF_Font(font), cText.(*cChar), cW, cH)
+	return int(cRet)
 }
 
 func TTF_RenderGlyph_Solid(font *TTF_Font, ch rune, fg SDL_Color) *SDL_Surface {
