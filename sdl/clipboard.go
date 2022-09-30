@@ -19,7 +19,7 @@ func SDL_GetClipboardText() string {
 	if cText == nil {
 		return ""
 	}
-	defer C.SDL_free(unsafe.Pointer(cText))
+	defer C.free(unsafe.Pointer(cText))
 
 	text := SDL_GoString(cText)
 	return text

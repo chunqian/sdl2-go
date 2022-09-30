@@ -53,7 +53,12 @@ func SDL_GoString(cstr interface{}) string {
 	sh.Data = uintptr(unsafe.Pointer(cstr.(*C.char)))
 	sh.Len = int(len)
 	sh.Cap = int(len)
-	return string(*(*[]byte)(unsafe.Pointer(sh)))
+	src := *(*[]byte)(unsafe.Pointer(sh))
+
+	// 复制
+	dst := make([]byte, len)
+	copy(dst, src)
+	return string(dst)
 }
 
 func SDL_CreateDataStructures[T SDL_DataStructures](mp *PX_memorypool, d T) *T {
