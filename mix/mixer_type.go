@@ -39,13 +39,10 @@ type (
 )
 
 // c #define
-const (
-)
+const ()
 
 // c enum
-type (
-)
+type ()
 
 // c struct
-type (
-)
+type ()

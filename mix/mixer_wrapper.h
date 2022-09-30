@@ -8,6 +8,8 @@
 #endif // }
 
 #if defined(SDL_SUPPORTED_MIDI_BACKENDS) // if {
+
+typedef int (SDLCALL *Mix_EachSoundFontCallback)(const char*, void*);
 extern int callEachSoundFont(char* str, void* udata);
 #endif // }
 

@@ -78,6 +78,7 @@ var SDL_EventSpecific SDL_EventWatcher
 var SDL_event_watchers []*SDL_EventWatcher
 var SDL_event_watchers_count int = 0
 
+//export SDL_EventFilterWrapper
 func SDL_EventFilterWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
@@ -126,6 +127,7 @@ func SDL_event_watchers_delete(watchers []*SDL_EventWatcher, watcher *SDL_EventW
 	return retWatchers
 }
 
+//export SDL_EventWatchWrapper
 func SDL_EventWatchWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event
@@ -176,6 +178,7 @@ func SDL_DelEventWatch(filter SDL_EventFilter, userdata interface{}) {
 	}
 }
 
+//export SDL_FilterEventsWrapper
 func SDL_FilterEventsWrapper(_ unsafe.Pointer, cEvent *C.SDL_Event) cInt {
 	var ret int32
 	var event *SDL_Event

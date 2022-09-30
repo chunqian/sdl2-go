@@ -3,6 +3,6 @@
 
 #include "sdl_wrapper.h"
 
-static int SDL_BytesPerPixel(Uint32 format) { return SDL_BYTESPERPIXEL(format); }
-static int SDL_BitsPerPixel(Uint32 format) { return SDL_BITSPERPIXEL(format); }
+static inline int SDL_BytesPerPixel(Uint32 format) { return SDL_BYTESPERPIXEL(format); }
+static inline int SDL_BitsPerPixel(Uint32 format) { return SDL_BITSPERPIXEL(format); }
 #endif // }

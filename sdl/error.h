@@ -3,5 +3,5 @@
 
 #include "sdl_wrapper.h"
 
-void SDL_SetErrorWrapper(const char *fmt) { SDL_SetError("%s", fmt); }
+static inline void SDL_SetErrorWrapper(const char *fmt) { SDL_SetError("%s", fmt); }
 #endif // }

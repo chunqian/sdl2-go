@@ -10,6 +10,6 @@
 
 typedef struct _TTF_Font TTF_Font;
 
-static void Do_TTF_SetError(const char *str) { TTF_SetError("%s", str); }
+static inline void Do_TTF_SetError(const char *str) { TTF_SetError("%s", str); }
 
 #endif // }

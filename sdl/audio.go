@@ -263,6 +263,7 @@ func SDL_AudoiStreamFree(stream *SDL_AudioStream) {
 	C.SDL_FreeAudioStream(cSDL_AudioStream(stream))
 }
 
+//export SDL_AudioCallbackWrapper
 func SDL_AudioCallbackWrapper(_ unsafe.Pointer, stream *cUint8, streamLen cInt) {
 	if SDL_AudioOK.callback != nil {
 		SDL_AudioOK.callback(SDL_AudioOK.userdata, (*uint8)(unsafe.Pointer(stream)), int(streamLen))
