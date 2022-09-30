@@ -13,7 +13,7 @@ import (
 	. "github.com/chunqian/sdl2-go/sdl"
 )
 
-type Mix_EachSoundFontCallback = func(string, any) int
+type Mix_EachSoundFontCallback = func(path string, userdata any) int
 
 type Mix_SoundFontWatcher struct {
 	callback Mix_EachSoundFontCallback
