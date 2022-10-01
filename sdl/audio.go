@@ -29,17 +29,31 @@ func (cvt *SDL_AudioCVT) FreeBuf() {
 	SDL_free(SDL_GetMemoryPool(), unsafe.Pointer(cvt.Buf))
 }
 
-func (cvt SDL_AudioCVT) BufSetValue(value uint8, index int) error {
+func (cvt SDL_AudioCVT) bufAsSlice() []byte {
 	var b []byte
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 	sliceHeader.Len = int(cvt.LenCVT)
 	sliceHeader.Cap = int(cvt.Len * cvt.LenMult)
 	sliceHeader.Data = uintptr(unsafe.Pointer(cvt.Buf))
+	return b
+}
 
-	if index <= sliceHeader.Cap {
+func (cvt SDL_AudioCVT) BufSetValue(value uint8, index int) error {
+	b := cvt.bufAsSlice()
+	if index <= len(b) {
 		b[index] = value
 	} else {
-		return ErrNoExpansionAllowed
+		return ErrArrayIndexOutOfBounds
+	}
+	return nil
+}
+
+func (cvt SDL_AudioCVT) BufGetValue(value *uint8, index int) error {
+	b := cvt.bufAsSlice()
+	if index <= len(b) {
+		*value = b[index]
+	} else {
+		return ErrArrayIndexOutOfBounds
 	}
 	return nil
 }

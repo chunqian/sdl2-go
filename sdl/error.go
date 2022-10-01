@@ -6,7 +6,7 @@ package sdl
 import "C"
 import "errors"
 
-var ErrNoExpansionAllowed = errors.New("No expansion allowed.")
+var ErrArrayIndexOutOfBounds = errors.New("Array Index Out Of Bounds Exception.")
 
 func SDL_GetError() error {
 	if cErrstr := C.SDL_GetError(); cErrstr != nil {
