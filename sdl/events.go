@@ -14,6 +14,11 @@ func cSDL_Event(s *SDL_Event) *C.SDL_Event {
 	return (*C.SDL_Event)(unsafe.Pointer(s))
 }
 
+func (event SDL_TextEditingExtEvent) TextAsString() string {
+	cStr := (*cChar)(unsafe.Pointer(event.Text))
+	return SDL_GoString(cStr)
+}
+
 func SDL_PumpEvents() {
 	C.SDL_PumpEvents()
 }

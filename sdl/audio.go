@@ -21,20 +21,20 @@ func cSDL_AudioStream(stream *SDL_AudioStream) *C.SDL_AudioStream {
 	return (*C.SDL_AudioStream)(unsafe.Pointer(stream))
 }
 
-func (cvt *SDL_AudioCVT) AllocBuf(size uintptr) {
+func (cvt *SDL_AudioCVT) BufAlloc(size uintptr) {
 	cvt.Buf = (*uint8)(SDL_malloc(SDL_GetMemoryPool(), int(size)))
 }
 
-func (cvt *SDL_AudioCVT) FreeBuf() {
+func (cvt *SDL_AudioCVT) BufFree() {
 	SDL_free(SDL_GetMemoryPool(), unsafe.Pointer(cvt.Buf))
 }
 
 func (cvt SDL_AudioCVT) bufAsSlice() []byte {
 	var b []byte
-	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
-	sliceHeader.Len = int(cvt.LenCVT)
-	sliceHeader.Cap = int(cvt.Len * cvt.LenMult)
-	sliceHeader.Data = uintptr(unsafe.Pointer(cvt.Buf))
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sh.Len = int(cvt.LenCVT)
+	sh.Cap = int(cvt.Len * cvt.LenMult)
+	sh.Data = uintptr(unsafe.Pointer(cvt.Buf))
 	return b
 }
 
@@ -63,8 +63,8 @@ func SDL_GetNumAudioDrivers() int {
 }
 
 func SDL_GetAudioDriver(index int) string {
-	cstr := C.SDL_GetAudioDriver(cInt(index))
-	return SDL_GoString(cstr)
+	cStr := C.SDL_GetAudioDriver(cInt(index))
+	return SDL_GoString(cStr)
 }
 
 func SDL_AudioInit(driverName string) int {
@@ -80,8 +80,8 @@ func SDL_AudioQuit() {
 }
 
 func SDL_GetCurrentAudioDriver() string {
-	cstr := C.SDL_GetCurrentAudioDriver()
-	return SDL_GoString(cstr)
+	cStr := C.SDL_GetCurrentAudioDriver()
+	return SDL_GoString(cStr)
 }
 
 func SDL_OpenAudio(desired, obtained *SDL_AudioSpec) int {
@@ -95,8 +95,8 @@ func SDL_GetNumAudioDevices(isCapture int32) int {
 }
 
 func SDL_GetAudioDeviceName(index int32, isCapture int32) string {
-	cstr := C.SDL_GetAudioDeviceName(cInt(index), cInt(isCapture))
-	return SDL_GoString(cstr)
+	cStr := C.SDL_GetAudioDeviceName(cInt(index), cInt(isCapture))
+	return SDL_GoString(cStr)
 }
 
 func SDL_OpenAudioDevice(device string, isCapture int32, desired, obtained *SDL_AudioSpec, allowedChanges int32) SDL_AudioDeviceID {

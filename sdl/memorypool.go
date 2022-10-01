@@ -42,23 +42,20 @@ func SDL_CreateCString(mp *PX_memorypool, s string) any {
 	return (*C.char)(p)
 }
 
-func SDL_DestroyCString(mp *PX_memorypool, cstr any) {
-	MP_Free(mp, unsafe.Pointer(cstr.(*C.char)))
+func SDL_DestroyCString(mp *PX_memorypool, cStr any) {
+	MP_Free(mp, unsafe.Pointer(cStr.(*C.char)))
 }
 
-func SDL_GoString(cstr any) string {
-	len := PX_strlen((*PX_char)(unsafe.Pointer(cstr.(*C.char))))
+func SDL_GoString(cStr any) string {
+	len := PX_strlen((*PX_char)(unsafe.Pointer(cStr.(*C.char))))
 
 	sh := &reflect.SliceHeader{}
-	sh.Data = uintptr(unsafe.Pointer(cstr.(*C.char)))
+	sh.Data = uintptr(unsafe.Pointer(cStr.(*C.char)))
 	sh.Len = int(len)
 	sh.Cap = int(len)
 	src := *(*[]byte)(unsafe.Pointer(sh))
 
-	// 复制
-	dst := make([]byte, len)
-	copy(dst, src)
-	return string(dst)
+	return string(src)
 }
 
 func SDL_CreateDataStructures[T SDL_DataStructures](mp *PX_memorypool, d T) *T {

@@ -23,10 +23,10 @@ type Mix_SoundFontWatcher struct {
 var Mix_SoundFontOK Mix_SoundFontWatcher
 
 //export callEachSoundFont
-func callEachSoundFont(cstr *cChar, _ unsafe.Pointer) cInt {
+func callEachSoundFont(cStr *cChar, _ unsafe.Pointer) cInt {
 	var ret int
 	if Mix_SoundFontOK.callback != nil {
-		ret = Mix_SoundFontOK.callback(SDL_GoString(cstr), Mix_SoundFontOK.data)
+		ret = Mix_SoundFontOK.callback(SDL_GoString(cStr), Mix_SoundFontOK.data)
 	}
 	return cInt(ret)
 }

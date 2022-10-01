@@ -34,10 +34,10 @@ func SDL_GetErrorMsg(maxlen int) error {
 }
 
 func SDL_SetError(err error) {
-	cstr := SDL_CreateCString(SDL_GetMemoryPool(), err.Error())
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cstr)
+	cStr := SDL_CreateCString(SDL_GetMemoryPool(), err.Error())
+	defer SDL_DestroyCString(SDL_GetMemoryPool(), cStr)
 
-	C.SDL_SetErrorWrapper(cstr.(*cChar))
+	C.SDL_SetErrorWrapper(cStr.(*cChar))
 }
 
 func SDL_ClearError() {
