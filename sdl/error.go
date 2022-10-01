@@ -6,6 +6,8 @@ package sdl
 import "C"
 import "errors"
 
+var ErrNoExpansionAllowed = errors.New("No expansion allowed.")
+
 func SDL_GetError() error {
 	if cErrstr := C.SDL_GetError(); cErrstr != nil {
 		errstr := SDL_GoString(cErrstr)
