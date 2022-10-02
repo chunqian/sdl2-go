@@ -58,9 +58,10 @@ type (
 	cSystemCursor         = C.SDL_SystemCursor
 	cTouchID              = C.SDL_TouchID
 	cGestureID            = C.SDL_GestureID
-	cJoystickID           = C.SDL_JoystickID
 	cGameControllerAxis   = C.SDL_GameControllerAxis
 	cGameControllerButton = C.SDL_GameControllerButton
+	cJoystickID           = C.SDL_JoystickID
+	cJoystickPowerLevel   = C.SDL_JoystickPowerLevel
 )
 
 // c struct
@@ -116,6 +117,16 @@ const (
 	SDL_MOUSE_TOUCHID = int64(-1)
 
 	SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE = C.SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE
+
+	SDL_HAT_CENTERED  = 0x00
+	SDL_HAT_UP        = 0x01
+	SDL_HAT_RIGHT     = 0x02
+	SDL_HAT_DOWN      = 0x04
+	SDL_HAT_LEFT      = 0x08
+	SDL_HAT_RIGHTUP   = SDL_HAT_RIGHT | SDL_HAT_UP
+	SDL_HAT_RIGHTDOWN = SDL_HAT_RIGHT | SDL_HAT_DOWN
+	SDL_HAT_LEFTUP    = SDL_HAT_LEFT | SDL_HAT_UP
+	SDL_HAT_LEFTDOWN  = SDL_HAT_LEFT | SDL_HAT_DOWN
 )
 
 func SDL_BUTTON(x int) int {

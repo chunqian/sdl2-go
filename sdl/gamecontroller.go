@@ -13,14 +13,6 @@ func cGameController(ctrl *SDL_GameController) *C.SDL_GameController {
 	return (*C.SDL_GameController)(unsafe.Pointer(ctrl))
 }
 
-func cJoystick(js *SDL_Joystick) *C.SDL_Joystick {
-	return (*C.SDL_Joystick)(unsafe.Pointer(js))
-}
-
-func cJoystickGUID(guid *SDL_JoystickGUID) *C.SDL_JoystickGUID {
-	return (*C.SDL_JoystickGUID)(unsafe.Pointer(guid))
-}
-
 func SDL_GameControllerAddMapping(mappingString string) int {
 	cMappingString := SDL_CreateCString(SDL_GetMemoryPool(), mappingString)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cMappingString)
