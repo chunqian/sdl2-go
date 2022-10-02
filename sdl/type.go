@@ -62,6 +62,9 @@ type (
 	cGameControllerButton = C.SDL_GameControllerButton
 	cJoystickID           = C.SDL_JoystickID
 	cJoystickPowerLevel   = C.SDL_JoystickPowerLevel
+	cKeymod               = C.SDL_Keymod
+	cScancode             = C.SDL_Scancode
+	cKeycode              = C.SDL_Keycode
 )
 
 // c struct
