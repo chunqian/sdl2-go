@@ -65,6 +65,7 @@ type (
 	cKeymod               = C.SDL_Keymod
 	cScancode             = C.SDL_Scancode
 	cKeycode              = C.SDL_Keycode
+	cSensorID             = C.SDL_SensorID
 )
 
 // c struct
@@ -130,6 +131,8 @@ const (
 	SDL_HAT_RIGHTDOWN = SDL_HAT_RIGHT | SDL_HAT_DOWN
 	SDL_HAT_LEFTUP    = SDL_HAT_LEFT | SDL_HAT_UP
 	SDL_HAT_LEFTDOWN  = SDL_HAT_LEFT | SDL_HAT_DOWN
+
+	SDL_STANDARD_GRAVITY = 9.80665
 )
 
 func SDL_BUTTON(x int) int {
