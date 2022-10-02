@@ -84,7 +84,7 @@ func SDL_SensorGetData(sensor *SDL_Sensor, data []float32, numValues int) int {
 	return int(cRet)
 }
 
-func SDL_SensorClose() *SDL_Sensor {
+func SDL_SensorClose(sensor *SDL_Sensor) {
 	C.SDL_SensorClose(cSensor(sensor))
 }
 
