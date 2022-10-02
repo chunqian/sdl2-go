@@ -67,6 +67,7 @@ type (
 	cKeycode              = C.SDL_Keycode
 	cSensorID             = C.SDL_SensorID
 	cHintPriority         = C.SDL_HintPriority
+	cLogPriority          = C.SDL_LogPriority
 )
 
 // c struct
