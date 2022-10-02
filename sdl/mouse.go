@@ -43,7 +43,7 @@ func SDL_WarpMouseInWindow(window *SDL_Window, x, y int32) {
 }
 
 func SDL_SetRelativeMouseMode(enabled SDL_bool) int {
-	cRet := C.SDL_SetRelativeMouseMode(cSDL_bool(enabled))
+	cRet := C.SDL_SetRelativeMouseMode(cBool(enabled))
 	return int(cRet)
 }
 
@@ -65,7 +65,7 @@ func SDL_CreateColorCursor(surface *SDL_Surface, hotX, hotY int32) *SDL_Cursor {
 }
 
 func SDL_CreateSystemCursor(id SDL_SystemCursor) *SDL_Cursor {
-	cId := cSDL_SystemCursor(id)
+	cId := cSystemCursor(id)
 
 	cCursor := C.SDL_CreateSystemCursor(cId)
 	return (*SDL_Cursor)(unsafe.Pointer(cCursor))
@@ -95,7 +95,7 @@ func SDL_ShowCursor(toggle int) int {
 }
 
 func SDL_CaptureMouse(toggle SDL_bool) int {
-	cRet := C.SDL_CaptureMouse(cSDL_bool(toggle))
+	cRet := C.SDL_CaptureMouse(cBool(toggle))
 	return int(cRet)
 }
 

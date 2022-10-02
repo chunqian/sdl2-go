@@ -45,7 +45,7 @@ func SDL_ClearError() {
 }
 
 func SDL_Error(code SDL_errorcode) {
-	C.SDL_Error(cSDL_errorcode(code))
+	C.SDL_Error(cErrorcode(code))
 }
 
 func SDL_OutOfMemory() {

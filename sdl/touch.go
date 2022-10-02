@@ -19,13 +19,13 @@ func SDL_GetTouchDeviceType(id SDL_TouchID) SDL_TouchDeviceType {
 }
 
 func SDL_GetNumTouchFingers(id SDL_TouchID) int {
-	cId := cSDL_TouchID(id)
+	cId := cTouchID(id)
 
 	return int(C.SDL_GetNumTouchFingers(cId))
 }
 
 func SDL_GetTouchFinger(id SDL_TouchID, index int) *SDL_Finger {
-	cId := cSDL_TouchID(id)
+	cId := cTouchID(id)
 
 	cFinger := C.SDL_GetTouchFinger(cId, cInt(index))
 	return (*SDL_Finger)(unsafe.Pointer(cFinger))

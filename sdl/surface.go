@@ -183,12 +183,12 @@ func SDL_GetSurfaceAlphaMod(surface *SDL_Surface, alpha *uint8) int {
 }
 
 func SDL_SetSurfaceBlendMode(surface *SDL_Surface, bm SDL_BlendMode) int {
-	cRet := C.SDL_SetSurfaceBlendMode(cSDL_Surface(surface), cSDL_BlendMode(bm))
+	cRet := C.SDL_SetSurfaceBlendMode(cSDL_Surface(surface), cBlendMode(bm))
 	return int(cRet)
 }
 
 func SDL_GetSurfaceBlendMode(surface *SDL_Surface, bm *SDL_BlendMode) int {
-	cBM := (*cSDL_BlendMode)(unsafe.Pointer(bm))
+	cBM := (*cBlendMode)(unsafe.Pointer(bm))
 	cRet := C.SDL_GetSurfaceBlendMode(cSDL_Surface(surface), cBM)
 	return int(cRet)
 }

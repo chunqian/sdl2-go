@@ -220,7 +220,7 @@ func SDL_GetWindowPosition(window *SDL_Window, x, y *int32) {
 }
 
 func SDL_SetWindowResizable(window *SDL_Window, resizable SDL_bool) {
-	C.SDL_SetWindowResizable(cSDL_Window(window), cSDL_bool(resizable))
+	C.SDL_SetWindowResizable(cSDL_Window(window), cBool(resizable))
 }
 
 func SDL_SetWindowSize(window *SDL_Window, w, h int32) {
@@ -254,7 +254,7 @@ func SDL_GetWindowMaximumSize(window *SDL_Window, w, h *int32) {
 }
 
 func SDL_SetWindowBordered(window *SDL_Window, bordered SDL_bool) {
-	C.SDL_SetWindowBordered(cSDL_Window(window), cSDL_bool(bordered))
+	C.SDL_SetWindowBordered(cSDL_Window(window), cBool(bordered))
 }
 
 func SDL_ShowWindow(window *SDL_Window) {
@@ -305,7 +305,7 @@ func SDL_UpdateWindowSurfaceRects(window *SDL_Window, rects []SDL_Rect) int {
 }
 
 func SDL_SetWindowGrab(window *SDL_Window, grabbed SDL_bool) {
-	C.SDL_SetWindowGrab(cSDL_Window(window), cSDL_bool(grabbed))
+	C.SDL_SetWindowGrab(cSDL_Window(window), cBool(grabbed))
 }
 
 func SDL_GetWindowGrab(window *SDL_Window) bool {
@@ -442,11 +442,11 @@ func SDL_FlashWindow(window *SDL_Window, operation SDL_FlashOperation) int {
 }
 
 func SDL_SetWindowAlwaysOnTop(window *SDL_Window, onTop SDL_bool) {
-	C.SDL_SetWindowAlwaysOnTop(cSDL_Window(window), cSDL_bool(onTop))
+	C.SDL_SetWindowAlwaysOnTop(cSDL_Window(window), cBool(onTop))
 }
 
 func SDL_GetWindowKeyboardGrab(window *SDL_Window, grabbed SDL_bool) {
-	C.SDL_SetWindowKeyboardGrab(cSDL_Window(window), cSDL_bool(grabbed))
+	C.SDL_SetWindowKeyboardGrab(cSDL_Window(window), cBool(grabbed))
 }
 
 func SDL_GetWindowICCProfile(window *SDL_Window, size *uint) unsafe.Pointer {

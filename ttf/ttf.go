@@ -32,7 +32,7 @@ func TTF_Quit() {
 }
 
 func TTF_ByteSwappedUNICODE(swap SDL_bool) {
-	C.TTF_ByteSwappedUNICODE(cSDL_bool(swap))
+	C.TTF_ByteSwappedUNICODE(cBool(swap))
 }
 
 func TTF_OpenFont(file string, size int) *TTF_Font {

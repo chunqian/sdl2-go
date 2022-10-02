@@ -130,23 +130,23 @@ func SDL_GetTextureAlphaMod(texture *SDL_Texture, alpha *uint8) int {
 }
 
 func SDL_SetTextureBlendMode(texture *SDL_Texture, bm SDL_BlendMode) int {
-	cRet := C.SDL_SetTextureBlendMode(cSDL_Texture(texture), cSDL_BlendMode(bm))
+	cRet := C.SDL_SetTextureBlendMode(cSDL_Texture(texture), cBlendMode(bm))
 	return int(cRet)
 }
 
 func SDL_GetTextureBlendMode(texture *SDL_Texture, bm *SDL_BlendMode) int {
-	cBM := (*cSDL_BlendMode)(unsafe.Pointer(bm))
+	cBM := (*cBlendMode)(unsafe.Pointer(bm))
 	cRet := C.SDL_GetTextureBlendMode(cSDL_Texture(texture), cBM)
 	return int(cRet)
 }
 
 func SDL_SetTextureScaleMode(texture *SDL_Texture, sm SDL_ScaleMode) int {
-	cRet := C.SDL_SetTextureScaleMode(cSDL_Texture(texture), cSDL_ScaleMode(sm))
+	cRet := C.SDL_SetTextureScaleMode(cSDL_Texture(texture), cScaleMode(sm))
 	return int(cRet)
 }
 
 func SDL_GetTextureScaleMode(texture *SDL_Texture, sm *SDL_ScaleMode) int {
-	cSM := (*cSDL_ScaleMode)(unsafe.Pointer(sm))
+	cSM := (*cScaleMode)(unsafe.Pointer(sm))
 	cRet := C.SDL_GetTextureScaleMode(cSDL_Texture(texture), cSM)
 	return int(cRet)
 }
@@ -273,7 +273,7 @@ func SDL_RenderGetScale(renderer *SDL_Renderer, scaleX, scaleY *float32) {
 }
 
 func SDL_RenderSetIntegerScale(renderer *SDL_Renderer, v SDL_bool) int {
-	cRet := C.SDL_RenderSetIntegerScale(cSDL_Renderer(renderer), cSDL_bool(v))
+	cRet := C.SDL_RenderSetIntegerScale(cSDL_Renderer(renderer), cBool(v))
 	return int(cRet)
 }
 
@@ -319,12 +319,12 @@ func SDL_GetRenderDrawColor(renderer *SDL_Renderer, r, g, b, a *uint8) int {
 }
 
 func SDL_SetRenderDrawBlendMode(renderer *SDL_Renderer, bm SDL_BlendMode) int {
-	cRet := C.SDL_SetRenderDrawBlendMode(cSDL_Renderer(renderer), cSDL_BlendMode(bm))
+	cRet := C.SDL_SetRenderDrawBlendMode(cSDL_Renderer(renderer), cBlendMode(bm))
 	return int(cRet)
 }
 
 func SDL_GetRenderDrawBlendMode(renderer *SDL_Renderer, bm *SDL_BlendMode) int {
-	cBM := (*cSDL_BlendMode)(unsafe.Pointer(bm))
+	cBM := (*cBlendMode)(unsafe.Pointer(bm))
 	cRet := C.SDL_GetRenderDrawBlendMode(cSDL_Renderer(renderer), cBM)
 	return int(cRet)
 }
@@ -419,7 +419,7 @@ func SDL_RenderCopyEx(renderer *SDL_Renderer, texture *SDL_Texture, src, dst *SD
 		cSDL_Rect(dst),
 		cDouble(angle),
 		cSDL_Point(center),
-		cSDL_RendererFlip(flip))
+		cRendererFlip(flip))
 	return int(cRet)
 }
 
@@ -497,7 +497,7 @@ func SDL_RenderCopyExF(renderer *SDL_Renderer, texture *SDL_Texture, src *SDL_Re
 		cSDL_FRect(dst),
 		cDouble(angle),
 		cSDL_FPoint(center),
-		cSDL_RendererFlip(flip))
+		cRendererFlip(flip))
 	return int(cRet)
 }
 

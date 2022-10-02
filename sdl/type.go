@@ -2,6 +2,7 @@ package sdl
 
 /*
 #include "sdl_wrapper.h"
+#include "gamecontroller.h"
 */
 import "C"
 import (
@@ -13,7 +14,6 @@ import (
 
 // c basic
 type (
-	cBool   = C.char   // int8
 	cChar   = C.char   // byte
 	cInt    = C.int    // int32
 	cUint   = C.uint   // uint32
@@ -46,18 +46,21 @@ type (
 
 // c enum
 type (
-	cSDL_bool           = C.SDL_bool
-	cSDL_errorcode      = C.SDL_errorcode
-	cSDL_BlendMode      = C.SDL_BlendMode
-	cSDL_BlendOperation = C.SDL_BlendOperation
-	cSDL_BlendFactor    = C.SDL_BlendFactor
-	cSDL_ScaleMode      = C.SDL_ScaleMode
-	cSDL_RendererFlip   = C.SDL_RendererFlip
-	cSDL_EventType      = C.SDL_EventType
-	cSDL_eventaction    = C.SDL_eventaction
-	cSDL_SystemCursor   = C.SDL_SystemCursor
-	cSDL_TouchID        = C.SDL_TouchID
-	cSDL_GestureID      = C.SDL_GestureID
+	cBool                 = C.SDL_bool
+	cErrorcode            = C.SDL_errorcode
+	cBlendMode            = C.SDL_BlendMode
+	cBlendOperation       = C.SDL_BlendOperation
+	cBlendFactor          = C.SDL_BlendFactor
+	cScaleMode            = C.SDL_ScaleMode
+	cRendererFlip         = C.SDL_RendererFlip
+	cEventType            = C.SDL_EventType
+	cEventaction          = C.SDL_eventaction
+	cSystemCursor         = C.SDL_SystemCursor
+	cTouchID              = C.SDL_TouchID
+	cGestureID            = C.SDL_GestureID
+	cJoystickID           = C.SDL_JoystickID
+	cGameControllerAxis   = C.SDL_GameControllerAxis
+	cGameControllerButton = C.SDL_GameControllerButton
 )
 
 // c struct
@@ -111,6 +114,8 @@ const (
 
 	SDL_TOUCH_MOUSEID = math.MaxUint32
 	SDL_MOUSE_TOUCHID = int64(-1)
+
+	SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE = C.SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE
 )
 
 func SDL_BUTTON(x int) int {
@@ -1251,11 +1256,12 @@ const (
 
 type SDL_MouseWheelDirection = int32
 
-type SDL_GUID struct {
+type SDL_JoystickGUID struct {
 	Data [16]uint8
 }
 
-type SDL_JoystickGUID = SDL_GUID
+type SDL_GUID = SDL_JoystickGUID
+
 type SDL_JoystickID = int32
 
 const (
@@ -1328,28 +1334,9 @@ const (
 
 type SDL_GameControllerBindType = int32
 
-type SDL_GameControllerButtonBindButton struct {
-	Button int32
-}
-
-type SDL_GameControllerButtonBindAxis struct {
-	Axis int32
-}
-
-type SDL_GameControllerButtonBindHat struct {
-	Hat     int32
-	HatMask int32
-}
-
-// button or axis or hat
-type SDL_GameControllerButtonBindPadding struct {
-	Padding1 int32
-	Padding2 int32
-}
-
 type SDL_GameControllerButtonBind struct {
 	BindType int32
-	Value    SDL_GameControllerButtonBindPadding
+	Value    [SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE]byte
 }
 
 const (
@@ -2213,17 +2200,6 @@ type SDL_EventStructures interface {
 
 func SDL_EventConvert[T SDL_EventStructures, T2 SDL_EventStructures](e *T, _ T2) *T2 {
 	return (*T2)(unsafe.Pointer(e))
-}
-
-type SDL_ConvertStructures interface {
-	SDL_GameControllerButtonBindPadding |
-		SDL_GameControllerButtonBindButton |
-		SDL_GameControllerButtonBindAxis |
-		SDL_GameControllerButtonBindHat
-}
-
-func SDL_Convert[T SDL_ConvertStructures, T2 SDL_ConvertStructures](s *T, _ T2) *T2 {
-	return (*T2)(unsafe.Pointer(s))
 }
 
 func init() {

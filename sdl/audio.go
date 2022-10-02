@@ -29,6 +29,7 @@ func (cvt *SDL_AudioCVT) BufFree() {
 	SDL_free(SDL_GetMemoryPool(), unsafe.Pointer(cvt.Buf))
 }
 
+// BufAsSlice方法返回的切片, 禁止使用append扩容, 会导致内存泄露
 func (cvt SDL_AudioCVT) BufAsSlice() []byte {
 	var b []byte
 	sh := (*reflect.SliceHeader)(unsafe.Pointer(&b))

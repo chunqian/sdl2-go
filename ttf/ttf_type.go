@@ -7,7 +7,6 @@ import "C"
 
 // c basic
 type (
-	cBool   = C.char   // int8
 	cChar   = C.char   // byte
 	cInt    = C.int    // int32
 	cUint   = C.uint   // uint32
@@ -59,7 +58,7 @@ const (
 
 // c enum
 type (
-	cSDL_bool = C.SDL_bool
+	cBool = C.SDL_bool
 )
 
 // c struct

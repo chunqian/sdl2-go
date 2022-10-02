@@ -37,7 +37,7 @@ func SDL_PeepEvents(events []SDL_Event, numevents int, action SDL_eventaction, m
 		return 0
 	}
 
-	cRet := C.SDL_PeepEvents(cSDL_Event(&events[0]), cInt(numevents), cSDL_eventaction(action), cUint(minType), cUint(maxType))
+	cRet := C.SDL_PeepEvents(cSDL_Event(&events[0]), cInt(numevents), cEventaction(action), cUint(minType), cUint(maxType))
 	return int(cRet)
 }
 
