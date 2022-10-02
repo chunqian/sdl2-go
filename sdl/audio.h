@@ -3,7 +3,9 @@
 
 #include "sdl_wrapper.h"
 
-void SDL_AudioCallbackWrapper(void *userdata, Uint8 *stream, int len);
+typedef void (*SDL_AudioCallback)(void *userdata, Uint8 *stream, int len);
+
+void callAudio(void *userdata, Uint8 *stream, int len);
 
 #if !(SDL_VERSION_ATLEAST(2, 24, 0)) // if {
 #if defined(WARN_OUTDATED)

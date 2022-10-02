@@ -17,18 +17,18 @@ typedef int (*Mix_EachSoundFontCallback)(const char *, void *);
 int callEachSoundFont(char *str, void *udata);
 #endif // }
 
-typedef void (*Mix_SetPostMixCallback)(void *udata, Uint8 *stream, int len);
+typedef void (*Mix_PostMixCallback)(void *udata, Uint8 *stream, int len);
 typedef void (*Mix_HookMusicCallback)(void *udata, Uint8 *stream, int len);
 typedef void (*Mix_HookMusicFinishedCallback)(void);
 typedef void (*Mix_ChannelFinishedCallback)(int channel);
 typedef void (*Mix_RegisterEffectCallback)(int chan, void *stream, int len, void *udata);
 typedef void (*Mix_RegisterEffectDoneCallback)(int chan, void *udata);
 
-void callPostMixFunction(void *udata, Uint8 *stream, int length);
+void callPostMix(void *udata, Uint8 *stream, int length);
 void callHookMusic(void *udata, Uint8 *stream, int length);
 void callHookMusicFinished();
 void callChannelFinished(int channel);
-void callEffectFunc(int channel, void *stream, int len, void *udata);
+void callEffect(int channel, void *stream, int len, void *udata);
 void callEffectDone(int channel, void *udata);
 
 static inline Uint32 Mix_GetChunkTimeMilliseconds(Mix_Chunk *chunk) {

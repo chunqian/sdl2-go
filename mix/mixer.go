@@ -454,7 +454,7 @@ func Mix_GetMusicDecoder(index int) string {
 	return C.GoString(C.Mix_GetMusicDecoder(cInt(index)))
 }
 
-type Mix_SetPostMixCallback = func(userdata any, stream []uint8)
+type Mix_PostMixCallback = func(userdata any, stream []uint8)
 type Mix_HookMusicCallback = func(userdata any, stream []uint8)
 type Mix_HookMusicFinishedCallback = func()
 type Mix_ChannelFinishedCallback = func(channel int)
@@ -462,7 +462,7 @@ type Mix_RegisterEffectCallback = func(channel int, stream []uint8, userdata any
 type Mix_RegisterEffectDoneCallback = func(channel int, userdata any)
 
 type SDL_MixWatcher struct {
-	postCallback Mix_SetPostMixCallback
+	postCallback Mix_PostMixCallback
 	postArg      any
 
 	hookCallback Mix_HookMusicCallback
@@ -478,8 +478,8 @@ type SDL_MixWatcher struct {
 
 var Mix_MusicOK SDL_MixWatcher
 
-//export callPostMixFunction
-func callPostMixFunction(_ unsafe.Pointer, stream *cUint8, length cInt) {
+//export callPostMix
+func callPostMix(_ unsafe.Pointer, stream *cUint8, length cInt) {
 	var slice []uint8
 	header := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
 	header.Data = uintptr(unsafe.Pointer(stream))
@@ -491,10 +491,10 @@ func callPostMixFunction(_ unsafe.Pointer, stream *cUint8, length cInt) {
 	}
 }
 
-func Mix_SetPostMix(callback Mix_SetPostMixCallback, arg any) {
+func Mix_SetPostMix(callback Mix_PostMixCallback, arg any) {
 	Mix_MusicOK.postCallback = callback
 	Mix_MusicOK.postArg = arg
-	C.Mix_SetPostMix(C.Mix_SetPostMixCallback(C.callPostMixFunction), nil)
+	C.Mix_SetPostMix(C.Mix_PostMixCallback(C.callPostMix), nil)
 }
 
 //export callHookMusic
@@ -542,8 +542,8 @@ func Mix_ChannelFinished(callback Mix_ChannelFinishedCallback) {
 
 var Mix_EffectOK []SDL_MixWatcher
 
-//export callEffectFunc
-func callEffectFunc(channel cInt, stream unsafe.Pointer, length cInt, userdata unsafe.Pointer) {
+//export callEffect
+func callEffect(channel cInt, stream unsafe.Pointer, length cInt, userdata unsafe.Pointer) {
 	index := int(uintptr(userdata))
 	var slice []byte
 	header := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
@@ -576,7 +576,7 @@ func Mix_RegisterEffect(channel int, callback Mix_RegisterEffectCallback, doneCa
 	}
 	Mix_EffectOK = append(Mix_EffectOK, watcher)
 
-	cCallback := C.Mix_RegisterEffectCallback(C.callEffectFunc)
+	cCallback := C.Mix_RegisterEffectCallback(C.callEffect)
 	cDoneCallback := C.Mix_RegisterEffectCallback(C.callEffectDone)
 	cRet := C.Mix_RegisterEffect(cInt(channel), cCallback, cDoneCallback, unsafe.Pointer(uintptr(index)))
 	return int(cRet)
