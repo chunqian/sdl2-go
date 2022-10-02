@@ -112,7 +112,7 @@ func SDL_PauseAudioDevice(dev SDL_AudioDeviceID, pauseOn int32) {
 func SDL_LoadWAV_RW(src *SDL_RWops, freeSrc int32, spec *SDL_AudioSpec, audioBuf *[]uint8, audioLen *uint32) *SDL_AudioSpec {
 	cAudioBuf := (**cUint8)(unsafe.Pointer(audioBuf))
 	cAudioLen := (*cUint32)(unsafe.Pointer(audioLen))
-	cSpec := C.SDL_LoadWAV_RW(cSDL_RWops(src), cInt(freeSrc), cAudioSpec(spec), cAudioBuf, cAudioLen)
+	cSpec := C.SDL_LoadWAV_RW(cRWops(src), cInt(freeSrc), cAudioSpec(spec), cAudioBuf, cAudioLen)
 	dstSpec := (*SDL_AudioSpec)(unsafe.Pointer(cSpec))
 
 	sh := (*reflect.SliceHeader)(unsafe.Pointer(audioBuf))

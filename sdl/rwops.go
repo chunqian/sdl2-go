@@ -9,7 +9,7 @@ import (
 	"unsafe"
 )
 
-func cSDL_RWops(rw *SDL_RWops) *C.SDL_RWops {
+func cRWops(rw *SDL_RWops) *C.SDL_RWops {
 	return (*C.SDL_RWops)(unsafe.Pointer(rw))
 }
 
@@ -38,11 +38,11 @@ func SDL_AllocRW() *SDL_RWops {
 }
 
 func SDL_FreeRW(rw *SDL_RWops) {
-	C.SDL_FreeRW(cSDL_RWops(rw))
+	C.SDL_FreeRW(cRWops(rw))
 }
 
 func SDL_RWsize(rw *SDL_RWops) int64 {
-	cN := C.RWsize(cSDL_RWops(rw))
+	cN := C.RWsize(cRWops(rw))
 	return int64(cN)
 }
 
@@ -50,7 +50,7 @@ func SDL_RWseek(rw *SDL_RWops, offset int64, whence int32) int64 {
 	if rw == nil {
 		return -1
 	}
-	cRet := C.RWseek(cSDL_RWops(rw), cInt64(offset), cInt(whence))
+	cRet := C.RWseek(cRWops(rw), cInt64(offset), cInt(whence))
 	return int64(cRet)
 }
 
@@ -63,7 +63,7 @@ func (rw *SDL_RWops) reading(buf []byte, size, maxnum uint) int {
 		return 0
 	}
 	header := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
-	cN := C.RWread(cSDL_RWops(rw), unsafe.Pointer(header.Data), cSize_t(size), cSize_t(maxnum))
+	cN := C.RWread(cRWops(rw), unsafe.Pointer(header.Data), cSize_t(size), cSize_t(maxnum))
 	return int(cN)
 }
 
@@ -71,7 +71,7 @@ func SDL_RWtell(rw *SDL_RWops) int64 {
 	if rw == nil {
 		return 0
 	}
-	cRet := C.RWseek(cSDL_RWops(rw), 0, cInt(RW_SEEK_CUR))
+	cRet := C.RWseek(cRWops(rw), 0, cInt(RW_SEEK_CUR))
 	return int64(cRet)
 }
 
@@ -84,12 +84,12 @@ func (rw *SDL_RWops) writing(buf []byte, size, num uint) int {
 		return 0
 	}
 	header := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
-	cN := C.RWwrite(cSDL_RWops(rw), unsafe.Pointer(header.Data), cSize_t(size), cSize_t(num))
+	cN := C.RWwrite(cRWops(rw), unsafe.Pointer(header.Data), cSize_t(size), cSize_t(num))
 	return int(cN)
 }
 
 func SDL_RWclose(rw *SDL_RWops) int {
-	cRet := C.RWclose(cSDL_RWops(rw))
+	cRet := C.RWclose(cRWops(rw))
 	if rw != nil && int(cRet) != 0 {
 		return -1
 	}
@@ -100,49 +100,49 @@ func SDL_ReadU8(rw *SDL_RWops) uint8 {
 	if rw == nil {
 		return 0
 	}
-	return uint8(C.SDL_ReadU8(cSDL_RWops(rw)))
+	return uint8(C.SDL_ReadU8(cRWops(rw)))
 }
 
 func SDL_ReadLE16(rw *SDL_RWops) uint16 {
 	if rw == nil {
 		return 0
 	}
-	return uint16(C.SDL_ReadLE16(cSDL_RWops(rw)))
+	return uint16(C.SDL_ReadLE16(cRWops(rw)))
 }
 
 func SDL_ReadBE16(rw *SDL_RWops) uint16 {
 	if rw == nil {
 		return 0
 	}
-	return uint16(C.SDL_ReadBE16(cSDL_RWops(rw)))
+	return uint16(C.SDL_ReadBE16(cRWops(rw)))
 }
 
 func SDL_ReadLE32(rw *SDL_RWops) uint32 {
 	if rw == nil {
 		return 0
 	}
-	return uint32(C.SDL_ReadLE32(cSDL_RWops(rw)))
+	return uint32(C.SDL_ReadLE32(cRWops(rw)))
 }
 
 func SDL_ReadBE32(rw *SDL_RWops) uint32 {
 	if rw == nil {
 		return 0
 	}
-	return uint32(C.SDL_ReadBE32(cSDL_RWops(rw)))
+	return uint32(C.SDL_ReadBE32(cRWops(rw)))
 }
 
 func SDL_ReadLE64(rw *SDL_RWops) uint64 {
 	if rw == nil {
 		return 0
 	}
-	return uint64(C.SDL_ReadLE64(cSDL_RWops(rw)))
+	return uint64(C.SDL_ReadLE64(cRWops(rw)))
 }
 
 func SDL_ReadBE64(rw *SDL_RWops) uint64 {
 	if rw == nil {
 		return 0
 	}
-	return uint64(C.SDL_ReadBE64(cSDL_RWops(rw)))
+	return uint64(C.SDL_ReadBE64(cRWops(rw)))
 }
 
 func SDL_LoadFile_RW(rw *SDL_RWops, freesrc SDL_bool) (data []byte, size int) {
@@ -153,7 +153,7 @@ func SDL_LoadFile_RW(rw *SDL_RWops, freesrc SDL_bool) (data []byte, size int) {
 		cFreesrc = 1
 	}
 
-	cData := C.SDL_LoadFile_RW(cSDL_RWops(rw), &cSize, cFreesrc)
+	cData := C.SDL_LoadFile_RW(cRWops(rw), &cSize, cFreesrc)
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
 	sliceHeader.Cap = int(cSize)
 	sliceHeader.Len = int(cSize)
@@ -171,47 +171,47 @@ func SDL_WriteU8(rw *SDL_RWops, value uint8) uint {
 	if rw == nil {
 		return 0
 	}
-	return uint(C.SDL_WriteU8(cSDL_RWops(rw), cUint8(value)))
+	return uint(C.SDL_WriteU8(cRWops(rw), cUint8(value)))
 }
 
 func SDL_WriteLE16(rw *SDL_RWops, value uint16) uint {
 	if rw == nil {
 		return 0
 	}
-	return uint(C.SDL_WriteLE16(cSDL_RWops(rw), cUint16(value)))
+	return uint(C.SDL_WriteLE16(cRWops(rw), cUint16(value)))
 }
 
 func SDL_WriteBE16(rw *SDL_RWops, value uint16) uint {
 	if rw == nil {
 		return 0
 	}
-	return uint(C.SDL_WriteBE16(cSDL_RWops(rw), cUint16(value)))
+	return uint(C.SDL_WriteBE16(cRWops(rw), cUint16(value)))
 }
 
 func SDL_WriteLE32(rw *SDL_RWops, value uint32) uint {
 	if rw == nil {
 		return 0
 	}
-	return uint(C.SDL_WriteLE32(cSDL_RWops(rw), cUint32(value)))
+	return uint(C.SDL_WriteLE32(cRWops(rw), cUint32(value)))
 }
 
 func SDL_WriteBE32(rw *SDL_RWops, value uint32) uint {
 	if rw == nil {
 		return 0
 	}
-	return uint(C.SDL_WriteBE32(cSDL_RWops(rw), cUint32(value)))
+	return uint(C.SDL_WriteBE32(cRWops(rw), cUint32(value)))
 }
 
 func SDL_WriteLE64(rw *SDL_RWops, value uint64) uint {
 	if rw == nil {
 		return 0
 	}
-	return uint(C.SDL_WriteLE64(cSDL_RWops(rw), cUint64(value)))
+	return uint(C.SDL_WriteLE64(cRWops(rw), cUint64(value)))
 }
 
 func SDL_WriteBE64(rw *SDL_RWops, value uint64) uint {
 	if rw == nil {
 		return 0
 	}
-	return uint(C.SDL_WriteBE64(cSDL_RWops(rw), cUint64(value)))
+	return uint(C.SDL_WriteBE64(cRWops(rw), cUint64(value)))
 }

@@ -10,7 +10,7 @@ import (
 	"unsafe"
 )
 
-func cSDL_Event(s *SDL_Event) *C.SDL_Event {
+func cEvent(s *SDL_Event) *C.SDL_Event {
 	return (*C.SDL_Event)(unsafe.Pointer(s))
 }
 
@@ -37,7 +37,7 @@ func SDL_PeepEvents(events []SDL_Event, numevents int, action SDL_eventaction, m
 		return 0
 	}
 
-	cRet := C.SDL_PeepEvents(cSDL_Event(&events[0]), cInt(numevents), cEventaction(action), cUint(minType), cUint(maxType))
+	cRet := C.SDL_PeepEvents(cEvent(&events[0]), cInt(numevents), cEventaction(action), cUint(minType), cUint(maxType))
 	return int(cRet)
 }
 
@@ -60,22 +60,22 @@ func SDL_FlushEvents(minType SDL_EventType, maxType SDL_EventType) {
 }
 
 func SDL_PollEvent(event *SDL_Event) bool {
-	cRet := C.SDL_PollEvent(cSDL_Event(event))
+	cRet := C.SDL_PollEvent(cEvent(event))
 	return cRet != 0
 }
 
 func SDL_WaitEvent(event *SDL_Event) int {
-	cRet := C.SDL_WaitEvent(cSDL_Event(event))
+	cRet := C.SDL_WaitEvent(cEvent(event))
 	return int(cRet)
 }
 
 func SDL_WaitEventTimeout(event *SDL_Event, timeout int) int {
-	cRet := C.SDL_WaitEventTimeout(cSDL_Event(event), cInt(timeout))
+	cRet := C.SDL_WaitEventTimeout(cEvent(event), cInt(timeout))
 	return int(cRet)
 }
 
 func SDL_PushEvent(event *SDL_Event) {
-	C.SDL_PushEvent(cSDL_Event(event))
+	C.SDL_PushEvent(cEvent(event))
 }
 
 type SDL_EventFilterCallback = func(userdata any, event *SDL_Event) int32

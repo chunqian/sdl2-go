@@ -9,15 +9,15 @@ import (
 	"unsafe"
 )
 
-func cSDL_PixelFormat(format *SDL_PixelFormat) *C.SDL_PixelFormat {
+func cPixelFormat(format *SDL_PixelFormat) *C.SDL_PixelFormat {
 	return (*C.SDL_PixelFormat)(unsafe.Pointer(format))
 }
 
-func cSDL_Palette(palette *SDL_Palette) *C.SDL_Palette {
+func cPalette(palette *SDL_Palette) *C.SDL_Palette {
 	return (*C.SDL_Palette)(unsafe.Pointer(palette))
 }
 
-func cSDL_Color(c *SDL_Color) *C.SDL_Color {
+func cColor(c *SDL_Color) *C.SDL_Color {
 	return (*C.SDL_Color)(unsafe.Pointer(c))
 }
 
@@ -79,7 +79,7 @@ func SDL_AllocPalette(ncolors int) *SDL_Palette {
 }
 
 func SDL_SetPixelFormatPalette(format *SDL_PixelFormat, palette *SDL_Palette) int {
-	cRet := C.SDL_SetPixelFormatPalette(cSDL_PixelFormat(format), cSDL_Palette(palette))
+	cRet := C.SDL_SetPixelFormatPalette(cPixelFormat(format), cPalette(palette))
 	return int(cRet)
 }
 
@@ -92,28 +92,28 @@ func SDL_SetPaletteColors(palette *SDL_Palette, colors []SDL_Color) int {
 		ptr = &colors[0]
 	}
 
-	cRet := C.SDL_SetPaletteColors(cSDL_Palette(palette), cSDL_Color(ptr), 0, cInt(len(colors)))
+	cRet := C.SDL_SetPaletteColors(cPalette(palette), cColor(ptr), 0, cInt(len(colors)))
 	return int(cRet)
 }
 
 func SDL_FreePalette(palette *SDL_Palette) {
-	C.SDL_FreePalette(cSDL_Palette(palette))
+	C.SDL_FreePalette(cPalette(palette))
 }
 
 func SDL_MapRGB(format *SDL_PixelFormat, r, g, b uint8) uint32 {
-	cRet := C.SDL_MapRGB(cSDL_PixelFormat(format), cUint8(r), cUint8(g), cUint8(b))
+	cRet := C.SDL_MapRGB(cPixelFormat(format), cUint8(r), cUint8(g), cUint8(b))
 	return uint32(cRet)
 }
 
 func SDL_MapRGBA(format *SDL_PixelFormat, r, g, b, a uint8) uint32 {
-	cRet := C.SDL_MapRGBA(cSDL_PixelFormat(format), cUint8(r), cUint8(g), cUint8(b), cUint8(a))
+	cRet := C.SDL_MapRGBA(cPixelFormat(format), cUint8(r), cUint8(g), cUint8(b), cUint8(a))
 	return uint32(cRet)
 }
 
 func SDL_GetRGB(pixel uint32, format *SDL_PixelFormat, r, g, b *uint8) {
 	C.SDL_GetRGB(
 		cUint32(pixel),
-		cSDL_PixelFormat(format),
+		cPixelFormat(format),
 		(*cUint8)(r),
 		(*cUint8)(g),
 		(*cUint8)(b))
@@ -122,7 +122,7 @@ func SDL_GetRGB(pixel uint32, format *SDL_PixelFormat, r, g, b *uint8) {
 func SDL_GetRGBA(pixel uint32, format *SDL_PixelFormat, r, g, b, a *uint8) {
 	C.SDL_GetRGBA(
 		cUint32(pixel),
-		cSDL_PixelFormat(format),
+		cPixelFormat(format),
 		(*cUint8)(r),
 		(*cUint8)(g),
 		(*cUint8)(b),

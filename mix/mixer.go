@@ -11,15 +11,15 @@ import (
 	. "github.com/chunqian/sdl2-go/sdl"
 )
 
-func cSDL_RWops(rw *SDL_RWops) *C.SDL_RWops {
+func cRWops(rw *SDL_RWops) *C.SDL_RWops {
 	return (*C.SDL_RWops)(unsafe.Pointer(rw))
 }
 
-func cMix_Music(m *Mix_Music) *C.Mix_Music {
+func cMusic(m *Mix_Music) *C.Mix_Music {
 	return (*C.Mix_Music)(unsafe.Pointer(m))
 }
 
-func cMix_Chunk(c *Mix_Chunk) *C.Mix_Chunk {
+func cChunk(c *Mix_Chunk) *C.Mix_Chunk {
 	return (*C.Mix_Chunk)(unsafe.Pointer(c))
 }
 
@@ -77,7 +77,7 @@ func Mix_QuerySpec(frequency *int, format *uint16, channels *int) int {
 }
 
 func Mix_LoadWAV_RW(src *SDL_RWops, freesrc SDL_bool) (chunk *Mix_Chunk) {
-	cSrc := cSDL_RWops(src)
+	cSrc := cRWops(src)
 	cFreesrc := cInt(freesrc)
 
 	cChunk := C.Mix_LoadWAV_RW(cSrc, cFreesrc)
@@ -108,7 +108,7 @@ func Mix_LoadMUS(file string) (mus *Mix_Music) {
 }
 
 func Mix_LoadMUS_RW(src *SDL_RWops, freesrc int) (mus *Mix_Music) {
-	cSrc := cSDL_RWops(src)
+	cSrc := cRWops(src)
 	cFreesrc := cInt(freesrc)
 
 	cMus := C.Mix_LoadMUS_RW(cSrc, cFreesrc)
@@ -117,7 +117,7 @@ func Mix_LoadMUS_RW(src *SDL_RWops, freesrc int) (mus *Mix_Music) {
 }
 
 func Mix_LoadMUSType_RW(src *SDL_RWops, type_ Mix_MusicType, freesrc int) (mus *Mix_Music) {
-	cSrc := cSDL_RWops(src)
+	cSrc := cRWops(src)
 	cType := (C.Mix_MusicType)(type_)
 	cFreesrc := cInt(freesrc)
 
@@ -144,17 +144,17 @@ func Mix_QuickLoad_RAW(mem *uint8, len_ uint32) (chunk *Mix_Chunk) {
 }
 
 func Mix_FreeChunk(chunk *Mix_Chunk) {
-	cChunk := cMix_Chunk(chunk)
+	cChunk := cChunk(chunk)
 	C.Mix_FreeChunk(cChunk)
 }
 
 func Mix_FreeMusic(music *Mix_Music) {
-	cMusic := cMix_Music(music)
+	cMusic := cMusic(music)
 	C.Mix_FreeMusic(cMusic)
 }
 
 func Mix_GetMusicType(music *Mix_Music) Mix_MusicType {
-	cMusic := cMix_Music(music)
+	cMusic := cMusic(music)
 	return (Mix_MusicType)(C.Mix_GetMusicType(cMusic))
 }
 
@@ -232,7 +232,7 @@ func Mix_GroupNewer(tag int) int {
 
 func Mix_PlayChannelTimed(channel int, chunk *Mix_Chunk, loops, ticks int) int {
 	cChannel := cInt(channel)
-	cChunk := cMix_Chunk(chunk)
+	cChunk := cChunk(chunk)
 	cLoops := cInt(loops)
 	cTicks := cInt(ticks)
 
@@ -241,7 +241,7 @@ func Mix_PlayChannelTimed(channel int, chunk *Mix_Chunk, loops, ticks int) int {
 }
 
 func Mix_GetChunkTimeMilliseconds(chunk *Mix_Chunk) int {
-	cChunk := cMix_Chunk(chunk)
+	cChunk := cChunk(chunk)
 
 	cRet := C.Mix_GetChunkTimeMilliseconds(cChunk)
 	return int(cRet)
@@ -249,7 +249,7 @@ func Mix_GetChunkTimeMilliseconds(chunk *Mix_Chunk) int {
 
 func Mix_PlayChannel(channel int, chunk *Mix_Chunk, loops int) int {
 	cChannel := cInt(channel)
-	cChunk := cMix_Chunk(chunk)
+	cChunk := cChunk(chunk)
 	cLoops := cInt(loops)
 
 	cRet := C.Mix_PlayChannelTimed(cChannel, cChunk, cLoops, -1)
@@ -257,7 +257,7 @@ func Mix_PlayChannel(channel int, chunk *Mix_Chunk, loops int) int {
 }
 
 func Mix_PlayMusic(music *Mix_Music, loops int) int {
-	cMusic := cMix_Music(music)
+	cMusic := cMusic(music)
 	cLoops := cInt(loops)
 
 	cRet := C.Mix_PlayMusic(cMusic, cLoops)
@@ -265,7 +265,7 @@ func Mix_PlayMusic(music *Mix_Music, loops int) int {
 }
 
 func Mix_FadeInMusic(music *Mix_Music, loops, ms int) int {
-	cMusic := cMix_Music(music)
+	cMusic := cMusic(music)
 	cLoops := cInt(loops)
 	cMs := cInt(ms)
 
@@ -274,7 +274,7 @@ func Mix_FadeInMusic(music *Mix_Music, loops, ms int) int {
 }
 
 func Mix_FadeInMusicPos(music *Mix_Music, loops, ms int, position float64) int {
-	cMusic := cMix_Music(music)
+	cMusic := cMusic(music)
 	cLoops := cInt(loops)
 	cMs := cInt(ms)
 	cPosition := cDouble(position)
@@ -289,7 +289,7 @@ func Mix_FadeInChannel(channel int, chunk *Mix_Chunk, loops, ms int) int {
 
 func Mix_FadeInChannelTimed(channel int, chunk *Mix_Chunk, loops, ms, ticks int) int {
 	cChannel := cInt(channel)
-	cChunk := cMix_Chunk(chunk)
+	cChunk := cChunk(chunk)
 	cLoops := cInt(loops)
 	cMs := cInt(ms)
 	cTicks := cInt(ticks)
@@ -305,7 +305,7 @@ func Mix_Volume(channel, volume int) int {
 }
 
 func Mix_VolumeChunk(chunk *Mix_Chunk, volume int) int {
-	cChunk := cMix_Chunk(chunk)
+	cChunk := cChunk(chunk)
 	cVolume := cInt(volume)
 
 	cRet := C.Mix_VolumeChunk(cChunk, cVolume)

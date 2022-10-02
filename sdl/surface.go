@@ -11,7 +11,7 @@ import (
 	"unsafe"
 )
 
-func cSDL_Surface(surface *SDL_Surface) *C.SDL_Surface {
+func cSurface(surface *SDL_Surface) *C.SDL_Surface {
 	return (*C.SDL_Surface)(unsafe.Pointer(surface))
 }
 
@@ -90,25 +90,25 @@ func GetYUVConversionModeForResolution(width, height int) SDL_YUV_CONVERSION_MOD
 }
 
 func SDL_FreeSurface(surface *SDL_Surface) {
-	C.SDL_FreeSurface(cSDL_Surface(surface))
+	C.SDL_FreeSurface(cSurface(surface))
 }
 
 func SDL_SetSurfacePalette(surface *SDL_Surface, palette *SDL_Palette) int {
-	cRet := C.SDL_SetSurfacePalette(cSDL_Surface(surface), cSDL_Palette(palette))
+	cRet := C.SDL_SetSurfacePalette(cSurface(surface), cPalette(palette))
 	return int(cRet)
 }
 
 func SDL_LockSurface(surface *SDL_Surface) int {
-	cRet := C.SDL_LockSurface(cSDL_Surface(surface))
+	cRet := C.SDL_LockSurface(cSurface(surface))
 	return int(cRet)
 }
 
 func SDL_UnlockSurface(surface *SDL_Surface) {
-	C.SDL_UnlockSurface(cSDL_Surface(surface))
+	C.SDL_UnlockSurface(cSurface(surface))
 }
 
 func SDL_LoadBMP_RW(src *SDL_RWops, freeSrc SDL_bool) *SDL_Surface {
-	cSurface := C.SDL_LoadBMP_RW(cSDL_RWops(src), cInt(freeSrc))
+	cSurface := C.SDL_LoadBMP_RW(cRWops(src), cInt(freeSrc))
 	surface := (*SDL_Surface)(unsafe.Pointer(cSurface))
 	return surface
 }
@@ -118,7 +118,7 @@ func LoadBMP(file string) *SDL_Surface {
 }
 
 func SDL_SaveBMP_RW(surface *SDL_Surface, dst *SDL_RWops, freeDst SDL_bool) int {
-	cRet := C.SDL_SaveBMP_RW(cSDL_Surface(surface), cSDL_RWops(dst), cInt(freeDst))
+	cRet := C.SDL_SaveBMP_RW(cSurface(surface), cRWops(dst), cInt(freeDst))
 	return int(cRet)
 }
 
@@ -127,12 +127,12 @@ func (surface *SDL_Surface) SaveBMP(file string) int {
 }
 
 func SDL_SetSurfaceRLE(surface *SDL_Surface, flag SDL_bool) int {
-	cRet := C.SDL_SetSurfaceRLE(cSDL_Surface(surface), cInt(flag))
+	cRet := C.SDL_SetSurfaceRLE(cSurface(surface), cInt(flag))
 	return int(cRet)
 }
 
 func SDL_HasSurfaceRLE(surface *SDL_Surface) bool {
-	cBool := C.SDL_HasSurfaceRLE(cSDL_Surface(surface))
+	cBool := C.SDL_HasSurfaceRLE(cSurface(surface))
 	if int(cBool) == 1 {
 		return true
 	}
@@ -140,12 +140,12 @@ func SDL_HasSurfaceRLE(surface *SDL_Surface) bool {
 }
 
 func SDL_SetColorKey(surface *SDL_Surface, flag SDL_bool, key uint32) int {
-	cRet := C.SDL_SetColorKey(cSDL_Surface(surface), cInt(flag), cUint32(key))
+	cRet := C.SDL_SetColorKey(cSurface(surface), cInt(flag), cUint32(key))
 	return int(cRet)
 }
 
 func (surface *SDL_Surface) HasColorKey() bool {
-	cBool := C.SDL_HasColorKey(cSDL_Surface(surface))
+	cBool := C.SDL_HasColorKey(cSurface(surface))
 	if int(cBool) == 1 {
 		return true
 	}
@@ -154,12 +154,12 @@ func (surface *SDL_Surface) HasColorKey() bool {
 
 func SDL_GetColorKey(surface *SDL_Surface, key *uint32) int {
 	cKey := (*cUint32)(unsafe.Pointer(key))
-	cRet := C.SDL_GetColorKey(cSDL_Surface(surface), cKey)
+	cRet := C.SDL_GetColorKey(cSurface(surface), cKey)
 	return int(cRet)
 }
 
 func SDL_SetSurfaceColorMod(surface *SDL_Surface, r, g, b uint8) int {
-	cRet := C.SDL_SetSurfaceColorMod(cSDL_Surface(surface), cUint8(r), cUint8(g), cUint8(b))
+	cRet := C.SDL_SetSurfaceColorMod(cSurface(surface), cUint8(r), cUint8(g), cUint8(b))
 	return int(cRet)
 }
 
@@ -167,34 +167,34 @@ func SDL_GetSurfaceColorMod(surface *SDL_Surface, r, g, b *uint8) int {
 	cR := (*cUint8)(unsafe.Pointer(r))
 	cG := (*cUint8)(unsafe.Pointer(g))
 	cB := (*cUint8)(unsafe.Pointer(b))
-	cRet := C.SDL_GetSurfaceColorMod(cSDL_Surface(surface), cR, cG, cB)
+	cRet := C.SDL_GetSurfaceColorMod(cSurface(surface), cR, cG, cB)
 	return int(cRet)
 }
 
 func SDL_SetSurfaceAlphaMod(surface *SDL_Surface, alpha uint8) int {
-	cRet := C.SDL_SetSurfaceAlphaMod(cSDL_Surface(surface), cUint8(alpha))
+	cRet := C.SDL_SetSurfaceAlphaMod(cSurface(surface), cUint8(alpha))
 	return int(cRet)
 }
 
 func SDL_GetSurfaceAlphaMod(surface *SDL_Surface, alpha *uint8) int {
 	cAlpha := (*cUint8)(unsafe.Pointer(alpha))
-	cRet := C.SDL_GetSurfaceAlphaMod(cSDL_Surface(surface), cAlpha)
+	cRet := C.SDL_GetSurfaceAlphaMod(cSurface(surface), cAlpha)
 	return int(cRet)
 }
 
 func SDL_SetSurfaceBlendMode(surface *SDL_Surface, bm SDL_BlendMode) int {
-	cRet := C.SDL_SetSurfaceBlendMode(cSDL_Surface(surface), cBlendMode(bm))
+	cRet := C.SDL_SetSurfaceBlendMode(cSurface(surface), cBlendMode(bm))
 	return int(cRet)
 }
 
 func SDL_GetSurfaceBlendMode(surface *SDL_Surface, bm *SDL_BlendMode) int {
 	cBM := (*cBlendMode)(unsafe.Pointer(bm))
-	cRet := C.SDL_GetSurfaceBlendMode(cSDL_Surface(surface), cBM)
+	cRet := C.SDL_GetSurfaceBlendMode(cSurface(surface), cBM)
 	return int(cRet)
 }
 
 func SDL_SetClipRect(surface *SDL_Surface, rect *SDL_Rect) bool {
-	cBool := C.SDL_SetClipRect(cSDL_Surface(surface), cSDL_Rect(rect))
+	cBool := C.SDL_SetClipRect(cSurface(surface), cRect(rect))
 	if int(cBool) > 0 {
 		return true
 	}
@@ -202,16 +202,16 @@ func SDL_SetClipRect(surface *SDL_Surface, rect *SDL_Rect) bool {
 }
 
 func SDL_GetClipRect(surface *SDL_Surface, rect *SDL_Rect) {
-	C.SDL_GetClipRect(cSDL_Surface(surface), cSDL_Rect(rect))
+	C.SDL_GetClipRect(cSurface(surface), cRect(rect))
 }
 
 func SDL_ConvertSurface(surface *SDL_Surface, fmt *SDL_PixelFormat, flags uint32) *SDL_Surface {
-	cSurface := C.SDL_ConvertSurface(cSDL_Surface(surface), cSDL_PixelFormat(fmt), cUint32(flags))
+	cSurface := C.SDL_ConvertSurface(cSurface(surface), cPixelFormat(fmt), cUint32(flags))
 	return (*SDL_Surface)(unsafe.Pointer(cSurface))
 }
 
 func SDL_ConvertSurfaceFormat(surface *SDL_Surface, pixelFormat uint32, flags uint32) *SDL_Surface {
-	cSurface := C.SDL_ConvertSurfaceFormat(cSDL_Surface(surface), cUint32(pixelFormat), cUint32(flags))
+	cSurface := C.SDL_ConvertSurfaceFormat(cSurface(surface), cUint32(pixelFormat), cUint32(flags))
 	return (*SDL_Surface)(unsafe.Pointer(cSurface))
 }
 
@@ -222,47 +222,47 @@ func SDL_ConvertPixels(width, height int32, srcFormat uint32, src unsafe.Pointer
 }
 
 func SDL_FillRect(surface *SDL_Surface, rect *SDL_Rect, color uint32) int {
-	cRet := C.SDL_FillRect(cSDL_Surface(surface), cSDL_Rect(rect), cUint32(color))
+	cRet := C.SDL_FillRect(cSurface(surface), cRect(rect), cUint32(color))
 	return int(cRet)
 }
 
 func SDL_FillRects(surface *SDL_Surface, rects []SDL_Rect, color uint32) int {
-	cRet := C.SDL_FillRects(cSDL_Surface(surface), cSDL_Rect(&rects[0]), cInt(len(rects)), cUint32(color))
+	cRet := C.SDL_FillRects(cSurface(surface), cRect(&rects[0]), cInt(len(rects)), cUint32(color))
 	return int(cRet)
 }
 
 func SDL_BlitSurface(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_BlitSurface(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_BlitSurface(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 
 func SDL_BlitScaled(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_BlitScaled(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_BlitScaled(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 
 func SDL_UpperBlit(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_UpperBlit(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_UpperBlit(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 
 func SDL_LowerBlit(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_LowerBlit(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_LowerBlit(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 
 func SDL_SoftStretch(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_SoftStretch(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_SoftStretch(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 
 func SDL_UpperBlitScaled(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_UpperBlitScaled(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_UpperBlitScaled(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 
 func SDL_LowerBlitScaled(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_LowerBlitScaled(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_LowerBlitScaled(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 
@@ -285,7 +285,7 @@ func (surface *SDL_Surface) Data() []byte {
 }
 
 func SDL_DuplicateSurface(surface *SDL_Surface) (newSurface *SDL_Surface) {
-	cNewSurface := C.SDL_DuplicateSurface(cSDL_Surface(surface))
+	cNewSurface := C.SDL_DuplicateSurface(cSurface(surface))
 	newSurface = (*SDL_Surface)(unsafe.Pointer(cNewSurface))
 	return
 }
@@ -511,7 +511,7 @@ func (surface *SDL_Surface) Set(x, y int, c color.Color) {
 }
 
 func SDL_SoftStretchLinear(surface *SDL_Surface, srcRect *SDL_Rect, dst *SDL_Surface, dstRect *SDL_Rect) int {
-	cRet := C.SDL_SoftStretchLinear(cSDL_Surface(surface), cSDL_Rect(srcRect), cSDL_Surface(dst), cSDL_Rect(dstRect))
+	cRet := C.SDL_SoftStretchLinear(cSurface(surface), cRect(srcRect), cSurface(dst), cRect(dstRect))
 	return int(cRet)
 }
 

@@ -6,7 +6,7 @@ package sdl
 import "C"
 import "unsafe"
 
-func cSDL_version(v *SDL_version) *C.SDL_version {
+func cVersion(v *SDL_version) *C.SDL_version {
 	return (*C.SDL_version)(unsafe.Pointer(v))
 }
 
@@ -29,7 +29,7 @@ func SDL_VERSION_ATLEAST(x, y, z int) bool {
 }
 
 func SDL_GetVersion(v *SDL_version) {
-	C.SDL_GetVersion(cSDL_version(v))
+	C.SDL_GetVersion(cVersion(v))
 }
 
 func SDL_GetRevision() string {

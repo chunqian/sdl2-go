@@ -6,7 +6,7 @@ package sdl
 import "C"
 import "unsafe"
 
-func cSDL_Cursor(c *SDL_Cursor) *C.SDL_Cursor {
+func cCursor(c *SDL_Cursor) *C.SDL_Cursor {
 	return (*C.SDL_Cursor)(unsafe.Pointer(c))
 }
 
@@ -39,7 +39,7 @@ func SDL_GetRelativeMouseState(x, y *int32) uint32 {
 }
 
 func SDL_WarpMouseInWindow(window *SDL_Window, x, y int32) {
-	C.SDL_WarpMouseInWindow(cSDL_Window(window), cInt(x), cInt(y))
+	C.SDL_WarpMouseInWindow(cWindow(window), cInt(x), cInt(y))
 }
 
 func SDL_SetRelativeMouseMode(enabled SDL_bool) int {
@@ -60,7 +60,7 @@ func SDL_CreateCursor(data, mask *uint8, w, h, hotX, hotY int32) *SDL_Cursor {
 }
 
 func SDL_CreateColorCursor(surface *SDL_Surface, hotX, hotY int32) *SDL_Cursor {
-	cCursor := C.SDL_CreateColorCursor(cSDL_Surface(surface), cInt(hotX), cInt(hotY))
+	cCursor := C.SDL_CreateColorCursor(cSurface(surface), cInt(hotX), cInt(hotY))
 	return (*SDL_Cursor)(unsafe.Pointer(cCursor))
 }
 
@@ -72,7 +72,7 @@ func SDL_CreateSystemCursor(id SDL_SystemCursor) *SDL_Cursor {
 }
 
 func SDL_SetCursor(cursor *SDL_Cursor) {
-	C.SDL_SetCursor(cSDL_Cursor(cursor))
+	C.SDL_SetCursor(cCursor(cursor))
 }
 
 func SDL_GetCursor() *SDL_Cursor {
@@ -86,7 +86,7 @@ func SDL_GetDefaultCursor() *SDL_Cursor {
 }
 
 func SDL_FreeCursor(cursor *SDL_Cursor) {
-	C.SDL_FreeCursor(cSDL_Cursor(cursor))
+	C.SDL_FreeCursor(cCursor(cursor))
 }
 
 func SDL_ShowCursor(toggle int) int {

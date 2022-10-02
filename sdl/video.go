@@ -6,11 +6,11 @@ package sdl
 import "C"
 import "unsafe"
 
-func cSDL_Window(w *SDL_Window) *C.SDL_Window {
+func cWindow(w *SDL_Window) *C.SDL_Window {
 	return (*C.SDL_Window)(unsafe.Pointer(w))
 }
 
-func cSDL_DisplayMode(dm *SDL_DisplayMode) *C.SDL_DisplayMode {
+func cDisplayMode(dm *SDL_DisplayMode) *C.SDL_DisplayMode {
 	return (*C.SDL_DisplayMode)(unsafe.Pointer(dm))
 }
 
@@ -63,32 +63,32 @@ func SDL_GetNumDisplayModes(displayIndex int) int {
 }
 
 func SDL_GetDisplayBounds(displayIndex int, rect *SDL_Rect) int {
-	cRet := C.SDL_GetDisplayBounds(cInt(displayIndex), cSDL_Rect(rect))
+	cRet := C.SDL_GetDisplayBounds(cInt(displayIndex), cRect(rect))
 	return int(cRet)
 }
 
 func SDL_GetDisplayUsableBounds(displayIndex int, rect *SDL_Rect) int {
-	cRet := C.SDL_GetDisplayUsableBounds(cInt(displayIndex), cSDL_Rect(rect))
+	cRet := C.SDL_GetDisplayUsableBounds(cInt(displayIndex), cRect(rect))
 	return int(cRet)
 }
 
 func SDL_GetDisplayMode(displayIndex int, modeIndex int, mode *SDL_DisplayMode) int {
-	cRet := C.SDL_GetDisplayMode(cInt(displayIndex), cInt(modeIndex), cSDL_DisplayMode(mode))
+	cRet := C.SDL_GetDisplayMode(cInt(displayIndex), cInt(modeIndex), cDisplayMode(mode))
 	return int(cRet)
 }
 
 func SDL_GetDesktopDisplayMode(displayIndex int, mode *SDL_DisplayMode) int {
-	cRet := C.SDL_GetDesktopDisplayMode(cInt(displayIndex), cSDL_DisplayMode(mode))
+	cRet := C.SDL_GetDesktopDisplayMode(cInt(displayIndex), cDisplayMode(mode))
 	return int(cRet)
 }
 
 func SDL_GetCurrentDisplayMode(displayIndex int, mode *SDL_DisplayMode) int {
-	cRet := C.SDL_GetCurrentDisplayMode(cInt(displayIndex), cSDL_DisplayMode(mode))
+	cRet := C.SDL_GetCurrentDisplayMode(cInt(displayIndex), cDisplayMode(mode))
 	return int(cRet)
 }
 
 func SDL_GetClosestDisplayMode(displayIndex int, mode *SDL_DisplayMode, closest *SDL_DisplayMode) *SDL_DisplayMode {
-	cDisplayMode := C.SDL_GetClosestDisplayMode(cInt(displayIndex), cSDL_DisplayMode(mode), cSDL_DisplayMode(closest))
+	cDisplayMode := C.SDL_GetClosestDisplayMode(cInt(displayIndex), cDisplayMode(mode), cDisplayMode(closest))
 	displayMode := (*SDL_DisplayMode)(unsafe.Pointer(cDisplayMode))
 	if displayMode == nil {
 		return nil
@@ -97,13 +97,13 @@ func SDL_GetClosestDisplayMode(displayIndex int, mode *SDL_DisplayMode, closest 
 }
 
 func SDL_GetPointDisplayIndex(p *SDL_Point) int {
-	cIndex := C.SDL_GetPointDisplayIndex(cSDL_Point(p))
+	cIndex := C.SDL_GetPointDisplayIndex(cPoint(p))
 	index := int(cIndex)
 	return index
 }
 
 func SDL_GetRectDisplayIndex(r *SDL_Rect) int {
-	cIndex := C.SDL_GetRectDisplayIndex(cSDL_Rect(r))
+	cIndex := C.SDL_GetRectDisplayIndex(cRect(r))
 	index := int(cIndex)
 	return index
 }
@@ -117,22 +117,22 @@ func SDL_GetDisplayDPI(displayIndex int, ddpi, hdpi, vdpi *float32) int {
 }
 
 func SDL_GetWindowDisplayIndex(window *SDL_Window) int {
-	cRet := C.SDL_GetWindowDisplayIndex(cSDL_Window(window))
+	cRet := C.SDL_GetWindowDisplayIndex(cWindow(window))
 	return int(cRet)
 }
 
 func SDL_SetWindowDisplayMode(window *SDL_Window, mode *SDL_DisplayMode) int {
-	cRet := C.SDL_SetWindowDisplayMode(cSDL_Window(window), cSDL_DisplayMode(mode))
+	cRet := C.SDL_SetWindowDisplayMode(cWindow(window), cDisplayMode(mode))
 	return int(cRet)
 }
 
 func SDL_GetWindowDisplayMode(window *SDL_Window, mode *SDL_DisplayMode) int {
-	cRet := C.SDL_GetWindowDisplayMode(cSDL_Window(window), cSDL_DisplayMode(mode))
+	cRet := C.SDL_GetWindowDisplayMode(cWindow(window), cDisplayMode(mode))
 	return int(cRet)
 }
 
 func SDL_GetWindowPixelFormat(window *SDL_Window) uint32 {
-	cRet := C.SDL_GetWindowPixelFormat(cSDL_Window(window))
+	cRet := C.SDL_GetWindowPixelFormat(cWindow(window))
 	return uint32(cRet)
 }
 
@@ -157,11 +157,11 @@ func SDL_CreateWindowFrom(data unsafe.Pointer) *SDL_Window {
 
 func SDL_DestroyWindow(window *SDL_Window) {
 	SDL_ClearError()
-	C.SDL_DestroyWindow(cSDL_Window(window))
+	C.SDL_DestroyWindow(cWindow(window))
 }
 
 func SDL_GetWindowID(window *SDL_Window) uint32 {
-	cId := C.SDL_GetWindowID(cSDL_Window(window))
+	cId := C.SDL_GetWindowID(cWindow(window))
 	return uint32(cId)
 }
 
@@ -174,7 +174,7 @@ func SDL_GetWindowFromID(id uint32) *SDL_Window {
 }
 
 func SDL_GetWindowFlags(window *SDL_Window) SDL_WindowFlags {
-	cRet := C.SDL_GetWindowFlags(cSDL_Window(window))
+	cRet := C.SDL_GetWindowFlags(cWindow(window))
 	return SDL_WindowFlags(cRet)
 }
 
@@ -182,112 +182,112 @@ func SDL_SetWindowTitle(window *SDL_Window, title string) {
 	cTitle := SDL_CreateCString(SDL_GetMemoryPool(), title)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cTitle) // memory free
 
-	C.SDL_SetWindowTitle(cSDL_Window(window), cTitle.(*cChar))
+	C.SDL_SetWindowTitle(cWindow(window), cTitle.(*cChar))
 }
 
 func SDL_GetWindowTitle(window *SDL_Window) string {
-	cTitle := C.SDL_GetWindowTitle(cSDL_Window(window))
+	cTitle := C.SDL_GetWindowTitle(cWindow(window))
 	return SDL_GoString(cTitle)
 }
 
 func SDL_SetWindowIcon(window *SDL_Window, icon *SDL_Surface) {
-	C.SDL_SetWindowIcon(cSDL_Window(window), cSDL_Surface(icon))
+	C.SDL_SetWindowIcon(cWindow(window), cSurface(icon))
 }
 
 func SDL_SetWindowData(window *SDL_Window, name string, userdata unsafe.Pointer) unsafe.Pointer {
 	cName := SDL_CreateCString(SDL_GetMemoryPool(), name)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cName) // memory free
 
-	return C.SDL_SetWindowData(cSDL_Window(window), cName.(*cChar), userdata)
+	return C.SDL_SetWindowData(cWindow(window), cName.(*cChar), userdata)
 }
 
 func SDL_GetWindowData(window *SDL_Window, name string) unsafe.Pointer {
 	cName := SDL_CreateCString(SDL_GetMemoryPool(), name)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cName) // memory free
 
-	cRet := C.SDL_GetWindowData(cSDL_Window(window), cName.(*cChar))
+	cRet := C.SDL_GetWindowData(cWindow(window), cName.(*cChar))
 	return cRet
 }
 
 func SDL_SetWindowPosition(window *SDL_Window, x, y int32) {
-	C.SDL_SetWindowPosition(cSDL_Window(window), cInt(x), cInt(y))
+	C.SDL_SetWindowPosition(cWindow(window), cInt(x), cInt(y))
 }
 
 func SDL_GetWindowPosition(window *SDL_Window, x, y *int32) {
 	cX := (*cInt)(unsafe.Pointer(x))
 	cY := (*cInt)(unsafe.Pointer(y))
-	C.SDL_GetWindowPosition(cSDL_Window(window), cX, cY)
+	C.SDL_GetWindowPosition(cWindow(window), cX, cY)
 }
 
 func SDL_SetWindowResizable(window *SDL_Window, resizable SDL_bool) {
-	C.SDL_SetWindowResizable(cSDL_Window(window), cBool(resizable))
+	C.SDL_SetWindowResizable(cWindow(window), cBool(resizable))
 }
 
 func SDL_SetWindowSize(window *SDL_Window, w, h int32) {
-	C.SDL_SetWindowSize(cSDL_Window(window), cInt(w), cInt(h))
+	C.SDL_SetWindowSize(cWindow(window), cInt(w), cInt(h))
 }
 
 func SDL_GetWindowSize(window *SDL_Window, w, h *int32) {
 	cW := (*cInt)(unsafe.Pointer(w))
 	cH := (*cInt)(unsafe.Pointer(h))
-	C.SDL_GetWindowSize(cSDL_Window(window), cW, cH)
+	C.SDL_GetWindowSize(cWindow(window), cW, cH)
 }
 
 func SDL_SetWindowMinimumSize(window *SDL_Window, minW, minH int32) {
-	C.SDL_SetWindowMinimumSize(cSDL_Window(window), cInt(minW), cInt(minH))
+	C.SDL_SetWindowMinimumSize(cWindow(window), cInt(minW), cInt(minH))
 }
 
 func SDL_GetWindowMinimumSize(window *SDL_Window, w, h *int32) {
 	cW := (*cInt)(unsafe.Pointer(w))
 	cH := (*cInt)(unsafe.Pointer(h))
-	C.SDL_GetWindowMinimumSize(cSDL_Window(window), cW, cH)
+	C.SDL_GetWindowMinimumSize(cWindow(window), cW, cH)
 }
 
 func SDL_SetWindowMaximumSize(window *SDL_Window, maxW, maxH int32) {
-	C.SDL_SetWindowMaximumSize(cSDL_Window(window), cInt(maxW), cInt(maxH))
+	C.SDL_SetWindowMaximumSize(cWindow(window), cInt(maxW), cInt(maxH))
 }
 
 func SDL_GetWindowMaximumSize(window *SDL_Window, w, h *int32) {
 	cW := (*cInt)(unsafe.Pointer(w))
 	cH := (*cInt)(unsafe.Pointer(h))
-	C.SDL_GetWindowMaximumSize(cSDL_Window(window), cW, cH)
+	C.SDL_GetWindowMaximumSize(cWindow(window), cW, cH)
 }
 
 func SDL_SetWindowBordered(window *SDL_Window, bordered SDL_bool) {
-	C.SDL_SetWindowBordered(cSDL_Window(window), cBool(bordered))
+	C.SDL_SetWindowBordered(cWindow(window), cBool(bordered))
 }
 
 func SDL_ShowWindow(window *SDL_Window) {
-	C.SDL_ShowWindow(cSDL_Window(window))
+	C.SDL_ShowWindow(cWindow(window))
 }
 
 func SDL_HideWindow(window *SDL_Window) {
-	C.SDL_HideWindow(cSDL_Window(window))
+	C.SDL_HideWindow(cWindow(window))
 }
 
 func SDL_RaiseWindow(window *SDL_Window) {
-	C.SDL_RaiseWindow(cSDL_Window(window))
+	C.SDL_RaiseWindow(cWindow(window))
 }
 
 func SDL_MaximizeWindow(window *SDL_Window) {
-	C.SDL_MaximizeWindow(cSDL_Window(window))
+	C.SDL_MaximizeWindow(cWindow(window))
 }
 
 func SDL_MinimizeWindow(window *SDL_Window) {
-	C.SDL_MinimizeWindow(cSDL_Window(window))
+	C.SDL_MinimizeWindow(cWindow(window))
 }
 
 func SDL_RestoreWindow(window *SDL_Window) {
-	C.SDL_RestoreWindow(cSDL_Window(window))
+	C.SDL_RestoreWindow(cWindow(window))
 }
 
 func SDL_SetWindowFullscreen(window *SDL_Window, flags uint32) int {
-	cRet := C.SDL_SetWindowFullscreen(cSDL_Window(window), cUint(flags))
+	cRet := C.SDL_SetWindowFullscreen(cWindow(window), cUint(flags))
 	return int(cRet)
 }
 
 func SDL_GetWindowSurface(window *SDL_Window) *SDL_Surface {
-	surface := (*SDL_Surface)(unsafe.Pointer(C.SDL_GetWindowSurface(cSDL_Window(window))))
+	surface := (*SDL_Surface)(unsafe.Pointer(C.SDL_GetWindowSurface(cWindow(window))))
 	if surface == nil {
 		return nil
 	}
@@ -295,38 +295,38 @@ func SDL_GetWindowSurface(window *SDL_Window) *SDL_Surface {
 }
 
 func SDL_UpdateWindowSurface(window *SDL_Window) int {
-	cRet := C.SDL_UpdateWindowSurface(cSDL_Window(window))
+	cRet := C.SDL_UpdateWindowSurface(cWindow(window))
 	return int(cRet)
 }
 
 func SDL_UpdateWindowSurfaceRects(window *SDL_Window, rects []SDL_Rect) int {
-	cRet := C.SDL_UpdateWindowSurfaceRects(cSDL_Window(window), cSDL_Rect(&rects[0]), cInt(len(rects)))
+	cRet := C.SDL_UpdateWindowSurfaceRects(cWindow(window), cRect(&rects[0]), cInt(len(rects)))
 	return int(cRet)
 }
 
 func SDL_SetWindowGrab(window *SDL_Window, grabbed SDL_bool) {
-	C.SDL_SetWindowGrab(cSDL_Window(window), cBool(grabbed))
+	C.SDL_SetWindowGrab(cWindow(window), cBool(grabbed))
 }
 
 func SDL_GetWindowGrab(window *SDL_Window) bool {
-	cRet := C.SDL_GetWindowGrab(cSDL_Window(window))
+	cRet := C.SDL_GetWindowGrab(cWindow(window))
 	return cRet != 0
 }
 
 func SDL_SetWindowBrightness(window *SDL_Window, brightness float32) int {
-	cRet := C.SDL_SetWindowBrightness(cSDL_Window(window), cFloat(brightness))
+	cRet := C.SDL_SetWindowBrightness(cWindow(window), cFloat(brightness))
 	return int(cRet)
 }
 
 func SDL_GetWindowBrightness(window *SDL_Window) float32 {
-	return float32(C.SDL_GetWindowBrightness(cSDL_Window(window)))
+	return float32(C.SDL_GetWindowBrightness(cWindow(window)))
 }
 
 func SDL_SetWindowGammaRamp(window *SDL_Window, red, green, blue *[256]uint16) int {
 	cRed := (*cUint16)(unsafe.Pointer(red))
 	cGreen := (*cUint16)(unsafe.Pointer(green))
 	cBlue := (*cUint16)(unsafe.Pointer(blue))
-	cRet := C.SDL_SetWindowGammaRamp(cSDL_Window(window), cRed, cGreen, cBlue)
+	cRet := C.SDL_SetWindowGammaRamp(cWindow(window), cRed, cGreen, cBlue)
 	return int(cRet)
 }
 
@@ -334,17 +334,17 @@ func SDL_GetWindowGammaRamp(window *SDL_Window, red, green, blue *[256]uint16) i
 	cRed := (*cUint16)(unsafe.Pointer(red))
 	cGreen := (*cUint16)(unsafe.Pointer(green))
 	cBlue := (*cUint16)(unsafe.Pointer(blue))
-	cRet := C.SDL_GetWindowGammaRamp(cSDL_Window(window), cRed, cGreen, cBlue)
+	cRet := C.SDL_GetWindowGammaRamp(cWindow(window), cRed, cGreen, cBlue)
 	return int(cRet)
 }
 
 func SDL_SetWindowOpacity(window *SDL_Window, opacity float32) int {
-	cRet := C.SDL_SetWindowOpacity(cSDL_Window(window), cFloat(opacity))
+	cRet := C.SDL_SetWindowOpacity(cWindow(window), cFloat(opacity))
 	return int(cRet)
 }
 
 func SDL_GetWindowOpacity(window *SDL_Window, opacity *float32) int {
-	cRet := C.SDL_GetWindowOpacity(cSDL_Window(window), (*cFloat)(unsafe.Pointer(opacity)))
+	cRet := C.SDL_GetWindowOpacity(cWindow(window), (*cFloat)(unsafe.Pointer(opacity)))
 	return int(cRet)
 }
 
@@ -400,7 +400,7 @@ func SDL_GL_GetAttribute(attr SDL_GLattr, value *int) int {
 }
 
 func SDL_GL_CreateContext(window *SDL_Window) SDL_GLContext {
-	context := SDL_GLContext(C.SDL_GL_CreateContext(cSDL_Window(window)))
+	context := SDL_GLContext(C.SDL_GL_CreateContext(cWindow(window)))
 	if context == nil {
 		return nil
 	}
@@ -408,7 +408,7 @@ func SDL_GL_CreateContext(window *SDL_Window) SDL_GLContext {
 }
 
 func SDL_GL_MakeCurrent(window *SDL_Window, glcontext SDL_GLContext) int {
-	cRet := C.SDL_GL_MakeCurrent(cSDL_Window(window), C.SDL_GLContext(glcontext))
+	cRet := C.SDL_GL_MakeCurrent(cWindow(window), C.SDL_GLContext(glcontext))
 	return int(cRet)
 }
 
@@ -425,11 +425,11 @@ func SDL_GL_GetSwapInterval() int {
 func SDL_GL_GetDrawableSize(window *SDL_Window, w, h *int32) {
 	cW := (*cInt)(unsafe.Pointer(w))
 	cH := (*cInt)(unsafe.Pointer(h))
-	C.SDL_GL_GetDrawableSize(cSDL_Window(window), cW, cH)
+	C.SDL_GL_GetDrawableSize(cWindow(window), cW, cH)
 }
 
 func SDL_GL_SwapWindow(window *SDL_Window) {
-	C.SDL_GL_SwapWindow(cSDL_Window(window))
+	C.SDL_GL_SwapWindow(cWindow(window))
 }
 
 func SDL_GL_DeleteContext(context SDL_GLContext) {
@@ -437,32 +437,32 @@ func SDL_GL_DeleteContext(context SDL_GLContext) {
 }
 
 func SDL_FlashWindow(window *SDL_Window, operation SDL_FlashOperation) int {
-	cRet := C.SDL_FlashWindow(cSDL_Window(window), C.SDL_FlashOperation(operation))
+	cRet := C.SDL_FlashWindow(cWindow(window), C.SDL_FlashOperation(operation))
 	return int(cRet)
 }
 
 func SDL_SetWindowAlwaysOnTop(window *SDL_Window, onTop SDL_bool) {
-	C.SDL_SetWindowAlwaysOnTop(cSDL_Window(window), cBool(onTop))
+	C.SDL_SetWindowAlwaysOnTop(cWindow(window), cBool(onTop))
 }
 
 func SDL_GetWindowKeyboardGrab(window *SDL_Window, grabbed SDL_bool) {
-	C.SDL_SetWindowKeyboardGrab(cSDL_Window(window), cBool(grabbed))
+	C.SDL_SetWindowKeyboardGrab(cWindow(window), cBool(grabbed))
 }
 
 func SDL_GetWindowICCProfile(window *SDL_Window, size *uint) unsafe.Pointer {
 	cSize := (*cSize_t)(unsafe.Pointer(size))
-	cIccProfile := C.SDL_GetWindowICCProfile(cSDL_Window(window), cSize)
+	cIccProfile := C.SDL_GetWindowICCProfile(cWindow(window), cSize)
 	return cIccProfile
 }
 
 func SDL_SetWindowMouseRect(window *SDL_Window, rect *SDL_Rect) int {
 	cRect := (*C.SDL_Rect)(unsafe.Pointer(rect))
-	cRet := C.SDL_SetWindowMouseRect(cSDL_Window(window), cRect)
+	cRet := C.SDL_SetWindowMouseRect(cWindow(window), cRect)
 	return int(cRet)
 }
 
 func SDL_GetWindowMouseRect(window *SDL_Window) (rect *SDL_Rect) {
-	cRect := C.SDL_GetWindowMouseRect(cSDL_Window(window))
+	cRect := C.SDL_GetWindowMouseRect(cWindow(window))
 	rect = (*SDL_Rect)(unsafe.Pointer(cRect))
 	return
 }
