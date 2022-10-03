@@ -19,7 +19,6 @@ type (
 	cUint   = C.uint   // uint32
 	cFloat  = C.float  // float32
 	cDouble = C.double // float64
-	cSize_t = C.size_t // uint
 
 	cInt8   = C.int8_t   // int8
 	cInt16  = C.int16_t  // int16
@@ -32,6 +31,9 @@ type (
 	cUint32  = C.uint32_t  // uint32
 	cUint64  = C.uint64_t  // uint64
 	cUintPtr = C.uintptr_t // uintptr
+
+	cSize  = C.size_t  // uint
+	cWchar = C.wchar_t // windows uint16, unix int32
 
 	cSchar  = C.schar  // int8
 	cUchar  = C.uchar  // uint8

@@ -42,9 +42,11 @@ func SDL_hid_free_enumeration(info *SDL_hid_device_info) {
 	C.SDL_hid_free_enumeration(cInfo)
 }
 
-func SDL_hid_open(vendorID, productID uint16, cSerialNumber *C.wchar_t) *SDL_hid_device {
+func SDL_hid_open[T []uint16 | []int32](vendorID, productID uint16, serialNumber T) *SDL_hid_device {
 	cVendorID := cUint16(vendorID)
 	cProductID := cUint16(productID)
+	cSerialNumber := (*cWchar)(unsafe.Pointer(&serialNumber))
+
 	cDevice := C.SDL_hid_open(cVendorID, cProductID, cSerialNumber)
 	return (*SDL_hid_device)(unsafe.Pointer(cDevice))
 }
@@ -58,7 +60,7 @@ func SDL_hid_open_path(path string, exclusive SDL_bool) *SDL_hid_device {
 }
 
 func SDL_hid_write(device *SDL_hid_device, data []byte) int {
-	cLength := cSize_t(len(data))
+	cLength := cSize(len(data))
 	cData := (*cUchar)(unsafe.Pointer(&data))
 	cDevice := cHidDevice(device)
 
@@ -67,7 +69,7 @@ func SDL_hid_write(device *SDL_hid_device, data []byte) int {
 }
 
 func SDL_hid_read_timeout(device *SDL_hid_device, data []byte, milliseconds int) int {
-	cLength := cSize_t(len(data))
+	cLength := cSize(len(data))
 	cData := (*cUchar)(unsafe.Pointer(&data))
 	cDevice := cHidDevice(device)
 	cMilliseconds := cInt(milliseconds)
@@ -77,7 +79,7 @@ func SDL_hid_read_timeout(device *SDL_hid_device, data []byte, milliseconds int)
 }
 
 func SDL_hid_read(device *SDL_hid_device, data []byte) int {
-	cLength := cSize_t(len(data))
+	cLength := cSize(len(data))
 	cData := (*cUchar)(unsafe.Pointer(&data))
 	cDevice := cHidDevice(device)
 
@@ -94,7 +96,7 @@ func SDL_hid_set_nonblocking(device *SDL_hid_device, nonblock SDL_bool) int {
 }
 
 func SDL_hid_send_feature_report(device *SDL_hid_device, data []byte) int {
-	cLength := cSize_t(len(data))
+	cLength := cSize(len(data))
 	cData := (*cUchar)(unsafe.Pointer(&data))
 	cDevice := cHidDevice(device)
 
@@ -103,7 +105,7 @@ func SDL_hid_send_feature_report(device *SDL_hid_device, data []byte) int {
 }
 
 func SDL_hid_get_feature_report(device *SDL_hid_device, data []byte) int {
-	cLength := cSize_t(len(data))
+	cLength := cSize(len(data))
 	cData := (*cUchar)(unsafe.Pointer(&data))
 	cDevice := cHidDevice(device)
 
@@ -116,30 +118,38 @@ func SDL_hid_close(device *SDL_hid_device) {
 	C.SDL_hid_close(cDevice)
 }
 
-func SDL_hid_get_manufacturer_string(device *SDL_hid_device, cStr *C.wchar_t, cMaxlen cSize_t) int {
+func SDL_hid_get_manufacturer_string[T []uint16 | []int32](device *SDL_hid_device, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
+	cStr := (*cWchar)(unsafe.Pointer(&str))
+	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_manufacturer_string(cDevice, cStr, cMaxlen)
 	return int(cRet)
 }
 
-func SDL_hid_get_product_string(device *SDL_hid_device, cStr *C.wchar_t, cMaxlen cSize_t) int {
+func SDL_hid_get_product_string[T []uint16 | []int32](device *SDL_hid_device, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
+	cStr := (*cWchar)(unsafe.Pointer(&str))
+	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_product_string(cDevice, cStr, cMaxlen)
 	return int(cRet)
 }
 
-func SDL_hid_get_serial_number_string(device *SDL_hid_device, cStr *C.wchar_t, cMaxlen cSize_t) int {
+func SDL_hid_get_serial_number_string[T []uint16 | []int32](device *SDL_hid_device, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
+	cStr := (*cWchar)(unsafe.Pointer(&str))
+	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_serial_number_string(cDevice, cStr, cMaxlen)
 	return int(cRet)
 }
 
-func SDL_hid_get_indexed_string(device *SDL_hid_device, index int, cStr *C.wchar_t, cMaxlen cSize_t) int {
+func SDL_hid_get_indexed_string[T []uint16 | []int32](device *SDL_hid_device, index int, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
 	cIndex := cInt(index)
+	cStr := (*cWchar)(unsafe.Pointer(&str))
+	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_indexed_string(cDevice, cIndex, cStr, cMaxlen)
 	return int(cRet)

@@ -39,8 +39,8 @@ func TTF_OpenFont(file string, size int) *TTF_Font {
 	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cSize := cInt(size)
-	cFont := C.TTF_OpenFont(cFile.(*cChar), cSize)
+	cLen := cInt(size)
+	cFont := C.TTF_OpenFont(cFile.(*cChar), cLen)
 	return (*TTF_Font)(unsafe.Pointer(cFont))
 }
 
@@ -48,9 +48,9 @@ func TTF_OpenFontIndex(file string, size int, index int) *TTF_Font {
 	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
 	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cSize := cInt(size)
+	cLen := cInt(size)
 	cIndex := cLong(index)
-	cFont := C.TTF_OpenFontIndex(cFile.(*cChar), cSize, cIndex)
+	cFont := C.TTF_OpenFontIndex(cFile.(*cChar), cLen, cIndex)
 	return (*TTF_Font)(unsafe.Pointer(cFont))
 }
 
@@ -61,9 +61,9 @@ func OpenFontRW(src *SDL_RWops, freesrc, size int) *TTF_Font {
 func TTF_OpenFontIndexRW(src *SDL_RWops, freesrc, size, index int) *TTF_Font {
 	cSrc := (*C.SDL_RWops)(unsafe.Pointer(src))
 	cFreesrc := cInt(freesrc)
-	cSize := cInt(size)
+	cLen := cInt(size)
 	cIndex := cLong(index)
-	cFont := C.TTF_OpenFontIndexRW(cSrc, cFreesrc, cSize, cIndex)
+	cFont := C.TTF_OpenFontIndexRW(cSrc, cFreesrc, cLen, cIndex)
 	return (*TTF_Font)(unsafe.Pointer(cFont))
 }
 

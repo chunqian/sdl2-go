@@ -305,9 +305,9 @@ func (bind *SDL_GameControllerButtonBind) HatMask() int {
 
 func SDL_GameControllerSendEffect(ctrl *SDL_GameController, data []byte) int {
 	cData := unsafe.Pointer(&data)
-	cSize := cInt(len(data))
+	cLen := cInt(len(data))
 
-	cRet := C.SDL_GameControllerSendEffect(cGameController(ctrl), cData, cSize)
+	cRet := C.SDL_GameControllerSendEffect(cGameController(ctrl), cData, cLen)
 	return int(cRet)
 }
 

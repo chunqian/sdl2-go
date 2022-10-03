@@ -63,7 +63,7 @@ func (rw *SDL_RWops) reading(buf []byte, size, maxnum uint) int {
 		return 0
 	}
 	header := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
-	cN := C.RWread(cRWops(rw), unsafe.Pointer(header.Data), cSize_t(size), cSize_t(maxnum))
+	cN := C.RWread(cRWops(rw), unsafe.Pointer(header.Data), cSize(size), cSize(maxnum))
 	return int(cN)
 }
 
@@ -84,7 +84,7 @@ func (rw *SDL_RWops) writing(buf []byte, size, num uint) int {
 		return 0
 	}
 	header := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
-	cN := C.RWwrite(cRWops(rw), unsafe.Pointer(header.Data), cSize_t(size), cSize_t(num))
+	cN := C.RWwrite(cRWops(rw), unsafe.Pointer(header.Data), cSize(size), cSize(num))
 	return int(cN)
 }
 
@@ -146,19 +146,19 @@ func SDL_ReadBE64(rw *SDL_RWops) uint64 {
 }
 
 func SDL_LoadFile_RW(rw *SDL_RWops, freesrc SDL_bool) (data []byte, size int) {
-	var cSize cSize_t
+	var cLen cSize
 	var cFreesrc cInt = 0
 
 	if freesrc == SDL_TRUE {
 		cFreesrc = 1
 	}
 
-	cData := C.SDL_LoadFile_RW(cRWops(rw), &cSize, cFreesrc)
+	cData := C.SDL_LoadFile_RW(cRWops(rw), &cLen, cFreesrc)
 	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&data))
-	sliceHeader.Cap = int(cSize)
-	sliceHeader.Len = int(cSize)
+	sliceHeader.Cap = int(cLen)
+	sliceHeader.Len = int(cLen)
 	sliceHeader.Data = uintptr(cData)
-	size = int(cSize)
+	size = int(cLen)
 	return
 }
 

@@ -450,8 +450,8 @@ func SDL_GetWindowKeyboardGrab(window *SDL_Window, grabbed SDL_bool) {
 }
 
 func SDL_GetWindowICCProfile(window *SDL_Window, size *uint) unsafe.Pointer {
-	cSize := (*cSize_t)(unsafe.Pointer(size))
-	cIccProfile := C.SDL_GetWindowICCProfile(cWindow(window), cSize)
+	cLen := (*cSize)(unsafe.Pointer(size))
+	cIccProfile := C.SDL_GetWindowICCProfile(cWindow(window), cLen)
 	return cIccProfile
 }
 

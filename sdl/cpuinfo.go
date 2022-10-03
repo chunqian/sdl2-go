@@ -135,11 +135,11 @@ func SDL_SIMDGetAlignment() int {
 }
 
 func SDL_SIMDAlloc(memLen int) unsafe.Pointer {
-	return C.SDL_SIMDAlloc(cSize_t(memLen))
+	return C.SDL_SIMDAlloc(cSize(memLen))
 }
 
 func SDL_SIMDRealloc(mem unsafe.Pointer, memLen int) unsafe.Pointer {
-	return C.SDL_SIMDRealloc(mem, cSize_t(memLen))
+	return C.SDL_SIMDRealloc(mem, cSize(memLen))
 }
 
 func SDL_SIMDFree(p unsafe.Pointer) {
