@@ -84,7 +84,7 @@ func SDL_ShowMessageBox(data *SDL_MessageBoxData) (buttonid int32) {
 		cbtn := C.SDL_MessageBoxButtonData{
 			flags:    cUint32(btn.Flags),
 			buttonid: cInt(btn.Buttonid),
-			text:     (*int8)(unsafe.Pointer(ctext.(*cChar))),
+			text:     ctext.(*cChar),
 		}
 
 		cbuttons = append(cbuttons, cbtn)
@@ -98,8 +98,8 @@ func SDL_ShowMessageBox(data *SDL_MessageBoxData) (buttonid int32) {
 	cdata := C.SDL_MessageBoxData{
 		flags:       cUint32(data.Flags),
 		window:      cWindow(data.Window),
-		title:       (*int8)(unsafe.Pointer(cTitle.(*cChar))),
-		message:     (*int8)(unsafe.Pointer(cMessage.(*cChar))),
+		title:       cTitle.(*cChar),
+		message:     cMessage.(*cChar),
 		numbuttons:  cInt(data.Numbuttons),
 		buttons:     buttonPtr,
 		colorScheme: cMessageBoxColorScheme(data.ColorScheme),
