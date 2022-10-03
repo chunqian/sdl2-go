@@ -355,6 +355,7 @@ const (
 type SDL_AudioFormat = uint16
 
 // type SDL_AudioCallback = func(unsafe.Pointer, *uint8, int32)
+
 type SDL_AudioSpec struct {
 	Freq     int32
 	Format   uint16
