@@ -49,7 +49,8 @@ func SDL_DestroyCString(mp *PX_memorypool, cStr any) {
 func SDL_GoString(cStr any) string {
 	len := PX_strlen((*PX_char)(unsafe.Pointer(cStr.(*C.char))))
 
-	sh := &reflect.SliceHeader{}
+	var slice []uint8
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
 	sh.Data = uintptr(unsafe.Pointer(cStr.(*C.char)))
 	sh.Len = int(len)
 	sh.Cap = int(len)
@@ -76,8 +77,9 @@ func SDL_CreateArrayDataStructures[T SDL_DataStructures](mp *PX_memorypool, d []
 	p := MP_Malloc(mp, n)
 	PX_memcpy(p, unsafe.Pointer(dh.Data), PX_int(n))
 
+	var slice []uint8
 	length := len(d)
-	sh := &reflect.SliceHeader{}
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
 	sh.Data = uintptr(unsafe.Pointer(p))
 	sh.Len = int(length)
 	sh.Cap = int(length)

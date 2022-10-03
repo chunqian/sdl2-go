@@ -18,7 +18,9 @@ func SDL_GetKeyboardState(numkeys *int) []uint8 {
 	// var numkeys cInt
 	cNumkeys := (*cInt)(unsafe.Pointer(numkeys))
 	start := C.SDL_GetKeyboardState(cNumkeys)
-	sh := reflect.SliceHeader{}
+
+	var slice []uint8
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
 	sh.Len = int(*numkeys)
 	sh.Cap = int(*numkeys)
 	sh.Data = uintptr(unsafe.Pointer(start))

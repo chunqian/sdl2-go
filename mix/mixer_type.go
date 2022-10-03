@@ -7,11 +7,11 @@ import "C"
 
 // c basic
 type (
-	cChar   = C.char    // byte
-	cInt    = C.int     // int32
-	cUint   = C.uint    // uint32
-	cFloat  = C.float   // float32
-	cDouble = C.double  // float64
+	cChar   = C.char   // byte
+	cInt    = C.int    // int32
+	cUint   = C.uint   // uint32
+	cFloat  = C.float  // float32
+	cDouble = C.double // float64
 
 	cInt8   = C.int8_t   // int8
 	cInt16  = C.int16_t  // int16
