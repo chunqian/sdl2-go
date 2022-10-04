@@ -6,7 +6,18 @@ package sdl
 import "C"
 import "errors"
 
-var ErrArrayIndexOutOfBounds = errors.New("Array Index Out Of Bounds Exception.")
+// typedef
+type SDL_errorcode = int32
+
+// enum
+const (
+	SDL_ENOMEM      SDL_errorcode = 0
+	SDL_EFREAD      SDL_errorcode = 1
+	SDL_EFWRITE     SDL_errorcode = 2
+	SDL_EFSEEK      SDL_errorcode = 3
+	SDL_UNSUPPORTED SDL_errorcode = 4
+	SDL_LASTERROR   SDL_errorcode = 5
+)
 
 func SDL_GetError() error {
 	if cErrstr := C.SDL_GetError(); cErrstr != nil {

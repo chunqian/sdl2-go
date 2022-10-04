@@ -5,7 +5,7 @@ package sdl
 */
 import "C"
 
-// #define
+// define
 const (
 	SDL_HINT_ACCELEROMETER_AS_JOYSTICK                = "SDL_ACCELEROMETER_AS_JOYSTICK"
 	SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED              = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED"
@@ -153,8 +153,18 @@ const (
 	SDL_HINT_AUDIODRIVER                              = "SDL_AUDIODRIVER"
 )
 
+// typedef
+type SDL_HintPriority = int32
 type HintCallback func(data interface{}, name, oldValue, newValue string)
 
+// enum
+const (
+	SDL_HINT_DEFAULT  SDL_HintPriority = 0
+	SDL_HINT_NORMAL   SDL_HintPriority = 1
+	SDL_HINT_OVERRIDE SDL_HintPriority = 2
+)
+
+// struct
 type HintCallbackAndData struct {
 	callback HintCallback // the function to call when the hint value changes
 	data     interface{}  // data to pass to the callback function

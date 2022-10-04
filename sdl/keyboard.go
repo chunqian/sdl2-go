@@ -9,6 +9,14 @@ import (
 	"unsafe"
 )
 
+// struct
+type SDL_Keysym struct {
+	Scancode int32
+	Sym      int32
+	Mod      uint16
+	Unused   uint32
+}
+
 func SDL_GetKeyboardFocus() *SDL_Window {
 	cWnd := C.SDL_GetKeyboardFocus()
 	return (*SDL_Window)(unsafe.Pointer(cWnd))

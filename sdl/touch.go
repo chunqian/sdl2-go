@@ -9,11 +9,32 @@ import (
 	"unsafe"
 )
 
-// #define
+// define
 const (
 	SDL_TOUCH_MOUSEID = math.MaxUint32
 	SDL_MOUSE_TOUCHID = int64(-1)
 )
+
+// typedef
+type SDL_TouchID = int64
+type SDL_FingerID = int64
+type SDL_TouchDeviceType = int32
+
+// enum
+const (
+	SDL_TOUCH_DEVICE_INVALID           SDL_TouchDeviceType = -1
+	SDL_TOUCH_DEVICE_DIRECT            SDL_TouchDeviceType = 0
+	SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE SDL_TouchDeviceType = 1
+	SDL_TOUCH_DEVICE_INDIRECT_RELATIVE SDL_TouchDeviceType = 2
+)
+
+// struct
+type SDL_Finger struct {
+	Id       int64
+	X        float32
+	Y        float32
+	Pressure float32
+}
 
 func SDL_GetNumTouchDevices() int {
 	return int(C.SDL_GetNumTouchDevices())

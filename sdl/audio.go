@@ -9,7 +9,7 @@ import (
 	"unsafe"
 )
 
-// #define
+// define
 var (
 	SDL_AUDIO_MASK_BITSIZE   = 0xFF
 	SDL_AUDIO_MASK_DATATYPE  = 1 << 8
@@ -79,6 +79,46 @@ const (
 	SDL_AUDIO_ALLOW_SAMPLES_CHANGE   = 0x00000008
 	SDL_AUDIO_ALLOW_ANY_CHANGE       = SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_FORMAT_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE | SDL_AUDIO_ALLOW_SAMPLES_CHANGE
 )
+
+// typedef
+type SDL_AudioFormat = uint16
+type SDL_AudioFilter = func(*SDL_AudioCVT, uint16)
+type SDL_AudioDeviceID = uint32
+type SDL_AudioStatus = int32
+
+// enum
+const (
+	SDL_AUDIO_STOPPED SDL_AudioStatus = 0
+	SDL_AUDIO_PLAYING SDL_AudioStatus = 1
+	SDL_AUDIO_PAUSED  SDL_AudioStatus = 2
+)
+
+// struct
+type SDL_AudioSpec struct {
+	Freq     int32
+	Format   uint16
+	Channels uint8
+	Silence  uint8
+	Samples  uint16
+	Padding  uint16
+	Size     uint32
+	Callback func(unsafe.Pointer, *uint8, int32)
+	Userdata unsafe.Pointer
+}
+
+type SDL_AudioCVT struct {
+	Needed      int32
+	SrcFormat   uint16
+	DstFormat   uint16
+	RateIncr    float64
+	Buf         *uint8
+	Len         int32
+	LenCVT      int32
+	LenMult     int32
+	LenRatio    float64
+	Filters     [10]func(*SDL_AudioCVT, uint16)
+	FilterIndex int32
+}
 
 func cAudioSpec(as *SDL_AudioSpec) *C.SDL_AudioSpec {
 	return (*C.SDL_AudioSpec)(unsafe.Pointer(as))

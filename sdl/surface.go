@@ -11,7 +11,7 @@ import (
 	"unsafe"
 )
 
-// #define
+// define
 const (
 	SDL_SWSURFACE    = 0
 	SDL_PREALLOC     = 0x00000001
@@ -19,6 +19,34 @@ const (
 	SDL_DONTFREE     = 0x00000004
 	SDL_SIMD_ALIGNED = 0x00000008
 )
+
+// typedef
+type SDL_YUV_CONVERSION_MODE = int32
+type SDL_blit = func(*SDL_Surface, *SDL_Rect, *SDL_Surface, *SDL_Rect) int32
+
+// enum
+const (
+	SDL_YUV_CONVERSION_JPEG      SDL_YUV_CONVERSION_MODE = 0
+	SDL_YUV_CONVERSION_BT601     SDL_YUV_CONVERSION_MODE = 1
+	SDL_YUV_CONVERSION_BT709     SDL_YUV_CONVERSION_MODE = 2
+	SDL_YUV_CONVERSION_AUTOMATIC SDL_YUV_CONVERSION_MODE = 3
+)
+
+// struct
+type SDL_Surface struct {
+	Flags       uint32
+	Format      *SDL_PixelFormat
+	W           int32
+	H           int32
+	Pitch       int32
+	Pixels      unsafe.Pointer
+	Userdata    unsafe.Pointer
+	Locked      int32
+	ListBlitmap unsafe.Pointer
+	ClipRect    SDL_Rect
+	Map         *SDL_BlitMap
+	Refcount    int32
+}
 
 func cSurface(surface *SDL_Surface) *C.SDL_Surface {
 	return (*C.SDL_Surface)(unsafe.Pointer(surface))

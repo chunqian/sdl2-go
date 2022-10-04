@@ -6,12 +6,19 @@ package sdl
 import "C"
 import "unsafe"
 
-// #define
+// define
 const (
 	SDL_MAJOR_VERSION = 2
 	SDL_MINOR_VERSION = 0
 	SDL_PATCHLEVEL    = 22
 )
+
+// struct
+type SDL_version struct {
+	Major uint8
+	Minor uint8
+	Patch uint8
+}
 
 func cVersion(v *SDL_version) *C.SDL_version {
 	return (*C.SDL_version)(unsafe.Pointer(v))

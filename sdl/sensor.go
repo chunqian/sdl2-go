@@ -6,9 +6,25 @@ package sdl
 import "C"
 import "unsafe"
 
-// #define
+// define
 const (
 	SDL_STANDARD_GRAVITY = 9.80665
+)
+
+// typedef
+type SDL_SensorID = int32
+type SDL_SensorType = int32
+
+// enum
+const (
+	SDL_SENSOR_INVALID SDL_SensorType = -1
+	SDL_SENSOR_UNKNOWN SDL_SensorType = 0
+	SDL_SENSOR_ACCEL   SDL_SensorType = 1
+	SDL_SENSOR_GYRO    SDL_SensorType = 2
+	// SDL_SENSOR_ACCEL_L SDL_SensorType = 3
+	// SDL_SENSOR_GYRO_L  SDL_SensorType = 4
+	// SDL_SENSOR_ACCEL_R SDL_SensorType = 5
+	// SDL_SENSOR_GYRO_R  SDL_SensorType = 6
 )
 
 func cSensor(ser *SDL_Sensor) *C.SDL_Sensor {

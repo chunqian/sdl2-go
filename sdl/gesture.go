@@ -5,6 +5,9 @@ package sdl
 */
 import "C"
 
+// typedef
+type SDL_GestureID = int64
+
 func SDL_RecordGesture(t SDL_TouchID) int {
 	return int(C.SDL_RecordGesture(cTouchID(t)))
 }

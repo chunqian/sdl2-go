@@ -6,7 +6,7 @@ package sdl
 import "C"
 import "unsafe"
 
-// #define
+// define
 var (
 	SDL_BUTTON        = func(x int) int { return 1 << (x - 1) }
 	SDL_BUTTON_LEFT   = 1
@@ -19,6 +19,32 @@ var (
 	SDL_BUTTON_RMASK  = SDL_BUTTON(SDL_BUTTON_RIGHT)
 	SDL_BUTTON_X1MASK = SDL_BUTTON(SDL_BUTTON_X1)
 	SDL_BUTTON_X2MASK = SDL_BUTTON(SDL_BUTTON_X2)
+)
+
+// typedef
+type SDL_SystemCursor = int32
+type SDL_MouseWheelDirection = int32
+
+// enum
+const (
+	SDL_SYSTEM_CURSOR_ARROW     SDL_SystemCursor = 0
+	SDL_SYSTEM_CURSOR_IBEAM     SDL_SystemCursor = 1
+	SDL_SYSTEM_CURSOR_WAIT      SDL_SystemCursor = 2
+	SDL_SYSTEM_CURSOR_CROSSHAIR SDL_SystemCursor = 3
+	SDL_SYSTEM_CURSOR_WAITARROW SDL_SystemCursor = 4
+	SDL_SYSTEM_CURSOR_SIZENWSE  SDL_SystemCursor = 5
+	SDL_SYSTEM_CURSOR_SIZENESW  SDL_SystemCursor = 6
+	SDL_SYSTEM_CURSOR_SIZEWE    SDL_SystemCursor = 7
+	SDL_SYSTEM_CURSOR_SIZENS    SDL_SystemCursor = 8
+	SDL_SYSTEM_CURSOR_SIZEALL   SDL_SystemCursor = 9
+	SDL_SYSTEM_CURSOR_NO        SDL_SystemCursor = 10
+	SDL_SYSTEM_CURSOR_HAND      SDL_SystemCursor = 11
+	SDL_NUM_SYSTEM_CURSORS      SDL_SystemCursor = 12
+)
+
+const (
+	SDL_MOUSEWHEEL_NORMAL  SDL_MouseWheelDirection = 0
+	SDL_MOUSEWHEEL_FLIPPED SDL_MouseWheelDirection = 1
 )
 
 func cCursor(c *SDL_Cursor) *C.SDL_Cursor {

@@ -9,6 +9,31 @@ import (
 	"unsafe"
 )
 
+// struct
+type SDL_Point struct {
+	X int32
+	Y int32
+}
+
+type SDL_FPoint struct {
+	X float32
+	Y float32
+}
+
+type SDL_Rect struct {
+	X int32
+	Y int32
+	W int32
+	H int32
+}
+
+type SDL_FRect struct {
+	X float32
+	Y float32
+	W float32
+	H float32
+}
+
 func cPoint(p *SDL_Point) *C.SDL_Point {
 	return (*C.SDL_Point)(unsafe.Pointer(p))
 }

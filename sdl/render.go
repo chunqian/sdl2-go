@@ -8,6 +8,61 @@ import (
 	"unsafe"
 )
 
+// typedef
+type SDL_RendererFlags = int32
+type SDL_ScaleMode = int32
+type SDL_TextureAccess = int32
+type SDL_TextureModulate = int32
+type SDL_RendererFlip = int32
+
+// enum
+const (
+	SDL_RENDERER_SOFTWARE      SDL_RendererFlags = 1
+	SDL_RENDERER_ACCELERATED   SDL_RendererFlags = 2
+	SDL_RENDERER_PRESENTVSYNC  SDL_RendererFlags = 4
+	SDL_RENDERER_TARGETTEXTURE SDL_RendererFlags = 8
+)
+
+const (
+	SDL_ScaleModeNearest SDL_ScaleMode = 0
+	SDL_ScaleModeLinear  SDL_ScaleMode = 1
+	SDL_ScaleModeBest    SDL_ScaleMode = 2
+)
+
+const (
+	SDL_TEXTUREACCESS_STATIC    SDL_TextureAccess = 0
+	SDL_TEXTUREACCESS_STREAMING SDL_TextureAccess = 1
+	SDL_TEXTUREACCESS_TARGET    SDL_TextureAccess = 2
+)
+
+const (
+	SDL_TEXTUREMODULATE_NONE  SDL_TextureModulate = 0
+	SDL_TEXTUREMODULATE_COLOR SDL_TextureModulate = 1
+	SDL_TEXTUREMODULATE_ALPHA SDL_TextureModulate = 2
+)
+
+const (
+	SDL_FLIP_NONE       SDL_RendererFlip = 0
+	SDL_FLIP_HORIZONTAL SDL_RendererFlip = 1
+	SDL_FLIP_VERTICAL   SDL_RendererFlip = 2
+)
+
+// struct
+type SDL_RendererInfo struct {
+	Name              *int8
+	Flags             uint32
+	NumTextureFormats uint32
+	TextureFormats    [16]uint32
+	MaxTextureWidth   int32
+	MaxTextureHeight  int32
+}
+
+type SDL_Vertex struct {
+	Position SDL_FPoint
+	Color    SDL_Color
+	TexCoord SDL_FPoint
+}
+
 func cRendererInfo(info *SDL_RendererInfo) *C.SDL_RendererInfo {
 	return (*C.SDL_RendererInfo)(unsafe.Pointer(info))
 }

@@ -9,10 +9,84 @@ import (
 	"unsafe"
 )
 
-// #define
+// define
 const (
 	SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE = C.SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE
 )
+
+// typedef
+type SDL_GameControllerType = int32
+type SDL_GameControllerBindType = int32
+type SDL_GameControllerAxis = int32
+type SDL_GameControllerButton = int32
+
+// enum
+const (
+	SDL_CONTROLLER_TYPE_UNKNOWN             SDL_GameControllerType = 0
+	SDL_CONTROLLER_TYPE_XBOX360             SDL_GameControllerType = 1
+	SDL_CONTROLLER_TYPE_XBOXONE             SDL_GameControllerType = 2
+	SDL_CONTROLLER_TYPE_PS3                 SDL_GameControllerType = 3
+	SDL_CONTROLLER_TYPE_PS4                 SDL_GameControllerType = 4
+	SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO SDL_GameControllerType = 5
+	SDL_CONTROLLER_TYPE_VIRTUAL             SDL_GameControllerType = 6
+	SDL_CONTROLLER_TYPE_PS5                 SDL_GameControllerType = 7
+	SDL_CONTROLLER_TYPE_AMAZON_LUNA         SDL_GameControllerType = 8
+	SDL_CONTROLLER_TYPE_GOOGLE_STADIA       SDL_GameControllerType = 9
+	// SDL_CONTROLLER_TYPE_NVIDIA_SHIELD                SDL_GameControllerType = 10
+	// SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_LEFT  SDL_GameControllerType = 11
+	// SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT SDL_GameControllerType = 12
+	// SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_PAIR  SDL_GameControllerType = 13
+)
+
+const (
+	SDL_CONTROLLER_BINDTYPE_NONE   SDL_GameControllerBindType = 0
+	SDL_CONTROLLER_BINDTYPE_BUTTON SDL_GameControllerBindType = 1
+	SDL_CONTROLLER_BINDTYPE_AXIS   SDL_GameControllerBindType = 2
+	SDL_CONTROLLER_BINDTYPE_HAT    SDL_GameControllerBindType = 3
+)
+
+const (
+	SDL_CONTROLLER_AXIS_INVALID      SDL_GameControllerAxis = -1
+	SDL_CONTROLLER_AXIS_LEFTX        SDL_GameControllerAxis = 0
+	SDL_CONTROLLER_AXIS_LEFTY        SDL_GameControllerAxis = 1
+	SDL_CONTROLLER_AXIS_RIGHTX       SDL_GameControllerAxis = 2
+	SDL_CONTROLLER_AXIS_RIGHTY       SDL_GameControllerAxis = 3
+	SDL_CONTROLLER_AXIS_TRIGGERLEFT  SDL_GameControllerAxis = 4
+	SDL_CONTROLLER_AXIS_TRIGGERRIGHT SDL_GameControllerAxis = 5
+	SDL_CONTROLLER_AXIS_MAX          SDL_GameControllerAxis = 6
+)
+
+const (
+	SDL_CONTROLLER_BUTTON_INVALID       SDL_GameControllerButton = -1
+	SDL_CONTROLLER_BUTTON_A             SDL_GameControllerButton = 0
+	SDL_CONTROLLER_BUTTON_B             SDL_GameControllerButton = 1
+	SDL_CONTROLLER_BUTTON_X             SDL_GameControllerButton = 2
+	SDL_CONTROLLER_BUTTON_Y             SDL_GameControllerButton = 3
+	SDL_CONTROLLER_BUTTON_BACK          SDL_GameControllerButton = 4
+	SDL_CONTROLLER_BUTTON_GUIDE         SDL_GameControllerButton = 5
+	SDL_CONTROLLER_BUTTON_START         SDL_GameControllerButton = 6
+	SDL_CONTROLLER_BUTTON_LEFTSTICK     SDL_GameControllerButton = 7
+	SDL_CONTROLLER_BUTTON_RIGHTSTICK    SDL_GameControllerButton = 8
+	SDL_CONTROLLER_BUTTON_LEFTSHOULDER  SDL_GameControllerButton = 9
+	SDL_CONTROLLER_BUTTON_RIGHTSHOULDER SDL_GameControllerButton = 10
+	SDL_CONTROLLER_BUTTON_DPAD_UP       SDL_GameControllerButton = 11
+	SDL_CONTROLLER_BUTTON_DPAD_DOWN     SDL_GameControllerButton = 12
+	SDL_CONTROLLER_BUTTON_DPAD_LEFT     SDL_GameControllerButton = 13
+	SDL_CONTROLLER_BUTTON_DPAD_RIGHT    SDL_GameControllerButton = 14
+	SDL_CONTROLLER_BUTTON_MISC1         SDL_GameControllerButton = 15
+	SDL_CONTROLLER_BUTTON_PADDLE1       SDL_GameControllerButton = 16
+	SDL_CONTROLLER_BUTTON_PADDLE2       SDL_GameControllerButton = 17
+	SDL_CONTROLLER_BUTTON_PADDLE3       SDL_GameControllerButton = 18
+	SDL_CONTROLLER_BUTTON_PADDLE4       SDL_GameControllerButton = 19
+	SDL_CONTROLLER_BUTTON_TOUCHPAD      SDL_GameControllerButton = 20
+	SDL_CONTROLLER_BUTTON_MAX           SDL_GameControllerButton = 21
+)
+
+// struct
+type SDL_GameControllerButtonBind struct {
+	BindType int32
+	Value    [SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE]byte
+}
 
 func cGameController(ctrl *SDL_GameController) *C.SDL_GameController {
 	return (*C.SDL_GameController)(unsafe.Pointer(ctrl))

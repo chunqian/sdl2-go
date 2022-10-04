@@ -6,7 +6,7 @@ package sdl
 import "C"
 import "unsafe"
 
-// #define
+// define
 const (
 	SDL_CACHELINE_SIZE = 128
 )

@@ -6,7 +6,7 @@ package sdl
 import "C"
 import "unsafe"
 
-// #define
+// define
 const (
 	SDL_JOYSTICK_AXIS_MAX = 32767
 	SDL_JOYSTICK_AXIS_MIN = -32768
@@ -22,10 +22,40 @@ const (
 	SDL_HAT_LEFTDOWN  = SDL_HAT_LEFT | SDL_HAT_DOWN
 )
 
-var (
-	SDLK_SCANCODE_MASK      = (1 << 30)
-	SDL_SCANCODE_TO_KEYCODE = func(x int32) int32 { return x | int32(SDLK_SCANCODE_MASK) }
+// typedef
+type SDL_GUID = SDL_JoystickGUID
+type SDL_JoystickID = int32
+type SDL_JoystickType = int32
+type SDL_JoystickPowerLevel = int32
+
+// enum
+const (
+	SDL_JOYSTICK_TYPE_UNKNOWN        SDL_JoystickType = 0
+	SDL_JOYSTICK_TYPE_GAMECONTROLLER SDL_JoystickType = 1
+	SDL_JOYSTICK_TYPE_WHEEL          SDL_JoystickType = 2
+	SDL_JOYSTICK_TYPE_ARCADE_STICK   SDL_JoystickType = 3
+	SDL_JOYSTICK_TYPE_FLIGHT_STICK   SDL_JoystickType = 4
+	SDL_JOYSTICK_TYPE_DANCE_PAD      SDL_JoystickType = 5
+	SDL_JOYSTICK_TYPE_GUITAR         SDL_JoystickType = 6
+	SDL_JOYSTICK_TYPE_DRUM_KIT       SDL_JoystickType = 7
+	SDL_JOYSTICK_TYPE_ARCADE_PAD     SDL_JoystickType = 8
+	SDL_JOYSTICK_TYPE_THROTTLE       SDL_JoystickType = 9
 )
+
+const (
+	SDL_JOYSTICK_POWER_UNKNOWN SDL_JoystickPowerLevel = -1
+	SDL_JOYSTICK_POWER_EMPTY   SDL_JoystickPowerLevel = 0
+	SDL_JOYSTICK_POWER_LOW     SDL_JoystickPowerLevel = 1
+	SDL_JOYSTICK_POWER_MEDIUM  SDL_JoystickPowerLevel = 2
+	SDL_JOYSTICK_POWER_FULL    SDL_JoystickPowerLevel = 3
+	SDL_JOYSTICK_POWER_WIRED   SDL_JoystickPowerLevel = 4
+	SDL_JOYSTICK_POWER_MAX     SDL_JoystickPowerLevel = 5
+)
+
+// struct
+type SDL_JoystickGUID struct {
+	Data [16]uint8
+}
 
 func cJoystick(js *SDL_Joystick) *C.SDL_Joystick {
 	return (*C.SDL_Joystick)(unsafe.Pointer(js))

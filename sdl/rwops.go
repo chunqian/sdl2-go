@@ -9,7 +9,7 @@ import (
 	"unsafe"
 )
 
-// #define
+// define
 const (
 	SDL_RWOPS_UNKNOWN   = 0
 	SDL_RWOPS_WINFILE   = 1

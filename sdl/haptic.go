@@ -6,7 +6,7 @@ package sdl
 import "C"
 import "unsafe"
 
-// #define
+// define
 var (
 	SDL_HAPTIC              = func(x uint) uint { return 1 << x }
 	SDL_HAPTIC_CONSTANT     = SDL_HAPTIC(0)
@@ -32,6 +32,101 @@ var (
 	SDL_HAPTIC_STEERING_AXIS = 3
 	SDL_HAPTIC_INFINITY      = 0xFFFFFFFF
 )
+
+// struct
+type SDL_HapticDirection struct {
+	Type uint8
+	Dir  [3]int32
+}
+
+type SDL_HapticConstant struct {
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Level        int16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
+}
+
+type SDL_HapticPeriodic struct {
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Period       uint16
+	Magnitude    int16
+	Offset       int16
+	Phase        uint16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
+}
+
+type SDL_HapticCondition struct {
+	Type       uint16
+	Direction  SDL_HapticDirection
+	Length     uint32
+	Delay      uint16
+	Button     uint16
+	Interval   uint16
+	RightSat   [3]uint16
+	LeftSat    [3]uint16
+	RightCoeff [3]int16
+	LeftCoeff  [3]int16
+	Deadband   [3]uint16
+	Center     [3]int16
+}
+
+type SDL_HapticRamp struct {
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Start        int16
+	End          int16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
+}
+
+type SDL_HapticLeftRight struct {
+	Type           uint16
+	Length         uint32
+	LargeMagnitude uint16
+	SmallMagnitude uint16
+}
+
+type SDL_HapticCustom struct {
+	Type         uint16
+	Direction    SDL_HapticDirection
+	Length       uint32
+	Delay        uint16
+	Button       uint16
+	Interval     uint16
+	Channels     uint8
+	Period       uint16
+	Samples      uint16
+	Data         *uint16
+	AttackLength uint16
+	AttackLevel  uint16
+	FadeLength   uint16
+	FadeLevel    uint16
+}
+
+type SDL_HapticEffect struct {
+	condition SDL_HapticCondition
+}
 
 func cHapticEffect(he *SDL_HapticEffect) *C.SDL_HapticEffect {
 	return (*C.SDL_HapticEffect)(unsafe.Pointer(he))

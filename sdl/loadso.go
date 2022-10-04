@@ -6,6 +6,7 @@ package sdl
 import "C"
 import "unsafe"
 
+// typedef
 type SharedObject unsafe.Pointer
 
 func SDL_LoadObject(sofile string) SharedObject {

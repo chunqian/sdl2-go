@@ -4,6 +4,11 @@ package sdl
 #include "sdl_wrapper.h"
 */
 import "C"
+import "unsafe"
+
+// typedef
+type SDL_TimerCallback = func(uint32, unsafe.Pointer) uint32
+type SDL_TimerID = int32
 
 func SDL_GetTicks() uint32 {
 	return uint32(C.SDL_GetTicks())

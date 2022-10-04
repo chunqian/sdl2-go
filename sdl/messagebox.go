@@ -7,6 +7,61 @@ import "C"
 import "unsafe"
 import "reflect"
 
+// typedef
+type SDL_MessageBoxFlags = int32
+type SDL_MessageBoxButtonFlags = int32
+type SDL_MessageBoxColorType = int32
+
+// enum
+const (
+	SDL_MESSAGEBOX_ERROR                 SDL_MessageBoxFlags = 16
+	SDL_MESSAGEBOX_WARNING               SDL_MessageBoxFlags = 32
+	SDL_MESSAGEBOX_INFORMATION           SDL_MessageBoxFlags = 64
+	SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT SDL_MessageBoxFlags = 128
+	SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT SDL_MessageBoxFlags = 256
+)
+
+const (
+	SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT SDL_MessageBoxButtonFlags = 1
+	SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT SDL_MessageBoxButtonFlags = 2
+)
+
+const (
+	SDL_MESSAGEBOX_COLOR_BACKGROUND        SDL_MessageBoxColorType = 0
+	SDL_MESSAGEBOX_COLOR_TEXT              SDL_MessageBoxColorType = 1
+	SDL_MESSAGEBOX_COLOR_BUTTON_BORDER     SDL_MessageBoxColorType = 2
+	SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND SDL_MessageBoxColorType = 3
+	SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED   SDL_MessageBoxColorType = 4
+	SDL_MESSAGEBOX_COLOR_MAX               SDL_MessageBoxColorType = 5
+)
+
+// struct
+type SDL_MessageBoxButtonData struct {
+	Flags    uint32
+	Buttonid int32
+	Text     *int8
+}
+
+type SDL_MessageBoxColor struct {
+	R uint8
+	G uint8
+	B uint8
+}
+
+type SDL_MessageBoxColorScheme struct {
+	Colors [5]SDL_MessageBoxColor
+}
+
+type SDL_MessageBoxData struct {
+	Flags       uint32
+	Window      *SDL_Window
+	Title       *int8
+	Message     *int8
+	Numbuttons  int32
+	Buttons     *SDL_MessageBoxButtonData
+	ColorScheme *SDL_MessageBoxColorScheme
+}
+
 func cMessageBoxColor(mc *SDL_MessageBoxColor) *C.SDL_MessageBoxColor {
 	return (*C.SDL_MessageBoxColor)(unsafe.Pointer(mc))
 }

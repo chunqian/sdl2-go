@@ -6,6 +6,24 @@ package sdl
 import "C"
 import "unsafe"
 
+// struct
+type SDL_hid_device_info struct {
+	Path               *int8
+	VendorId           uint16
+	ProductId          uint16
+	SerialNumber       *int32
+	ReleaseNumber      uint16
+	ManufacturerString *int32
+	ProductString      *int32
+	UsagePage          uint16
+	Usage              uint16
+	InterfaceNumber    int32
+	InterfaceClass     int32
+	InterfaceSubclass  int32
+	InterfaceProtocol  int32
+	Next               *SDL_hid_device_info
+}
+
 func cHidDevice(info *SDL_hid_device) *C.SDL_hid_device {
 	return (*C.SDL_hid_device)(unsafe.Pointer(info))
 }
