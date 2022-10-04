@@ -6,7 +6,6 @@ package sdl
 */
 import "C"
 import (
-	"encoding/binary"
 	"image/color"
 	"unsafe"
 )
@@ -97,7 +96,7 @@ const (
 	SDL_TRUE  SDL_bool = 1
 )
 
-type SDL_bool = int32
+type SDL_bool = uint32
 
 const (
 	SDL_ENOMEM      SDL_errorcode = 0
@@ -108,7 +107,7 @@ const (
 	SDL_LASTERROR   SDL_errorcode = 5
 )
 
-type SDL_errorcode = int32
+type SDL_errorcode = uint32
 
 type SDL_AudioFormat = uint16
 
@@ -150,7 +149,7 @@ const (
 	SDL_AUDIO_PAUSED  SDL_AudioStatus = 2
 )
 
-type SDL_AudioStatus = int32
+type SDL_AudioStatus = uint32
 
 const (
 	SDL_PIXELTYPE_UNKNOWN  SDL_PixelType = 0
@@ -167,7 +166,7 @@ const (
 	SDL_PIXELTYPE_ARRAYF32 SDL_PixelType = 11
 )
 
-type SDL_PixelType = int32
+type SDL_PixelType = uint32
 
 const (
 	SDL_BITMAPORDER_NONE SDL_BitmapOrder = 0
@@ -175,7 +174,7 @@ const (
 	SDL_BITMAPORDER_1234 SDL_BitmapOrder = 2
 )
 
-type SDL_BitmapOrder = int32
+type SDL_BitmapOrder = uint32
 
 const (
 	SDL_PACKEDORDER_NONE SDL_PackedOrder = 0
@@ -189,7 +188,7 @@ const (
 	SDL_PACKEDORDER_BGRA SDL_PackedOrder = 8
 )
 
-type SDL_PackedOrder = int32
+type SDL_PackedOrder = uint32
 
 const (
 	SDL_ARRAYORDER_NONE SDL_ArrayOrder = 0
@@ -201,7 +200,7 @@ const (
 	SDL_ARRAYORDER_ABGR SDL_ArrayOrder = 6
 )
 
-type SDL_ArrayOrder = int32
+type SDL_ArrayOrder = uint32
 
 const (
 	SDL_PACKEDLAYOUT_NONE    SDL_PackedLayout = 0
@@ -215,12 +214,7 @@ const (
 	SDL_PACKEDLAYOUT_1010102 SDL_PackedLayout = 8
 )
 
-type SDL_PackedLayout = int32
-
-func SDL_DEFINE_PIXELFORMAT(type_ int32, order_ int32, layout_ int32, bits_ int32, bytes_ int32) uint32 {
-	var ret = (1 << 28) | ((type_) << 24) | ((order_) << 20) | ((layout_) << 16) | ((bits_) << 8) | ((bytes_) << 0)
-	return uint32(ret)
-}
+type SDL_PackedLayout = uint32
 
 func IsLittleEndian() bool {
 	var value int32 = 1 // 占4byte 转换成16进制 0x00 00 00 01
@@ -233,17 +227,6 @@ func IsLittleEndian() bool {
 		return false
 	}
 	return true
-}
-
-func SDL_DEFINE_PIXELFOURCC(a byte, b byte, c byte, d byte) uint32 {
-	var endian binary.ByteOrder
-	if IsLittleEndian() {
-		endian = binary.LittleEndian
-	} else {
-		endian = binary.BigEndian
-	}
-	arr := []byte{a, b, c, d}
-	return endian.Uint32(arr)
 }
 
 func SDL_PIXELFORMATENUM_INIT() {

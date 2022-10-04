@@ -5,6 +5,7 @@ package sdl
 */
 import "C"
 import (
+	"encoding/binary"
 	"image/color"
 	"unsafe"
 )
@@ -13,6 +14,96 @@ import (
 const (
 	SDL_ALPHA_OPAQUE      = 255
 	SDL_ALPHA_TRANSPARENT = 0
+)
+
+var (
+	SDL_DEFINE_PIXELFORMAT = func(type_, order, layout, bits, bytes uint32) uint32 {
+		ret := (1 << 28) | (type_ << 24) | (order << 20) | (layout << 16) | (bits << 8) | (bytes << 0)
+		return uint32(ret)
+	}
+	SDL_DEFINE_PIXELFOURCC = func(a, b, c, d byte) uint32 {
+		var endian binary.ByteOrder
+		if IsLittleEndian() {
+			endian = binary.LittleEndian
+		} else {
+			endian = binary.BigEndian
+		}
+		arr := []byte{a, b, c, d}
+		return endian.Uint32(arr)
+	}
+	SDL_PIXELFLAG     = func(x int) int { return (x >> 28) & 0x0F }
+	SDL_PIXELTYPE     = func(x int) int { return (x >> 24) & 0x0F }
+	SDL_PIXELORDER    = func(x int) int { return (x >> 20) & 0x0F }
+	SDL_PIXELLAYOUT   = func(x int) int { return (x >> 16) & 0x0F }
+	SDL_BITSPERPIXEL  = func(x int) int { return (x >> 8) & 0xFF }
+	SDL_BYTESPERPIXEL = func(x int) int {
+		if SDL_ISPIXELFORMAT_FOURCC(x) {
+			if x == SDL_PIXELFORMAT_YUY2 ||
+				x == SDL_PIXELFORMAT_UYVY ||
+				x == SDL_PIXELFORMAT_YVYU {
+				return 2
+			} else {
+				return 1
+			}
+		} else {
+			return (x >> 0) & 0xFF
+		}
+	}
+	SDL_ISPIXELFORMAT_INDEXED = func(format int) bool {
+		if !SDL_ISPIXELFORMAT_FOURCC(format) &&
+			(SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8) {
+			return true
+		} else {
+			return false
+		}
+	}
+	SDL_ISPIXELFORMAT_PACKED = func(format int) bool {
+		if !SDL_ISPIXELFORMAT_FOURCC(format) &&
+			(SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) {
+			return true
+		} else {
+			return false
+		}
+	}
+	SDL_ISPIXELFORMAT_ARRAY = func(format int) bool {
+		if !SDL_ISPIXELFORMAT_FOURCC(format) &&
+			(SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16 ||
+				SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32) {
+			return true
+		} else {
+			return false
+		}
+	}
+	SDL_ISPIXELFORMAT_ALPHA = func(format int) bool {
+		if (SDL_ISPIXELFORMAT_PACKED(format) &&
+			(SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB ||
+				SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA ||
+				SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR ||
+				SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA)) ||
+			(SDL_ISPIXELFORMAT_ARRAY(format) &&
+				(SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB ||
+					SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA ||
+					SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR ||
+					SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA)) {
+			return true
+		} else {
+			return false
+		}
+	}
+	SDL_ISPIXELFORMAT_FOURCC = func(format int) bool {
+		if format && SDL_PIXELFLAG(format) != 1 {
+			return true
+		} else {
+			return false
+		}
+	}
 )
 
 func cPixelFormat(format *SDL_PixelFormat) *C.SDL_PixelFormat {
