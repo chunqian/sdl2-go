@@ -6,6 +6,27 @@ package sdl
 import "C"
 import "unsafe"
 
+// #define
+const (
+	SDL_JOYSTICK_AXIS_MAX = 32767
+	SDL_JOYSTICK_AXIS_MIN = -32768
+
+	SDL_HAT_CENTERED  = 0x00
+	SDL_HAT_UP        = 0x01
+	SDL_HAT_RIGHT     = 0x02
+	SDL_HAT_DOWN      = 0x04
+	SDL_HAT_LEFT      = 0x08
+	SDL_HAT_RIGHTUP   = SDL_HAT_RIGHT | SDL_HAT_UP
+	SDL_HAT_RIGHTDOWN = SDL_HAT_RIGHT | SDL_HAT_DOWN
+	SDL_HAT_LEFTUP    = SDL_HAT_LEFT | SDL_HAT_UP
+	SDL_HAT_LEFTDOWN  = SDL_HAT_LEFT | SDL_HAT_DOWN
+)
+
+var (
+	SDLK_SCANCODE_MASK      = (1 << 30)
+	SDL_SCANCODE_TO_KEYCODE = func(x int32) int32 { return x | int32(SDLK_SCANCODE_MASK) }
+)
+
 func cJoystick(js *SDL_Joystick) *C.SDL_Joystick {
 	return (*C.SDL_Joystick)(unsafe.Pointer(js))
 }

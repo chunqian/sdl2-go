@@ -4,7 +4,16 @@ package sdl
 #include "sdl_wrapper.h"
 */
 import "C"
-import "unsafe"
+import (
+	"math"
+	"unsafe"
+)
+
+// #define
+const (
+	SDL_TOUCH_MOUSEID = math.MaxUint32
+	SDL_MOUSE_TOUCHID = int64(-1)
+)
 
 func SDL_GetNumTouchDevices() int {
 	return int(C.SDL_GetNumTouchDevices())

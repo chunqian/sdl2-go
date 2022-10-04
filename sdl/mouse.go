@@ -6,6 +6,21 @@ package sdl
 import "C"
 import "unsafe"
 
+// #define
+var (
+	SDL_BUTTON        = func(x int) int { return 1 << (x - 1) }
+	SDL_BUTTON_LEFT   = 1
+	SDL_BUTTON_MIDDLE = 2
+	SDL_BUTTON_RIGHT  = 3
+	SDL_BUTTON_X1     = 4
+	SDL_BUTTON_X2     = 5
+	SDL_BUTTON_LMASK  = SDL_BUTTON(SDL_BUTTON_LEFT)
+	SDL_BUTTON_MMASK  = SDL_BUTTON(SDL_BUTTON_MIDDLE)
+	SDL_BUTTON_RMASK  = SDL_BUTTON(SDL_BUTTON_RIGHT)
+	SDL_BUTTON_X1MASK = SDL_BUTTON(SDL_BUTTON_X1)
+	SDL_BUTTON_X2MASK = SDL_BUTTON(SDL_BUTTON_X2)
+)
+
 func cCursor(c *SDL_Cursor) *C.SDL_Cursor {
 	return (*C.SDL_Cursor)(unsafe.Pointer(c))
 }

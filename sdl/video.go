@@ -6,6 +6,18 @@ package sdl
 import "C"
 import "unsafe"
 
+// #define
+var (
+	SDL_WINDOWPOS_UNDEFINED_MASK    = 0x1FFF0000
+	SDL_WINDOWPOS_UNDEFINED_DISPLAY = func(x int) int32 { return int32(SDL_WINDOWPOS_UNDEFINED_MASK) | int32(x) }
+	SDL_WINDOWPOS_UNDEFINED         = SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)
+	SDL_WINDOWPOS_ISUNDEFINED       = func(x int) bool { return int32(x&0xFFFF0000) == int32(SDL_WINDOWPOS_UNDEFINED_MASK) }
+	SDL_WINDOWPOS_CENTERED_MASK     = 0x2FFF0000
+	SDL_WINDOWPOS_CENTERED_DISPLAY  = func(x int) int32 { return int32(SDL_WINDOWPOS_CENTERED_MASK) | int32(x) }
+	SDL_WINDOWPOS_CENTERED          = SDL_WINDOWPOS_CENTERED_DISPLAY(0)
+	SDL_WINDOWPOS_ISCENTERED        = func(x int) bool { return int32(x&0xFFFF0000) == int32(SDL_WINDOWPOS_CENTERED_MASK) }
+)
+
 func cWindow(w *SDL_Window) *C.SDL_Window {
 	return (*C.SDL_Window)(unsafe.Pointer(w))
 }

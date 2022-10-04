@@ -11,6 +11,15 @@ import (
 	"unsafe"
 )
 
+// #define
+const (
+	SDL_SWSURFACE    = 0
+	SDL_PREALLOC     = 0x00000001
+	SDL_RLEACCEL     = 0x00000002
+	SDL_DONTFREE     = 0x00000004
+	SDL_SIMD_ALIGNED = 0x00000008
+)
+
 func cSurface(surface *SDL_Surface) *C.SDL_Surface {
 	return (*C.SDL_Surface)(unsafe.Pointer(surface))
 }

@@ -6,6 +6,11 @@ package sdl
 import "C"
 import "unsafe"
 
+// #define
+const (
+	SDL_STANDARD_GRAVITY = 9.80665
+)
+
 func cSensor(ser *SDL_Sensor) *C.SDL_Sensor {
 	return (*C.SDL_Sensor)(unsafe.Pointer(ser))
 }

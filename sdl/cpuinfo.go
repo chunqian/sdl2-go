@@ -6,6 +6,11 @@ package sdl
 import "C"
 import "unsafe"
 
+// #define
+const (
+	SDL_CACHELINE_SIZE = 128
+)
+
 func SDL_GetCPUCount() int {
 	return int(C.SDL_GetCPUCount())
 }

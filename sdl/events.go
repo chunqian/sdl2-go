@@ -10,6 +10,12 @@ import (
 	"unsafe"
 )
 
+// #define
+const (
+	SDL_RELEASED = 0
+	SDL_PRESSED  = 1
+)
+
 func cEvent(s *SDL_Event) *C.SDL_Event {
 	return (*C.SDL_Event)(unsafe.Pointer(s))
 }

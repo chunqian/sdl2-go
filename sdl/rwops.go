@@ -9,6 +9,21 @@ import (
 	"unsafe"
 )
 
+// #define
+const (
+	SDL_RWOPS_UNKNOWN   = 0
+	SDL_RWOPS_WINFILE   = 1
+	SDL_RWOPS_STDFILE   = 2
+	SDL_RWOPS_JNIFILE   = 3
+	SDL_RWOPS_MEMORY    = 4
+	SDL_RWOPS_MEMORY_RO = 5
+	SDL_RWOPS_VITAFILE  = 6
+
+	RW_SEEK_SET = 0
+	RW_SEEK_CUR = 1
+	RW_SEEK_END = 2
+)
+
 func cRWops(rw *SDL_RWops) *C.SDL_RWops {
 	return (*C.SDL_RWops)(unsafe.Pointer(rw))
 }
