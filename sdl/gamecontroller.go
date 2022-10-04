@@ -9,6 +9,11 @@ import (
 	"unsafe"
 )
 
+// #define
+const (
+	SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE = C.SDL_GAMECONTROLLER_BUTTON_BIND_VALUE_SIZE
+)
+
 func cGameController(ctrl *SDL_GameController) *C.SDL_GameController {
 	return (*C.SDL_GameController)(unsafe.Pointer(ctrl))
 }

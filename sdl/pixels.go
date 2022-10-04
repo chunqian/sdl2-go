@@ -9,6 +9,12 @@ import (
 	"unsafe"
 )
 
+// #define
+const (
+	SDL_ALPHA_OPAQUE      = 255
+	SDL_ALPHA_TRANSPARENT = 0
+)
+
 func cPixelFormat(format *SDL_PixelFormat) *C.SDL_PixelFormat {
 	return (*C.SDL_PixelFormat)(unsafe.Pointer(format))
 }
