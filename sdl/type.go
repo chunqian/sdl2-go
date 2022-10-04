@@ -96,7 +96,7 @@ const (
 	SDL_TRUE  SDL_bool = 1
 )
 
-type SDL_bool = uint32
+type SDL_bool = int32
 
 const (
 	SDL_ENOMEM      SDL_errorcode = 0
@@ -107,7 +107,7 @@ const (
 	SDL_LASTERROR   SDL_errorcode = 5
 )
 
-type SDL_errorcode = uint32
+type SDL_errorcode = int32
 
 type SDL_AudioFormat = uint16
 
@@ -149,7 +149,7 @@ const (
 	SDL_AUDIO_PAUSED  SDL_AudioStatus = 2
 )
 
-type SDL_AudioStatus = uint32
+type SDL_AudioStatus = int32
 
 const (
 	SDL_PIXELTYPE_UNKNOWN  SDL_PixelType = 0
@@ -166,7 +166,7 @@ const (
 	SDL_PIXELTYPE_ARRAYF32 SDL_PixelType = 11
 )
 
-type SDL_PixelType = uint32
+type SDL_PixelType = int32
 
 const (
 	SDL_BITMAPORDER_NONE SDL_BitmapOrder = 0
@@ -174,7 +174,7 @@ const (
 	SDL_BITMAPORDER_1234 SDL_BitmapOrder = 2
 )
 
-type SDL_BitmapOrder = uint32
+type SDL_BitmapOrder = int32
 
 const (
 	SDL_PACKEDORDER_NONE SDL_PackedOrder = 0
@@ -188,7 +188,7 @@ const (
 	SDL_PACKEDORDER_BGRA SDL_PackedOrder = 8
 )
 
-type SDL_PackedOrder = uint32
+type SDL_PackedOrder = int32
 
 const (
 	SDL_ARRAYORDER_NONE SDL_ArrayOrder = 0
@@ -200,7 +200,7 @@ const (
 	SDL_ARRAYORDER_ABGR SDL_ArrayOrder = 6
 )
 
-type SDL_ArrayOrder = uint32
+type SDL_ArrayOrder = int32
 
 const (
 	SDL_PACKEDLAYOUT_NONE    SDL_PackedLayout = 0
@@ -214,7 +214,7 @@ const (
 	SDL_PACKEDLAYOUT_1010102 SDL_PackedLayout = 8
 )
 
-type SDL_PackedLayout = uint32
+type SDL_PackedLayout = int32
 
 func IsLittleEndian() bool {
 	var value int32 = 1 // 占4byte 转换成16进制 0x00 00 00 01
@@ -417,6 +417,7 @@ const (
 )
 
 type SDL_YUV_CONVERSION_MODE = int32
+
 type SDL_DisplayMode struct {
 	Format      uint32
 	W           int32
@@ -585,6 +586,7 @@ const (
 )
 
 type SDL_HitTestResult = int32
+
 type SDL_HitTest = func(*SDL_Window, *SDL_Point, unsafe.Pointer) int32
 
 const (
@@ -839,6 +841,7 @@ const (
 )
 
 type SDL_Scancode = int32
+
 type SDL_Keycode = int32
 
 var (

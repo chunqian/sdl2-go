@@ -16,11 +16,12 @@ const (
 	SDL_ALPHA_TRANSPARENT = 0
 )
 
+func SDL_DEFINE_PIXELFORMAT[T int32 | uint32](type_, order, layout, bits, bytes T) uint32 {
+	ret := (1 << 28) | (type_ << 24) | (order << 20) | (layout << 16) | (bits << 8) | (bytes << 0)
+	return uint32(ret)
+}
+
 var (
-	SDL_DEFINE_PIXELFORMAT = func(type_, order, layout, bits, bytes uint32) uint32 {
-		ret := (1 << 28) | (type_ << 24) | (order << 20) | (layout << 16) | (bits << 8) | (bytes << 0)
-		return uint32(ret)
-	}
 	SDL_DEFINE_PIXELFOURCC = func(a, b, c, d byte) uint32 {
 		var endian binary.ByteOrder
 		if IsLittleEndian() {
@@ -31,22 +32,23 @@ var (
 		arr := []byte{a, b, c, d}
 		return endian.Uint32(arr)
 	}
-	SDL_PIXELFLAG     = func(x int) int { return (x >> 28) & 0x0F }
-	SDL_PIXELTYPE     = func(x int) int { return (x >> 24) & 0x0F }
-	SDL_PIXELORDER    = func(x int) int { return (x >> 20) & 0x0F }
-	SDL_PIXELLAYOUT   = func(x int) int { return (x >> 16) & 0x0F }
-	SDL_BITSPERPIXEL  = func(x int) int { return (x >> 8) & 0xFF }
-	SDL_BYTESPERPIXEL = func(x int) int {
+	SDL_PIXELFLAG     = func(x int) uint32 { x2 := uint32(x); return (x2 >> 28) & 0x0F }
+	SDL_PIXELTYPE     = func(x int) int32 { x2 := int32(x); return (x2 >> 24) & 0x0F }
+	SDL_PIXELORDER    = func(x int) int32 { x2 := int32(x); return (x2 >> 20) & 0x0F }
+	SDL_PIXELLAYOUT   = func(x int) uint32 { x2 := uint32(x); return (x2 >> 16) & 0x0F }
+	SDL_BITSPERPIXEL  = func(x int) uint32 { x2 := uint32(x); return (x2 >> 8) & 0xFF }
+	SDL_BYTESPERPIXEL = func(x int) uint32 {
+		x2 := uint32(x)
 		if SDL_ISPIXELFORMAT_FOURCC(x) {
-			if x == SDL_PIXELFORMAT_YUY2 ||
-				x == SDL_PIXELFORMAT_UYVY ||
-				x == SDL_PIXELFORMAT_YVYU {
+			if x2 == SDL_PIXELFORMAT_YUY2 ||
+				x2 == SDL_PIXELFORMAT_UYVY ||
+				x2 == SDL_PIXELFORMAT_YVYU {
 				return 2
 			} else {
 				return 1
 			}
 		} else {
-			return (x >> 0) & 0xFF
+			return (x2 >> 0) & 0xFF
 		}
 	}
 	SDL_ISPIXELFORMAT_INDEXED = func(format int) bool {
@@ -98,7 +100,7 @@ var (
 		}
 	}
 	SDL_ISPIXELFORMAT_FOURCC = func(format int) bool {
-		if format && SDL_PIXELFLAG(format) != 1 {
+		if SDL_PIXELFLAG(format) != 1 {
 			return true
 		} else {
 			return false
