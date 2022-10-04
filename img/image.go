@@ -10,6 +10,24 @@ import (
 	. "github.com/chunqian/sdl2-go/sdl"
 )
 
+// define
+const (
+	SDL_IMAGE_MAJOR_VERSION = 2
+	SDL_IMAGE_MINOR_VERSION = 0
+	SDL_IMAGE_PATCHLEVEL    = 5
+)
+
+// typedef
+type IMG_InitFlags = int32
+
+// enum
+const (
+	IMG_INIT_JPG  IMG_InitFlags = 0x00000001
+	IMG_INIT_PNG  IMG_InitFlags = 0x00000002
+	IMG_INIT_TIF  IMG_InitFlags = 0x00000004
+	IMG_INIT_WEBP IMG_InitFlags = 0x00000008
+)
+
 func cRWops(rw *SDL_RWops) *C.SDL_RWops {
 	return (*C.SDL_RWops)(unsafe.Pointer(rw))
 }

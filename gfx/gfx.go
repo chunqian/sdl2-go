@@ -10,6 +10,29 @@ import (
 	. "github.com/chunqian/sdl2-go/sdl"
 )
 
+// define
+const (
+	FPS_UPPER_LIMIT = 200
+	FPS_LOWER_LIMIT = 1
+	FPS_DEFAULT     = 30
+
+	SMOOTHING_OFF = 0
+	SMOOTHING_ON  = 1
+
+	SDL2_GFXPRIMITIVES_MAJOR = 1
+	SDL2_GFXPRIMITIVES_MINOR = 0
+	SDL2_GFXPRIMITIVES_MICRO = 4
+)
+
+// struct
+type FPSmanager struct {
+	Framecount uint32
+	Rateticks  float32
+	Baseticks  uint32
+	Lastticks  uint32
+	Rate       uint32
+}
+
 func cRenderer(r *SDL_Renderer) *C.SDL_Renderer {
 	return (*C.SDL_Renderer)(unsafe.Pointer(r))
 }

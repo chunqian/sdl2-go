@@ -39,25 +39,6 @@ type (
 	cUlonglong = C.ulonglong // uint64
 )
 
-// c #define
-const (
-	SDL_TTF_MAJOR_VERSION = 2
-	SDL_TTF_MINOR_VERSION = 0
-	SDL_TTF_PATCHLEVEL    = 18
-
-	TTF_STYLE_NORMAL        = 0x00
-	TTF_STYLE_BOLD          = 0x01
-	TTF_STYLE_ITALIC        = 0x02
-	TTF_STYLE_UNDERLINE     = 0x04
-	TTF_STYLE_STRIKETHROUGH = 0x08
-
-	TTF_HINTING_NORMAL         = 0
-	TTF_HINTING_LIGHT          = 1
-	TTF_HINTING_MONO           = 2
-	TTF_HINTING_NONE           = 3
-	TTF_HINTING_LIGHT_SUBPIXEL = 4
-)
-
 // c enum
 type (
 	cBool = C.SDL_bool

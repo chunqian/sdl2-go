@@ -22,6 +22,8 @@ var (
 	SDL_AUDIO_ISINT          = func(x int) bool { return !SDL_AUDIO_ISFLOAT(x) }
 	SDL_AUDIO_ISLITTLEENDIAN = func(x int) bool { return !SDL_AUDIO_ISBIGENDIAN(x) }
 	SDL_AUDIO_ISUNSIGNED     = func(x int) bool { return !SDL_AUDIO_ISSIGNED(x) }
+
+	SDL_MIX_MAXVOLUME = 128
 )
 
 var (

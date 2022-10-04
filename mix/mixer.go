@@ -11,6 +11,72 @@ import (
 	. "github.com/chunqian/sdl2-go/sdl"
 )
 
+// define
+const (
+	SDL_MIXER_MAJOR_VERSION = 2
+	SDL_MIXER_MINOR_VERSION = 0
+	SDL_MIXER_PATCHLEVEL    = 4
+)
+
+var (
+	MIX_CHANNELS          = 8
+	MIX_DEFAULT_FREQUENCY = 22050
+	MIX_DEFAULT_FORMAT    = func() int {
+		if !IsLittleEndian() {
+			return AUDIO_S16MSB
+		} else {
+			return AUDIO_S16LSB
+		}
+	}()
+	MIX_DEFAULT_CHANNELS = 2
+	MIX_MAX_VOLUME       = SDL_MIX_MAXVOLUME
+	MIX_CHANNEL_POST     = -2
+	MIX_EFFECTSMAXSPEED  = "MIX_EFFECTSMAXSPEED"
+)
+
+// typedef
+type MIX_InitFlags = int32
+type Mix_Fading = int32
+type Mix_MusicType = int32
+
+// enum
+const (
+	MIX_INIT_FLAC MIX_InitFlags = 1
+	MIX_INIT_MOD  MIX_InitFlags = 2
+	MIX_INIT_MP3  MIX_InitFlags = 8
+	MIX_INIT_OGG  MIX_InitFlags = 16
+	MIX_INIT_MID  MIX_InitFlags = 32
+	MIX_INIT_OPUS MIX_InitFlags = 64
+)
+
+const (
+	MIX_NO_FADING  Mix_Fading = 0
+	MIX_FADING_OUT Mix_Fading = 1
+	MIX_FADING_IN  Mix_Fading = 2
+)
+
+const (
+	MUS_NONE           Mix_MusicType = 0
+	MUS_CMD            Mix_MusicType = 1
+	MUS_WAV            Mix_MusicType = 2
+	MUS_MOD            Mix_MusicType = 3
+	MUS_MID            Mix_MusicType = 4
+	MUS_OGG            Mix_MusicType = 5
+	MUS_MP3            Mix_MusicType = 6
+	MUS_MP3_MAD_UNUSED Mix_MusicType = 7
+	MUS_FLAC           Mix_MusicType = 8
+	MUS_MODPLUG_UNUSED Mix_MusicType = 9
+	MUS_OPUS           Mix_MusicType = 10
+)
+
+// struct
+type Mix_Chunk struct {
+	allocated int32
+	abuf      *uint8
+	alen      uint32
+	volume    uint8
+}
+
 func cRWops(rw *SDL_RWops) *C.SDL_RWops {
 	return (*C.SDL_RWops)(unsafe.Pointer(rw))
 }
