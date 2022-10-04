@@ -98,7 +98,7 @@ func Mix_Quit() {
 	C.Mix_Quit()
 }
 
-func Mix_OpenAudio(frequency int, format uint16, channels, chunksize int) int {
+func Mix_OpenAudio(frequency int, format int, channels, chunksize int) int {
 	cFrequency := cInt(frequency)
 	cFormat := cUint16(format)
 	cChannels := cInt(channels)
@@ -108,7 +108,7 @@ func Mix_OpenAudio(frequency int, format uint16, channels, chunksize int) int {
 	return int(cRet)
 }
 
-func Mix_OpenAudioDevice(frequency int, format uint16, channels, chunksize int, device string, allowedChanges int) int {
+func Mix_OpenAudioDevice(frequency int, format int, channels, chunksize int, device string, allowedChanges int) int {
 	cFrequency := cInt(frequency)
 	cFormat := cUint16(format)
 	cChannels := cInt(channels)
