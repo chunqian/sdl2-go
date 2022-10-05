@@ -97,7 +97,7 @@ func SDL_SensorGetData(sensor *SDL_Sensor, data []float32, numValues int) int {
 	if data == nil {
 		return -1
 	}
-	cData := (*cFloat)(unsafe.Pointer(&data))
+	cData := (*cFloat)(unsafe.Pointer(&data[0]))
 	// cNumValues := cInt(len(data))
 	cNumValues := cInt(numValues)
 

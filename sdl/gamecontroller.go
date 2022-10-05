@@ -349,7 +349,7 @@ func SDL_GameControllerIsSensorEnabled(ctrl *SDL_GameController, typ SDL_SensorT
 }
 
 func SDL_GameControllerGetSensorData(ctrl *SDL_GameController, typ SDL_SensorType, data []float32, numValues int) int {
-	cData := (*cFloat)(unsafe.Pointer(&data))
+	cData := (*cFloat)(unsafe.Pointer(&data[0]))
 	cRet := C.SDL_GameControllerGetSensorData(cGameController(ctrl), C.SDL_SensorType(typ), cData, cInt(numValues))
 	return int(cRet)
 }
@@ -383,7 +383,7 @@ func (bind *SDL_GameControllerButtonBind) HatMask() int {
 }
 
 func SDL_GameControllerSendEffect(ctrl *SDL_GameController, data []byte) int {
-	cData := unsafe.Pointer(&data)
+	cData := unsafe.Pointer(&data[0])
 	cLen := cInt(len(data))
 
 	cRet := C.SDL_GameControllerSendEffect(cGameController(ctrl), cData, cLen)

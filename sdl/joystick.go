@@ -116,7 +116,7 @@ func SDL_JoystickGetDeviceInstanceID(index int) SDL_JoystickID {
 
 func SDL_JoystickGetGUIDString(guid SDL_JoystickGUID, pszGUID []byte, cbGUID int) string {
 	cGuid := cJoystickGUID(&guid)
-	cPszGUID := (*cChar)(unsafe.Pointer(&pszGUID))
+	cPszGUID := (*cChar)(unsafe.Pointer(&pszGUID[0]))
 	C.SDL_JoystickGetGUIDString(*cGuid, cPszGUID, cInt(cbGUID))
 	return SDL_GoString(pszGUID)
 }
