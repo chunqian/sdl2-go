@@ -4,7 +4,10 @@ package sdl
 #include "sdl_wrapper.h"
 */
 import "C"
-import "unsafe"
+import (
+	"reflect"
+	"unsafe"
+)
 
 // struct
 type SDL_hid_device_info struct {
@@ -63,7 +66,9 @@ func SDL_hid_free_enumeration(info *SDL_hid_device_info) {
 func SDL_hid_open[T []uint16 | []int32](vendorID, productID uint16, serialNumber T) *SDL_hid_device {
 	cVendorID := cUint16(vendorID)
 	cProductID := cUint16(productID)
-	cSerialNumber := (*cWchar)(unsafe.Pointer(&serialNumber[0]))
+
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&serialNumber))
+	cSerialNumber := (*cWchar)(unsafe.Pointer(sh.Data))
 
 	cDevice := C.SDL_hid_open(cVendorID, cProductID, cSerialNumber)
 	return (*SDL_hid_device)(unsafe.Pointer(cDevice))
@@ -138,7 +143,9 @@ func SDL_hid_close(device *SDL_hid_device) {
 
 func SDL_hid_get_manufacturer_string[T []uint16 | []int32](device *SDL_hid_device, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
-	cStr := (*cWchar)(unsafe.Pointer(&str[0]))
+
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&str))
+	cStr := (*cWchar)(unsafe.Pointer(sh.Data))
 	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_manufacturer_string(cDevice, cStr, cMaxlen)
@@ -147,7 +154,9 @@ func SDL_hid_get_manufacturer_string[T []uint16 | []int32](device *SDL_hid_devic
 
 func SDL_hid_get_product_string[T []uint16 | []int32](device *SDL_hid_device, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
-	cStr := (*cWchar)(unsafe.Pointer(&str[0]))
+
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&str))
+	cStr := (*cWchar)(unsafe.Pointer(sh.Data))
 	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_product_string(cDevice, cStr, cMaxlen)
@@ -156,7 +165,9 @@ func SDL_hid_get_product_string[T []uint16 | []int32](device *SDL_hid_device, st
 
 func SDL_hid_get_serial_number_string[T []uint16 | []int32](device *SDL_hid_device, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
-	cStr := (*cWchar)(unsafe.Pointer(&str[0]))
+
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&str))
+	cStr := (*cWchar)(unsafe.Pointer(sh.Data))
 	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_serial_number_string(cDevice, cStr, cMaxlen)
@@ -166,7 +177,9 @@ func SDL_hid_get_serial_number_string[T []uint16 | []int32](device *SDL_hid_devi
 func SDL_hid_get_indexed_string[T []uint16 | []int32](device *SDL_hid_device, index int, str T, maxlen uint) int {
 	cDevice := cHidDevice(device)
 	cIndex := cInt(index)
-	cStr := (*cWchar)(unsafe.Pointer(&str[0]))
+
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&str))
+	cStr := (*cWchar)(unsafe.Pointer(sh.Data))
 	cMaxlen := cSize(maxlen)
 
 	cRet := C.SDL_hid_get_indexed_string(cDevice, cIndex, cStr, cMaxlen)
