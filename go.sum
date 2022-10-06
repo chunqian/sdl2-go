@@ -1,5 +1,5 @@
-github.com/chunqian/memory v0.0.0-20221005113947-12f5100d5664 h1:emsLlVSWRoCf0IkEAAa5U1+e5n+FYLojugs/4yeJo/Q=
-github.com/chunqian/memory v0.0.0-20221005113947-12f5100d5664/go.mod h1:zmRgPBkVnNjci7NQkhbOetncfT4H2XW1HUcvoxmNl9Q=
+github.com/chunqian/memory v0.0.0-20221006160030-edcfa8d1dd5c h1:g5+O8iXl0rz824eAw9atNFgDoL94SX8Ck6BsgMDU3aw=
+github.com/chunqian/memory v0.0.0-20221006160030-edcfa8d1dd5c/go.mod h1:zmRgPBkVnNjci7NQkhbOetncfT4H2XW1HUcvoxmNl9Q=
 github.com/chunqian/tinylog v0.0.0-20220925021251-4fb4b5a07353 h1:152xNFiS6/FPtZD/JBBAWG+io70Vz/kWkyc+vKBNLiE=
 github.com/chunqian/tinylog v0.0.0-20220925021251-4fb4b5a07353/go.mod h1:z4za+zJiIIN45kWlbGFFe7N1y92BbsL4M+fZR6eRPZI=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

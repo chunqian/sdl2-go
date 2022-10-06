@@ -3,7 +3,7 @@ module github.com/chunqian/sdl2-go
 go 1.18
 
 require (
-	github.com/chunqian/memory v0.0.0-20221005113947-12f5100d5664
+	github.com/chunqian/memory v0.0.0-20221006160030-edcfa8d1dd5c
 	github.com/chunqian/tinylog v0.0.0-20220925021251-4fb4b5a07353
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 )
