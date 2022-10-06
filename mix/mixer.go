@@ -193,7 +193,7 @@ func Mix_LoadMUSType_RW(src *SDL_RWops, type_ Mix_MusicType, freesrc int) (mus *
 }
 
 func Mix_QuickLoad_WAV(mem []byte) (chunk *Mix_Chunk) {
-	cMem := (*cUint8)(&mem[0])
+	cMem := (*cUint8)(unsafe.Pointer(&mem[0]))
 
 	cChunk := C.Mix_QuickLoad_WAV(cMem)
 	chunk = (*Mix_Chunk)(unsafe.Pointer(cChunk))

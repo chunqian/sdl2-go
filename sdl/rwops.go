@@ -160,7 +160,7 @@ func SDL_ReadBE64(rw *SDL_RWops) uint64 {
 	return uint64(C.SDL_ReadBE64(cRWops(rw)))
 }
 
-func SDL_LoadFile_RW(rw *SDL_RWops, freesrc SDL_bool) (data []byte, size int) {
+func SDL_LoadFile_RW(rw *SDL_RWops, size *int, freesrc SDL_bool) (data []byte) {
 	var cLen cSize
 	var cFreesrc cInt = 0
 
@@ -173,13 +173,13 @@ func SDL_LoadFile_RW(rw *SDL_RWops, freesrc SDL_bool) (data []byte, size int) {
 	sliceHeader.Cap = int(cLen)
 	sliceHeader.Len = int(cLen)
 	sliceHeader.Data = uintptr(cData)
-	size = int(cLen)
+	*size = int(cLen)
 	return
 }
 
-func SDL_LoadFile(file string) (data []byte, size int) {
+func SDL_LoadFile(file string, size *int) []byte {
 	rw := SDL_RWFromFile(file, "rb")
-	return SDL_LoadFile_RW(rw, SDL_TRUE)
+	return SDL_LoadFile_RW(rw, size, SDL_TRUE)
 }
 
 func SDL_WriteU8(rw *SDL_RWops, value uint8) uint {
