@@ -46,7 +46,6 @@ func main() {
 		log.Error("wav load failed.")
 	}
 	defer SDL_FreeWAV(sound.Data)
-	log.Info("sound len: {}", len(sound.Data))
 
 	want := SDL_AudioSpec{
 		Freq:     44100,
