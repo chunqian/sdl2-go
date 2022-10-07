@@ -61,7 +61,7 @@ func main() {
 	// 播放
 	SDL_PauseAudio(0)
 
-	window := SDL_CreateWindow("SDL2-Go Audio Wav",
+	window := SDL_CreateWindow("sdl2-go audio wav",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHigth, SDL_WINDOW_SHOWN)
 	defer SDL_DestroyWindow(window)
 	log.Info("window title: {}", SDL_GetWindowTitle(window))

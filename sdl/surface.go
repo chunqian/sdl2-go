@@ -150,7 +150,7 @@ func SDL_LoadBMP_RW(src *SDL_RWops, freeSrc SDL_bool) *SDL_Surface {
 	return surface
 }
 
-func LoadBMP(file string) *SDL_Surface {
+func SDL_LoadBMP(file string) *SDL_Surface {
 	return SDL_LoadBMP_RW(SDL_RWFromFile(file, "rb"), SDL_TRUE)
 }
 
