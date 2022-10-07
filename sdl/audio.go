@@ -160,14 +160,14 @@ func SDL_GetNumAudioDrivers() int {
 
 func SDL_GetAudioDriver(index int) string {
 	cStr := C.SDL_GetAudioDriver(cInt(index))
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func SDL_AudioInit(driverName string) int {
-	cDriverName := SDL_CreateCString(SDL_GetMemoryPool(), driverName)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cDriverName) // memory free
+	cDriverName := createCString(SDL_GetMemoryPool(), driverName)
+	defer destroyCString(SDL_GetMemoryPool(), cDriverName) // memory free
 
-	cRet := C.SDL_AudioInit(cDriverName.(*cChar))
+	cRet := C.SDL_AudioInit(cDriverName)
 	return int(cRet)
 }
 
@@ -177,7 +177,7 @@ func SDL_AudioQuit() {
 
 func SDL_GetCurrentAudioDriver() string {
 	cStr := C.SDL_GetCurrentAudioDriver()
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func SDL_OpenAudio(desired, obtained *SDL_AudioSpec) int {
@@ -192,17 +192,17 @@ func SDL_GetNumAudioDevices(isCapture int32) int {
 
 func SDL_GetAudioDeviceName(index int32, isCapture int32) string {
 	cStr := C.SDL_GetAudioDeviceName(cInt(index), cInt(isCapture))
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func SDL_OpenAudioDevice(device string, isCapture int32, desired, obtained *SDL_AudioSpec, allowedChanges int32) SDL_AudioDeviceID {
-	cDevice := SDL_CreateCString(SDL_GetMemoryPool(), device)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cDevice) // memory free
+	cDevice := createCString(SDL_GetMemoryPool(), device)
+	defer destroyCString(SDL_GetMemoryPool(), cDevice) // memory free
 
 	if device == "" {
 		cDevice = nil
 	}
-	cId := C.SDL_OpenAudioDevice(cDevice.(*cChar), cInt(isCapture), cAudioSpec(desired), cAudioSpec(obtained), cInt(allowedChanges))
+	cId := C.SDL_OpenAudioDevice(cDevice, cInt(isCapture), cAudioSpec(desired), cAudioSpec(obtained), cInt(allowedChanges))
 	return SDL_AudioDeviceID(cId)
 }
 
@@ -242,13 +242,13 @@ func SDL_LoadWAV(file string, spec *SDL_AudioSpec, audioBuf *[]uint8) *SDL_Audio
 	var cAudioBuf *cUint8
 	var audioLen uint32
 
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	cRB := SDL_CreateCString(SDL_GetMemoryPool(), "rb")
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cRB)   // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	cRB := createCString(SDL_GetMemoryPool(), "rb")
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	defer destroyCString(SDL_GetMemoryPool(), cRB)   // memory free
 
 	cAudioLen := (*cUint32)(unsafe.Pointer(&audioLen))
-	cSpec := C.SDL_LoadWAV_RW(C.SDL_RWFromFile(cFile.(*cChar), cRB.(*cChar)), 1, cAudioSpec(spec), &cAudioBuf, cAudioLen)
+	cSpec := C.SDL_LoadWAV_RW(C.SDL_RWFromFile(cFile, cRB), 1, cAudioSpec(spec), &cAudioBuf, cAudioLen)
 	dstSpec := (*SDL_AudioSpec)(unsafe.Pointer(cSpec))
 
 	sh := (*reflect.SliceHeader)(unsafe.Pointer(audioBuf))

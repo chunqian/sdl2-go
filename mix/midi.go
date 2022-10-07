@@ -26,7 +26,7 @@ var Mix_SoundFontOK Mix_SoundFontWatcher
 func callEachSoundFont(cStr *cChar, _ unsafe.Pointer) cInt {
 	var ret int
 	if Mix_SoundFontOK.callback != nil {
-		ret = Mix_SoundFontOK.callback(SDL_GoString(cStr), Mix_SoundFontOK.data)
+		ret = Mix_SoundFontOK.callback(createGoString(cStr), Mix_SoundFontOK.data)
 	}
 	return cInt(ret)
 }
@@ -39,14 +39,14 @@ func Mix_EachSoundFont(callback Mix_EachSoundFontCallback, data any) int {
 }
 
 func Mix_SetSoundFonts(paths string) bool {
-	cPaths := SDL_CreateCString(SDL_GetMemoryPool(), paths)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cPaths) // memory free
+	cPaths := createCString(SDL_GetMemoryPool(), paths)
+	defer destroyCString(SDL_GetMemoryPool(), cPaths) // memory free
 
-	cRet := C.Mix_SetSoundFonts(cPaths.(*cChar))
+	cRet := C.Mix_SetSoundFonts(cPaths)
 	return int(cRet) == 0
 }
 
 func Mix_GetSoundFonts() string {
 	cStr := C.Mix_GetSoundFonts()
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }

@@ -32,7 +32,8 @@ func cHidDevice(info *SDL_hid_device) *C.SDL_hid_device {
 }
 
 func (info *SDL_hid_device_info) PathAsString() string {
-	return SDL_GoString(info.Path)
+	cPath := (*cChar)(unsafe.Pointer(info.Path))
+	return createGoString(cPath)
 }
 
 func SDL_hid_init() int {
@@ -75,10 +76,10 @@ func SDL_hid_open[T []uint16 | []int32](vendorID, productID uint16, serialNumber
 }
 
 func SDL_hid_open_path(path string, exclusive SDL_bool) *SDL_hid_device {
-	cPath := SDL_CreateCString(SDL_GetMemoryPool(), path)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cPath)
+	cPath := createCString(SDL_GetMemoryPool(), path)
+	defer destroyCString(SDL_GetMemoryPool(), cPath)
 
-	cDevice := C.SDL_hid_open_path(cPath.(*cChar), cInt(exclusive))
+	cDevice := C.SDL_hid_open_path(cPath, cInt(exclusive))
 	return (*SDL_hid_device)(unsafe.Pointer(cDevice))
 }
 

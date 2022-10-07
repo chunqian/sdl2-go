@@ -7,10 +7,10 @@ import "C"
 import "unsafe"
 
 func SDL_SetClipboardText(text string) int {
-	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
+	cText := createCString(SDL_GetMemoryPool(), text)
+	defer destroyCString(SDL_GetMemoryPool(), cText) // memory free
 
-	cRet := C.SDL_SetClipboardText(cText.(*cChar))
+	cRet := C.SDL_SetClipboardText(cText)
 	return int(cRet)
 }
 
@@ -21,7 +21,7 @@ func SDL_GetClipboardText() string {
 	}
 	defer C.free(unsafe.Pointer(cText))
 
-	text := SDL_GoString(cText)
+	text := createGoString(cText)
 	return text
 }
 

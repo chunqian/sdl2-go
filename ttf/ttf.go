@@ -58,21 +58,21 @@ func TTF_ByteSwappedUNICODE(swap SDL_bool) {
 }
 
 func TTF_OpenFont(file string, size int) *TTF_Font {
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
 	cLen := cInt(size)
-	cFont := C.TTF_OpenFont(cFile.(*cChar), cLen)
+	cFont := C.TTF_OpenFont(cFile, cLen)
 	return (*TTF_Font)(unsafe.Pointer(cFont))
 }
 
 func TTF_OpenFontIndex(file string, size int, index int) *TTF_Font {
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
 	cLen := cInt(size)
 	cIndex := cLong(index)
-	cFont := C.TTF_OpenFontIndex(cFile.(*cChar), cLen, cIndex)
+	cFont := C.TTF_OpenFontIndex(cFile, cLen, cIndex)
 	return (*TTF_Font)(unsafe.Pointer(cFont))
 }
 
@@ -90,53 +90,53 @@ func TTF_OpenFontIndexRW(src *SDL_RWops, freesrc, size, index int) *TTF_Font {
 }
 
 func TTF_RenderUTF8_Solid(font *TTF_Font, text string, color SDL_Color) *SDL_Surface {
-	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
+	cText := createCString(SDL_GetMemoryPool(), text)
+	defer destroyCString(SDL_GetMemoryPool(), cText) // memory free
 
 	cColor := cColor(&color)
-	cSurface := C.TTF_RenderUTF8_Solid(cFont(font), cText.(*cChar), *cColor)
+	cSurface := C.TTF_RenderUTF8_Solid(cFont(font), cText, *cColor)
 	surface := (*SDL_Surface)(unsafe.Pointer(cSurface))
 	return surface
 }
 
 func TTF_RenderUTF8_Shaded(font *TTF_Font, text string, fg, bg SDL_Color) *SDL_Surface {
-	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
+	cText := createCString(SDL_GetMemoryPool(), text)
+	defer destroyCString(SDL_GetMemoryPool(), cText) // memory free
 
 	cFg := cColor(&fg)
 	cBg := cColor(&bg)
-	cSurface := C.TTF_RenderUTF8_Shaded(cFont(font), cText.(*cChar), *cFg, *cBg)
+	cSurface := C.TTF_RenderUTF8_Shaded(cFont(font), cText, *cFg, *cBg)
 	surface := (*SDL_Surface)(unsafe.Pointer(cSurface))
 	return surface
 }
 
 func TTF_RenderUTF8_Blended(font *TTF_Font, text string, color SDL_Color) *SDL_Surface {
-	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
+	cText := createCString(SDL_GetMemoryPool(), text)
+	defer destroyCString(SDL_GetMemoryPool(), cText) // memory free
 
 	cColor := cColor(&color)
-	cSurface := C.TTF_RenderUTF8_Blended(cFont(font), cText.(*cChar), *cColor)
+	cSurface := C.TTF_RenderUTF8_Blended(cFont(font), cText, *cColor)
 	surface := (*SDL_Surface)(unsafe.Pointer(cSurface))
 	return surface
 }
 
 func TTF_RenderUTF8_Blended_Wrapped(font *TTF_Font, text string, fg SDL_Color, wrapLength int) *SDL_Surface {
-	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
+	cText := createCString(SDL_GetMemoryPool(), text)
+	defer destroyCString(SDL_GetMemoryPool(), cText) // memory free
 
 	cFg := cColor(&fg)
-	cSurface := C.TTF_RenderUTF8_Blended_Wrapped(cFont(font), cText.(*cChar), *cFg, cUint32(wrapLength))
+	cSurface := C.TTF_RenderUTF8_Blended_Wrapped(cFont(font), cText, *cFg, cUint32(wrapLength))
 	surface := (*SDL_Surface)(unsafe.Pointer(cSurface))
 	return surface
 }
 
 func TTF_SizeUTF8(font *TTF_Font, text string, w, h *int32) int {
-	cText := SDL_CreateCString(SDL_GetMemoryPool(), text)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cText) // memory free
+	cText := createCString(SDL_GetMemoryPool(), text)
+	defer destroyCString(SDL_GetMemoryPool(), cText) // memory free
 
 	cW := (*cInt)(unsafe.Pointer(w))
 	cH := (*cInt)(unsafe.Pointer(h))
-	cRet := C.TTF_SizeUTF8(cFont(font), cText.(*cChar), cW, cH)
+	cRet := C.TTF_SizeUTF8(cFont(font), cText, cW, cH)
 	return int(cRet)
 }
 
@@ -238,7 +238,7 @@ func TTF_FontFaceIsFixedWidth(font *TTF_Font) bool {
 
 func TTF_FontFaceFamilyName(font *TTF_Font) string {
 	cFname := C.TTF_FontFaceFamilyName(cFont(font))
-	fname := SDL_GoString(cFname)
+	fname := createGoString(cFname)
 	return fname
 }
 

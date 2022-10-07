@@ -58,18 +58,18 @@ func IMG_LoadTyped_RW(src *SDL_RWops, freesrc SDL_bool, type_ string) *SDL_Surfa
 	cSrc := cRWops(src)
 	cFreesrc := cInt(freesrc)
 
-	cType := SDL_CreateCString(SDL_GetMemoryPool(), type_)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cType) // memory free
+	cType := createCString(SDL_GetMemoryPool(), type_)
+	defer destroyCString(SDL_GetMemoryPool(), cType) // memory free
 
-	cSurface := C.IMG_LoadTyped_RW(cSrc, cFreesrc, cType.(*cChar))
+	cSurface := C.IMG_LoadTyped_RW(cSrc, cFreesrc, cType)
 	return (*SDL_Surface)(unsafe.Pointer(cSurface))
 }
 
 func IMG_Load(file string) *SDL_Surface {
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cSurface := C.IMG_Load(cFile.(*cChar))
+	cSurface := C.IMG_Load(cFile)
 	return (*SDL_Surface)(unsafe.Pointer(cSurface))
 }
 
@@ -83,10 +83,10 @@ func IMG_Load_RW(src *SDL_RWops, freesrc SDL_bool) *SDL_Surface {
 func IMG_LoadTexture(renderer *SDL_Renderer, file string) *SDL_Texture {
 	cRenderer := cRenderer(renderer)
 
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cSurface := C.IMG_LoadTexture(cRenderer, cFile.(*cChar))
+	cSurface := C.IMG_LoadTexture(cRenderer, cFile)
 	return (*SDL_Texture)(unsafe.Pointer(cSurface))
 }
 
@@ -259,20 +259,20 @@ func IMG_LoadWEBP_RW(src *SDL_RWops) *SDL_Surface {
 }
 
 func IMG_ReadXPMFromArray(xpm string) *SDL_Surface {
-	cXpm := SDL_CreateCString(SDL_GetMemoryPool(), xpm)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cXpm) // memory free
+	cXpm := createCString(SDL_GetMemoryPool(), xpm)
+	defer destroyCString(SDL_GetMemoryPool(), cXpm) // memory free
 
-	cSurface := C.IMG_ReadXPMFromArray((**cChar)(unsafe.Pointer(&cXpm)))
+	cSurface := C.IMG_ReadXPMFromArray(&cXpm)
 	return (*SDL_Surface)(unsafe.Pointer(cSurface))
 }
 
 func IMG_SavePNG(surface *SDL_Surface, file string) int {
 	cSurface := cSurface(surface)
 
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cRet := C.IMG_SavePNG(cSurface, cFile.(*cChar))
+	cRet := C.IMG_SavePNG(cSurface, cFile)
 	return int(cRet)
 }
 

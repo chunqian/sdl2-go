@@ -47,7 +47,7 @@ func SDL_GetVersion(v *SDL_version) {
 }
 
 func SDL_GetRevision() string {
-	return SDL_GoString(C.SDL_GetRevision())
+	return createGoString(C.SDL_GetRevision())
 }
 
 func GetRevisionNumber() int {

@@ -57,5 +57,5 @@ func SDL_WasInit(flags uint32) uint32 {
 }
 
 func SDL_GetPlatform() string {
-	return SDL_GoString(C.SDL_GetPlatform())
+	return createGoString(C.SDL_GetPlatform())
 }

@@ -16,7 +16,7 @@ func SDL_GetPreferredLocales() (locale *SDL_Locale) {
 	if cLocale == nil {
 		return nil
 	}
-	locale.Language = SDL_GoString(cLocale.language)
-	locale.Country = SDL_GoString(cLocale.country)
+	locale.Language = createGoString(cLocale.language)
+	locale.Country = createGoString(cLocale.country)
 	return
 }

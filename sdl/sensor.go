@@ -45,7 +45,7 @@ func SDL_NumSensors() int {
 
 func SDL_SensorGetDeviceName(deviceIndex int) string {
 	cName := C.SDL_SensorGetDeviceName(cInt(deviceIndex))
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_SensorGetDeviceType(deviceIndex int) SDL_SensorType {
@@ -75,7 +75,7 @@ func SDL_SensorFromInstanceID(id SDL_SensorID) *SDL_Sensor {
 
 func SDL_SensorGetName(sensor *SDL_Sensor) string {
 	cName := C.SDL_SensorGetName(cSensor(sensor))
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_SensorGetType(sensor *SDL_Sensor) SDL_SensorType {

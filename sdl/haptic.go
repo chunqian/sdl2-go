@@ -146,7 +146,7 @@ func SDL_HapticName(index int) string {
 	if name == nil {
 		return ""
 	}
-	return SDL_GoString(name)
+	return createGoString(name)
 }
 
 func SDL_HapticOpen(index int) *SDL_Haptic {

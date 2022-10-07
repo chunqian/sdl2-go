@@ -193,7 +193,7 @@ func SDL_GetDisplayName(displayIndex int) string {
 	if cName == nil {
 		return ""
 	}
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_GetNumVideoDisplays() int {
@@ -208,14 +208,14 @@ func SDL_GetNumVideoDrivers() int {
 
 func SDL_GetVideoDriver(index int) string {
 	cStr := C.SDL_GetVideoDriver(cInt(index))
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func SDL_VideoInit(driverName string) int {
-	cDriverName := SDL_CreateCString(SDL_GetMemoryPool(), driverName)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cDriverName) // memory free
+	cDriverName := createCString(SDL_GetMemoryPool(), driverName)
+	defer destroyCString(SDL_GetMemoryPool(), cDriverName) // memory free
 
-	cRet := C.SDL_VideoInit(cDriverName.(*cChar))
+	cRet := C.SDL_VideoInit(cDriverName)
 	return int(cRet)
 }
 
@@ -228,7 +228,7 @@ func SDL_GetCurrentVideoDriver() string {
 	if cName == nil {
 		return ""
 	}
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_GetNumDisplayModes(displayIndex int) int {
@@ -311,10 +311,10 @@ func SDL_GetWindowPixelFormat(window *SDL_Window) uint32 {
 }
 
 func SDL_CreateWindow(title string, x, y, w, h int32, flags SDL_WindowFlags) *SDL_Window {
-	cTitle := SDL_CreateCString(SDL_GetMemoryPool(), title)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cTitle) // memory free
+	cTitle := createCString(SDL_GetMemoryPool(), title)
+	defer destroyCString(SDL_GetMemoryPool(), cTitle) // memory free
 
-	var cWindow = C.SDL_CreateWindow(cTitle.(*cChar), cInt(x), cInt(y), cInt(w), cInt(h), cUint(flags))
+	var cWindow = C.SDL_CreateWindow(cTitle, cInt(x), cInt(y), cInt(w), cInt(h), cUint(flags))
 	if cWindow == nil {
 		return nil
 	}
@@ -353,15 +353,15 @@ func SDL_GetWindowFlags(window *SDL_Window) SDL_WindowFlags {
 }
 
 func SDL_SetWindowTitle(window *SDL_Window, title string) {
-	cTitle := SDL_CreateCString(SDL_GetMemoryPool(), title)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cTitle) // memory free
+	cTitle := createCString(SDL_GetMemoryPool(), title)
+	defer destroyCString(SDL_GetMemoryPool(), cTitle) // memory free
 
-	C.SDL_SetWindowTitle(cWindow(window), cTitle.(*cChar))
+	C.SDL_SetWindowTitle(cWindow(window), cTitle)
 }
 
 func SDL_GetWindowTitle(window *SDL_Window) string {
 	cTitle := C.SDL_GetWindowTitle(cWindow(window))
-	return SDL_GoString(cTitle)
+	return createGoString(cTitle)
 }
 
 func SDL_SetWindowIcon(window *SDL_Window, icon *SDL_Surface) {
@@ -369,17 +369,17 @@ func SDL_SetWindowIcon(window *SDL_Window, icon *SDL_Surface) {
 }
 
 func SDL_SetWindowData(window *SDL_Window, name string, userdata unsafe.Pointer) unsafe.Pointer {
-	cName := SDL_CreateCString(SDL_GetMemoryPool(), name)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cName) // memory free
+	cName := createCString(SDL_GetMemoryPool(), name)
+	defer destroyCString(SDL_GetMemoryPool(), cName) // memory free
 
-	return C.SDL_SetWindowData(cWindow(window), cName.(*cChar), userdata)
+	return C.SDL_SetWindowData(cWindow(window), cName, userdata)
 }
 
 func SDL_GetWindowData(window *SDL_Window, name string) unsafe.Pointer {
-	cName := SDL_CreateCString(SDL_GetMemoryPool(), name)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cName) // memory free
+	cName := createCString(SDL_GetMemoryPool(), name)
+	defer destroyCString(SDL_GetMemoryPool(), cName) // memory free
 
-	cRet := C.SDL_GetWindowData(cWindow(window), cName.(*cChar))
+	cRet := C.SDL_GetWindowData(cWindow(window), cName)
 	return cRet
 }
 
@@ -536,18 +536,18 @@ func SDL_DisableScreenSaver() {
 }
 
 func SDL_GL_LoadLibrary(path string) int {
-	cPath := SDL_CreateCString(SDL_GetMemoryPool(), path)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cPath) // memory free
+	cPath := createCString(SDL_GetMemoryPool(), path)
+	defer destroyCString(SDL_GetMemoryPool(), cPath) // memory free
 
-	cRet := C.SDL_GL_LoadLibrary(cPath.(*cChar))
+	cRet := C.SDL_GL_LoadLibrary(cPath)
 	return int(cRet)
 }
 
 func SDL_GL_GetProcAddress(proc string) unsafe.Pointer {
-	cProc := SDL_CreateCString(SDL_GetMemoryPool(), proc)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cProc) // memory free
+	cProc := createCString(SDL_GetMemoryPool(), proc)
+	defer destroyCString(SDL_GetMemoryPool(), cProc) // memory free
 
-	return C.SDL_GL_GetProcAddress(cProc.(*cChar))
+	return C.SDL_GL_GetProcAddress(cProc)
 }
 
 func SDL_GL_UnloadLibrary() {
@@ -555,10 +555,10 @@ func SDL_GL_UnloadLibrary() {
 }
 
 func SDL_GL_ExtensionSupported(extension string) bool {
-	cExtension := SDL_CreateCString(SDL_GetMemoryPool(), extension)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cExtension) // memory free
+	cExtension := createCString(SDL_GetMemoryPool(), extension)
+	defer destroyCString(SDL_GetMemoryPool(), cExtension) // memory free
 
-	cRet := C.SDL_GL_ExtensionSupported(cExtension.(*cChar))
+	cRet := C.SDL_GL_ExtensionSupported(cExtension)
 	return cRet != 0
 }
 

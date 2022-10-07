@@ -4,6 +4,12 @@ package mix
 #include "mixer_wrapper.h"
 */
 import "C"
+import (
+	"reflect"
+	"unsafe"
+
+	. "github.com/chunqian/memory"
+)
 
 // c basic
 type (
@@ -41,3 +47,29 @@ type (
 
 // c struct
 type Mix_Music C.Mix_Music
+
+func createCString(mp *PX_memorypool, s string) *cChar {
+	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
+	n := PX_uint(sh.Len)
+	p := MP_Malloc(mp, n+1)
+	PX_memcpy(p, unsafe.Pointer(sh.Data), PX_int(n))
+	*(*cChar)(unsafe.Pointer(uintptr(p) + uintptr(n))) = '\x00'
+	return (*cChar)(p)
+}
+
+func destroyCString(mp *PX_memorypool, cStr *cChar) {
+	MP_Free(mp, unsafe.Pointer(cStr))
+}
+
+func createGoString(cStr *cChar) string {
+	len := PX_strlen((*PX_char)(unsafe.Pointer(cStr)))
+
+	var slice []uint8
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
+	sh.Data = uintptr(unsafe.Pointer(cStr))
+	sh.Len = int(len)
+	sh.Cap = int(len)
+	src := *(*[]byte)(unsafe.Pointer(sh))
+
+	return string(src)
+}

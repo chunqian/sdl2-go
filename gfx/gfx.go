@@ -679,25 +679,25 @@ func StringColor(renderer *SDL_Renderer, x, y int32, s string, color SDL_Color) 
 	cX := cInt16(x)
 	cY := cInt16(y)
 
-	cS := SDL_CreateCString(SDL_GetMemoryPool(), s)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cS) // memory free
+	cS := createCString(SDL_GetMemoryPool(), s)
+	defer destroyCString(SDL_GetMemoryPool(), cS) // memory free
 
 	cColor := cUint32(gfxColor(color))
-	return C.stringColor(cRenderer(renderer), cX, cY, cS.(*cChar), cColor) == 0
+	return C.stringColor(cRenderer(renderer), cX, cY, cS, cColor) == 0
 }
 
 func StringRGBA(renderer *SDL_Renderer, x, y int32, s string, r, g, b, a uint8) bool {
 	cX := cInt16(x)
 	cY := cInt16(y)
 
-	cS := SDL_CreateCString(SDL_GetMemoryPool(), s)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cS) // memory free
+	cS := createCString(SDL_GetMemoryPool(), s)
+	defer destroyCString(SDL_GetMemoryPool(), cS) // memory free
 
 	cR := cUint8(r)
 	cG := cUint8(g)
 	cB := cUint8(b)
 	cA := cUint8(a)
-	return C.stringRGBA(cRenderer(renderer), cX, cY, cS.(*cChar), cR, cG, cB, cA) == 0
+	return C.stringRGBA(cRenderer(renderer), cX, cY, cS, cR, cG, cB, cA) == 0
 }
 
 func SDL_imageFilterMMXdetect() bool {

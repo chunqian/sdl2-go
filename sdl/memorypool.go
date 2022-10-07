@@ -9,12 +9,12 @@ import (
 )
 
 const memorySize = 1024 * 1024 * 20 // 20M
-var calcBuffer [memorySize]C.char
+var calcBuffer [memorySize]PX_char
 var memoryPool PX_memorypool
 
 func init() {
 	// 内存池初始化
-	calcBuffer = [memorySize]C.char{C.char(0)}
+	calcBuffer = [memorySize]PX_char{PX_char(0)}
 	memoryPool = MP_Create(unsafe.Pointer(&calcBuffer), PX_uint(memorySize))
 }
 
@@ -31,32 +31,6 @@ func SDL_malloc(mp *PX_memorypool, maxlen int) unsafe.Pointer {
 
 func SDL_free(mp *PX_memorypool, paddr unsafe.Pointer) {
 	MP_Free(mp, paddr)
-}
-
-func SDL_CreateCString(mp *PX_memorypool, s string) any {
-	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
-	n := PX_uint(sh.Len)
-	p := MP_Malloc(mp, n+1)
-	PX_memcpy(p, unsafe.Pointer(sh.Data), PX_int(n))
-	*(*C.char)(unsafe.Pointer(uintptr(p) + uintptr(n))) = '\x00'
-	return (*C.char)(p)
-}
-
-func SDL_DestroyCString(mp *PX_memorypool, cStr any) {
-	MP_Free(mp, unsafe.Pointer(cStr.(*C.char)))
-}
-
-func SDL_GoString(cStr any) string {
-	len := PX_strlen((*PX_char)(unsafe.Pointer(cStr.(*C.char))))
-
-	var slice []uint8
-	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
-	sh.Data = uintptr(unsafe.Pointer(cStr.(*C.char)))
-	sh.Len = int(len)
-	sh.Cap = int(len)
-	src := *(*[]byte)(unsafe.Pointer(sh))
-
-	return string(src)
 }
 
 func SDL_CreateDataStructures[T SDL_DataStructures](mp *PX_memorypool, d T) *T {

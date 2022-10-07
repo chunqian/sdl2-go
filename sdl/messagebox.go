@@ -91,21 +91,21 @@ func (data *SDL_MessageBoxData) TitleAsString() string {
 	cStr := (*cChar)(unsafe.Pointer(data.Title))
 	defer C.free(unsafe.Pointer(cStr))
 
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func (data *SDL_MessageBoxData) MessageAsString() string {
 	cStr := (*cChar)(unsafe.Pointer(data.Message))
 	defer C.free(unsafe.Pointer(cStr))
 
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func (button *SDL_MessageBoxButtonData) TextAsString() string {
 	cStr := (*cChar)(unsafe.Pointer(button.Text))
 	defer C.free(unsafe.Pointer(cStr))
 
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 type MessageBoxButtonData struct {
@@ -125,41 +125,41 @@ type MessageBoxData struct {
 }
 
 func SDL_ShowSimpleMessageBox(flags SDL_MessageBoxFlags, title, message string, window *SDL_Window) int {
-	cTitle := SDL_CreateCString(SDL_GetMemoryPool(), title)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cTitle)
+	cTitle := createCString(SDL_GetMemoryPool(), title)
+	defer destroyCString(SDL_GetMemoryPool(), cTitle)
 
-	cMessage := SDL_CreateCString(SDL_GetMemoryPool(), message)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cMessage)
+	cMessage := createCString(SDL_GetMemoryPool(), message)
+	defer destroyCString(SDL_GetMemoryPool(), cMessage)
 
-	cRet := C.SDL_ShowSimpleMessageBox(cUint32(flags), cTitle.(*cChar), cMessage.(*cChar), cWindow(window))
+	cRet := C.SDL_ShowSimpleMessageBox(cUint32(flags), cTitle, cMessage, cWindow(window))
 	return int(cRet)
 }
 
 func SDL_ShowMessageBox(data *MessageBoxData) (buttonid int32) {
-	cTitle := SDL_CreateCString(SDL_GetMemoryPool(), data.Title)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cTitle)
+	cTitle := createCString(SDL_GetMemoryPool(), data.Title)
+	defer destroyCString(SDL_GetMemoryPool(), cTitle)
 
-	cMessage := SDL_CreateCString(SDL_GetMemoryPool(), data.Message)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cMessage)
+	cMessage := createCString(SDL_GetMemoryPool(), data.Message)
+	defer destroyCString(SDL_GetMemoryPool(), cMessage)
 
 	var cbuttons []SDL_MessageBoxButtonData
 	var cbtntexts []*cChar
 	defer func(texts []*cChar) {
 		for _, t := range texts {
-			defer SDL_DestroyCString(SDL_GetMemoryPool(), t)
+			defer destroyCString(SDL_GetMemoryPool(), t)
 		}
 	}(cbtntexts)
 
 	for _, btn := range data.Buttons {
-		ctext := SDL_CreateCString(SDL_GetMemoryPool(), btn.Text)
+		ctext := createCString(SDL_GetMemoryPool(), btn.Text)
 		cbtn := SDL_MessageBoxButtonData{
 			Flags:    btn.Flags,
 			Buttonid: btn.Buttonid,
-			Text:     (*int8)(unsafe.Pointer(ctext.(*cChar))),
+			Text:     (*int8)(unsafe.Pointer(ctext)),
 		}
 
 		cbuttons = append(cbuttons, cbtn)
-		cbtntexts = append(cbtntexts, ctext.(*cChar))
+		cbtntexts = append(cbtntexts, ctext)
 	}
 
 	var buttonPtr *SDL_MessageBoxButtonData
@@ -169,8 +169,8 @@ func SDL_ShowMessageBox(data *MessageBoxData) (buttonid int32) {
 	data2 := &SDL_MessageBoxData{
 		Flags:       data.Flags,
 		Window:      data.Window,
-		Title:       (*int8)(unsafe.Pointer(cTitle.(*cChar))),
-		Message:     (*int8)(unsafe.Pointer(cMessage.(*cChar))),
+		Title:       (*int8)(unsafe.Pointer(cTitle)),
+		Message:     (*int8)(unsafe.Pointer(cMessage)),
 		Numbuttons:  data.Numbuttons,
 		Buttons:     buttonPtr,
 		ColorScheme: data.ColorScheme,

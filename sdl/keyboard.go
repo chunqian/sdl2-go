@@ -56,27 +56,27 @@ func SDL_GetScancodeFromKey(code SDL_Keycode) SDL_Scancode {
 
 func SDL_GetScancodeName(code SDL_Scancode) string {
 	cName := C.SDL_GetScancodeName(cScancode(code))
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_GetScancodeFromName(name string) SDL_Scancode {
-	cName := SDL_CreateCString(SDL_GetMemoryPool(), name)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cName)
+	cName := createCString(SDL_GetMemoryPool(), name)
+	defer destroyCString(SDL_GetMemoryPool(), cName)
 
-	cScancode := C.SDL_GetScancodeFromName(cName.(*cChar))
+	cScancode := C.SDL_GetScancodeFromName(cName)
 	return SDL_Scancode(cScancode)
 }
 
 func SDL_GetKeyName(code SDL_Keycode) string {
 	cKeyname := C.SDL_GetKeyName(cKeycode(code))
-	return SDL_GoString(cKeyname)
+	return createGoString(cKeyname)
 }
 
 func SDL_GetKeyFromName(name string) SDL_Keycode {
-	cName := SDL_CreateCString(SDL_GetMemoryPool(), name)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cName)
+	cName := createCString(SDL_GetMemoryPool(), name)
+	defer destroyCString(SDL_GetMemoryPool(), cName)
 
-	cKeycode := C.SDL_GetKeyFromName(cName.(*cChar))
+	cKeycode := C.SDL_GetKeyFromName(cName)
 	return SDL_Keycode(cKeycode)
 }
 

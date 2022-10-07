@@ -93,10 +93,10 @@ func cGameController(ctrl *SDL_GameController) *C.SDL_GameController {
 }
 
 func SDL_GameControllerAddMapping(mappingString string) int {
-	cMappingString := SDL_CreateCString(SDL_GetMemoryPool(), mappingString)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cMappingString)
+	cMappingString := createCString(SDL_GetMemoryPool(), mappingString)
+	defer destroyCString(SDL_GetMemoryPool(), cMappingString)
 
-	cRet := C.SDL_GameControllerAddMapping(cMappingString.(*cChar))
+	cRet := C.SDL_GameControllerAddMapping(cMappingString)
 	return int(cRet)
 }
 
@@ -109,7 +109,7 @@ func SDL_GameControllerMappingForIndex(index int) string {
 	cMappingString := C.SDL_GameControllerMappingForIndex(cInt(index))
 	defer C.free(unsafe.Pointer(cMappingString))
 
-	return SDL_GoString(cMappingString)
+	return createGoString(cMappingString)
 }
 
 func SDL_GameControllerMappingForGUID(guid SDL_JoystickGUID) string {
@@ -117,7 +117,7 @@ func SDL_GameControllerMappingForGUID(guid SDL_JoystickGUID) string {
 	cMappingString := C.SDL_GameControllerMappingForGUID(*cGuid)
 	defer C.free(unsafe.Pointer(cMappingString))
 
-	return SDL_GoString(cMappingString)
+	return createGoString(cMappingString)
 }
 
 func SDL_IsGameController(index int) bool {
@@ -127,12 +127,12 @@ func SDL_IsGameController(index int) bool {
 
 func SDL_GameControllerNameForIndex(index int) string {
 	cRet := C.SDL_GameControllerNameForIndex(cInt(index))
-	return SDL_GoString(cRet)
+	return createGoString(cRet)
 }
 
 func SDL_GameControllerPathForIndex(index int) string {
 	cRet := C.SDL_GameControllerPathForIndex(cInt(index))
-	return SDL_GoString(cRet)
+	return createGoString(cRet)
 }
 
 func SDL_GameControllerTypeForIndex(index int) SDL_GameControllerType {
@@ -144,7 +144,7 @@ func SDL_GameControllerMappingForDeviceIndex(index int) string {
 	cMappingString := C.SDL_GameControllerMappingForDeviceIndex(cInt(index))
 	defer C.free(unsafe.Pointer(cMappingString))
 
-	return SDL_GoString(cMappingString)
+	return createGoString(cMappingString)
 }
 
 func SDL_GameControllerOpen(index int) *SDL_GameController {
@@ -164,12 +164,12 @@ func SDL_GameControllerFromPlayerIndex(playerIndex int) *SDL_GameController {
 
 func SDL_GameControllerName(ctrl *SDL_GameController) string {
 	cName := C.SDL_GameControllerName(cGameController(ctrl))
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_GameControllerPath(ctrl *SDL_GameController) string {
 	cPath := C.SDL_GameControllerPath(cGameController(ctrl))
-	return SDL_GoString(cPath)
+	return createGoString(cPath)
 }
 
 func SDL_GameControllerGetType(ctrl *SDL_GameController) SDL_GameControllerType {
@@ -208,7 +208,7 @@ func SDL_GameControllerGetFirmwareVersion(ctrl *SDL_GameController) uint16 {
 
 func SDL_GameControllerGetSerial(ctrl *SDL_GameController) string {
 	cSerial := C.SDL_GameControllerGetSerial(cGameController(ctrl))
-	return SDL_GoString(cSerial)
+	return createGoString(cSerial)
 }
 
 func SDL_GameControllerGetAttached(ctrl *SDL_GameController) bool {
@@ -220,7 +220,7 @@ func SDL_GameControllerMapping(ctrl *SDL_GameController) string {
 	cMappingString := C.SDL_GameControllerMapping(cGameController(ctrl))
 	defer C.free(unsafe.Pointer(cMappingString))
 
-	return SDL_GoString(cMappingString)
+	return createGoString(cMappingString)
 }
 
 func SDL_GameControllerGetJoystick(ctrl *SDL_GameController) *SDL_Joystick {
@@ -238,16 +238,16 @@ func SDL_GameControllerUpdate() {
 }
 
 func SDL_GameControllerGetAxisFromString(pchString string) SDL_GameControllerAxis {
-	cPchString := SDL_CreateCString(SDL_GetMemoryPool(), pchString)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cPchString)
+	cPchString := createCString(SDL_GetMemoryPool(), pchString)
+	defer destroyCString(SDL_GetMemoryPool(), cPchString)
 
-	cRet := C.SDL_GameControllerGetAxisFromString(cPchString.(*cChar))
+	cRet := C.SDL_GameControllerGetAxisFromString(cPchString)
 	return SDL_GameControllerAxis(cRet)
 }
 
 func SDL_GameControllerGetStringForAxis(axis SDL_GameControllerAxis) string {
 	cRet := C.SDL_GameControllerGetStringForAxis(cGameControllerAxis(axis))
-	return SDL_GoString(cRet)
+	return createGoString(cRet)
 }
 
 func SDL_GameControllerGetBindForAxis(ctrl *SDL_GameController, axis SDL_GameControllerAxis) SDL_GameControllerButtonBind {
@@ -266,16 +266,16 @@ func SDL_GameControllerGetAxis(ctrl *SDL_GameController, axis SDL_GameController
 }
 
 func SDL_GameControllerGetButtonFromString(pchString string) SDL_GameControllerButton {
-	cPchString := SDL_CreateCString(SDL_GetMemoryPool(), pchString)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cPchString)
+	cPchString := createCString(SDL_GetMemoryPool(), pchString)
+	defer destroyCString(SDL_GetMemoryPool(), cPchString)
 
-	cRet := C.SDL_GameControllerGetButtonFromString(cPchString.(*cChar))
+	cRet := C.SDL_GameControllerGetButtonFromString(cPchString)
 	return SDL_GameControllerButton(cRet)
 }
 
 func SDL_GameControllerGetStringForButton(btn SDL_GameControllerButton) string {
 	cRet := C.SDL_GameControllerGetStringForButton(cGameControllerButton(btn))
-	return SDL_GoString(cRet)
+	return createGoString(cRet)
 }
 
 func SDL_GameControllerGetBindForButton(ctrl *SDL_GameController, btn SDL_GameControllerButton) SDL_GameControllerButtonBind {
@@ -408,13 +408,13 @@ func SDL_GameControllerHasRumbleTriggers(ctrl *SDL_GameController) bool {
 func SDL_GameControllerGetAppleSFSymbolsNameForButton(ctrl *SDL_GameController, button SDL_GameControllerButton) (sfSymbolsName string) {
 	cButton := cGameControllerButton(button)
 	cSfSymbolsName := C.SDL_GameControllerGetAppleSFSymbolsNameForButton(cGameController(ctrl), cButton)
-	sfSymbolsName = SDL_GoString(cSfSymbolsName)
+	sfSymbolsName = createGoString(cSfSymbolsName)
 	return
 }
 
 func SDL_GameControllerGetAppleSFSymbolsNameForAxis(ctrl *SDL_GameController, axis SDL_GameControllerAxis) (sfSymbolsName string) {
 	cAxis := cGameControllerAxis(axis)
 	cSfSymbolsName := C.SDL_GameControllerGetAppleSFSymbolsNameForAxis(cGameController(ctrl), cAxis)
-	sfSymbolsName = SDL_GoString(cSfSymbolsName)
+	sfSymbolsName = createGoString(cSfSymbolsName)
 	return
 }

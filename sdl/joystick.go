@@ -71,12 +71,12 @@ func SDL_NumJoysticks() int {
 
 func SDL_JoystickNameForIndex(index int) string {
 	cStr := C.SDL_JoystickNameForIndex(cInt(index))
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func SDL_JoystickPathForIndex(index int) string {
 	cStr := C.SDL_JoystickPathForIndex(cInt(index))
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func SDL_JoystickGetDevicePlayerIndex(index int) int {
@@ -118,14 +118,14 @@ func SDL_JoystickGetGUIDString(guid SDL_JoystickGUID, pszGUID []byte, cbGUID int
 	cGuid := cJoystickGUID(&guid)
 	cPszGUID := (*cChar)(unsafe.Pointer(&pszGUID[0]))
 	C.SDL_JoystickGetGUIDString(*cGuid, cPszGUID, cInt(cbGUID))
-	return SDL_GoString(pszGUID)
+	return createGoString(cPszGUID)
 }
 
 func SDL_JoystickGetGUIDFromString(pchGUID string) SDL_JoystickGUID {
-	cPchGUID := SDL_CreateCString(SDL_GetMemoryPool(), pchGUID)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cPchGUID)
+	cPchGUID := createCString(SDL_GetMemoryPool(), pchGUID)
+	defer destroyCString(SDL_GetMemoryPool(), cPchGUID)
 
-	cJoyGuid := C.SDL_JoystickGetGUIDFromString(cPchGUID.(*cChar))
+	cJoyGuid := C.SDL_JoystickGetGUIDFromString(cPchGUID)
 	return *(*SDL_JoystickGUID)(unsafe.Pointer(&cJoyGuid))
 }
 
@@ -200,12 +200,12 @@ func SDL_UnlockJoysticks() {
 
 func SDL_JoystickName(joy *SDL_Joystick) string {
 	cName := C.SDL_JoystickName(cJoystick(joy))
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_JoystickPath(joy *SDL_Joystick) string {
 	cPath := C.SDL_JoystickPath(cJoystick(joy))
-	return SDL_GoString(cPath)
+	return createGoString(cPath)
 }
 
 func SDL_JoystickGetPlayerIndex(joy *SDL_Joystick) int {
@@ -244,7 +244,7 @@ func SDL_JoystickGetFirmwareVersion(joy *SDL_Joystick) uint16 {
 
 func SDL_JoystickGetSerial(joy *SDL_Joystick) string {
 	cSerial := C.SDL_JoystickGetSerial(cJoystick(joy))
-	return SDL_GoString(cSerial)
+	return createGoString(cSerial)
 }
 
 func SDL_JoystickGetType(joy *SDL_Joystick) SDL_JoystickType {

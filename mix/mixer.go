@@ -115,8 +115,8 @@ func Mix_OpenAudioDevice(frequency int, format int, channels, chunksize int, dev
 	cChunksize := cInt(chunksize)
 	cAllowedChanges := cInt(allowedChanges)
 
-	cDevice := SDL_CreateCString(SDL_GetMemoryPool(), device)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cDevice) // memory free
+	cDevice := createCString(SDL_GetMemoryPool(), device)
+	defer destroyCString(SDL_GetMemoryPool(), cDevice) // memory free
 
 	if device == "" {
 		// Passing in a device name of NULL requests the most reasonable default
@@ -124,7 +124,7 @@ func Mix_OpenAudioDevice(frequency int, format int, channels, chunksize int, dev
 		cDevice = nil
 	}
 
-	cRet := C.Mix_OpenAudioDevice(cFrequency, cFormat, cChannels, cChunksize, cDevice.(*cChar), cAllowedChanges)
+	cRet := C.Mix_OpenAudioDevice(cFrequency, cFormat, cChannels, cChunksize, cDevice, cAllowedChanges)
 	return int(cRet)
 }
 
@@ -152,23 +152,23 @@ func Mix_LoadWAV_RW(src *SDL_RWops, freesrc SDL_bool) (chunk *Mix_Chunk) {
 }
 
 func Mix_LoadWAV(file string) (chunk *Mix_Chunk) {
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cRB := SDL_CreateCString(SDL_GetMemoryPool(), "rb")
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cRB) // memory free
+	cRB := createCString(SDL_GetMemoryPool(), "rb")
+	defer destroyCString(SDL_GetMemoryPool(), cRB) // memory free
 
 	// why doesn't this call Mix_LoadWAV ?
-	cChunk := C.Mix_LoadWAV_RW(C.SDL_RWFromFile(cFile.(*cChar), cRB.(*cChar)), 1)
+	cChunk := C.Mix_LoadWAV_RW(C.SDL_RWFromFile(cFile, cRB), 1)
 	chunk = (*Mix_Chunk)(unsafe.Pointer(cChunk))
 	return
 }
 
 func Mix_LoadMUS(file string) (mus *Mix_Music) {
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
 
-	cMus := C.Mix_LoadMUS(cFile.(*cChar))
+	cMus := C.Mix_LoadMUS(cFile)
 	mus = (*Mix_Music)(unsafe.Pointer(cMus))
 	return
 }
@@ -477,10 +477,10 @@ func Mix_PlayingMusic() bool {
 }
 
 func Mix_SetMusicCMD(command string) int {
-	cCommand := SDL_CreateCString(SDL_GetMemoryPool(), command)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cCommand) // memory free
+	cCommand := createCString(SDL_GetMemoryPool(), command)
+	defer destroyCString(SDL_GetMemoryPool(), cCommand) // memory free
 
-	cRet := C.Mix_SetMusicCMD(cCommand.(*cChar))
+	cRet := C.Mix_SetMusicCMD(cCommand)
 	return int(cRet)
 }
 

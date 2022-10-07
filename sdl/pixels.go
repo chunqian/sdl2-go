@@ -315,7 +315,7 @@ func SDL_GetPixelFormatName(format uint) string {
 	if cName == nil {
 		return ""
 	}
-	return SDL_GoString(cName)
+	return createGoString(cName)
 }
 
 func SDL_PixelFormatEnumToMasks(format uint, bpp *int, rmask, gmask, bmask, amask *uint32) bool {

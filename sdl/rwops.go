@@ -29,12 +29,12 @@ func cRWops(rw *SDL_RWops) *C.SDL_RWops {
 }
 
 func SDL_RWFromFile(file, mode string) *SDL_RWops {
-	cFile := SDL_CreateCString(SDL_GetMemoryPool(), file)
-	cMode := SDL_CreateCString(SDL_GetMemoryPool(), mode)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cFile) // memory free
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cMode) // memory free
+	cFile := createCString(SDL_GetMemoryPool(), file)
+	cMode := createCString(SDL_GetMemoryPool(), mode)
+	defer destroyCString(SDL_GetMemoryPool(), cFile) // memory free
+	defer destroyCString(SDL_GetMemoryPool(), cMode) // memory free
 
-	cRW := C.SDL_RWFromFile(cFile.(*cChar), cMode.(*cChar))
+	cRW := C.SDL_RWFromFile(cFile, cMode)
 	return (*SDL_RWops)(unsafe.Pointer(cRW))
 }
 

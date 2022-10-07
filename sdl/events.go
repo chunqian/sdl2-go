@@ -409,14 +409,14 @@ func (event SDL_TextEditingExtEvent) TextAsString() string {
 	cStr := (*cChar)(unsafe.Pointer(event.Text))
 	defer C.free(unsafe.Pointer(cStr))
 
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func (event SDL_DropEvent) FileAsString() string {
 	cStr := (*cChar)(unsafe.Pointer(event.File))
 	defer C.free(unsafe.Pointer(cStr))
 
-	return SDL_GoString(cStr)
+	return createGoString(cStr)
 }
 
 func SDL_PumpEvents() {

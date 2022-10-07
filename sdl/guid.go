@@ -23,9 +23,9 @@ func SDL_GUIDToString(guid SDL_GUID, pszGUID []byte, cbGUID int) {
 }
 
 func SDL_GUIDFromString(pchGUID string) SDL_GUID {
-	cPchGUID := SDL_CreateCString(SDL_GetMemoryPool(), pchGUID)
-	defer SDL_DestroyCString(SDL_GetMemoryPool(), cPchGUID)
+	cPchGUID := createCString(SDL_GetMemoryPool(), pchGUID)
+	defer destroyCString(SDL_GetMemoryPool(), cPchGUID)
 
-	cGuid := C.SDL_GUIDFromString(cPchGUID.(*cChar))
+	cGuid := C.SDL_GUIDFromString(cPchGUID)
 	return *(*SDL_GUID)(unsafe.Pointer(&cGuid))
 }
