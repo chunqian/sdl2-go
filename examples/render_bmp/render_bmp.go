@@ -12,13 +12,13 @@ import (
 )
 
 const windowWidth = 800
-const windowHigth = 600
+const windowHeight = 600
 
 func main() {
 	SDL_Init(SDL_INIT_EVERYTHING)
 
 	window := SDL_CreateWindow("sdl2-go render bmp",
-		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHigth, SDL_WINDOW_SHOWN)
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_SHOWN)
 	defer SDL_DestroyWindow(window)
 	log.Info("window title: {}", SDL_GetWindowTitle(window))
 
