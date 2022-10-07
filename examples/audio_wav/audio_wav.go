@@ -31,7 +31,6 @@ func callback(userdata any, stream []uint8) {
 	for i := 0; i < int(size); i++ {
 		stream[i] = sound.Data[i+int(sound.Position)]
 	}
-
 	sound.Position = sound.Position + uint32(size)
 }
 
@@ -47,7 +46,6 @@ func main() {
 		log.Error("wav load failed.")
 	}
 	defer SDL_FreeWAV(sound.Data)
-
 	log.Info("sound len: {}", len(sound.Data))
 
 	want := SDL_AudioSpec{
@@ -61,12 +59,12 @@ func main() {
 	SDL_OpenAudio(&want, nil)
 	defer SDL_CloseAudio()
 
+	// 播放
 	SDL_PauseAudio(0)
 
 	window := SDL_CreateWindow("SDL2-Go Audio Wav",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHigth, SDL_WINDOW_SHOWN)
 	defer SDL_DestroyWindow(window)
-
 	log.Info("window title: {}", SDL_GetWindowTitle(window))
 
 	renderer := SDL_CreateRenderer(window, -1, 0)

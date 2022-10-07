@@ -23,7 +23,6 @@ func main() {
 	window := SDL_CreateWindow("SDL2-Go Mix Wav",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHigth, SDL_WINDOW_SHOWN)
 	defer SDL_DestroyWindow(window)
-
 	log.Info("window title: {}", SDL_GetWindowTitle(window))
 
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096)

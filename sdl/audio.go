@@ -425,8 +425,8 @@ func SDL_GetDefaultAudioInfo(name *[]byte, spec *SDL_AudioSpec, isCapture int) i
 	size := PX_strlen((*PX_char)(unsafe.Pointer(cName)))
 	nameSlice := make([]byte, size)
 	sh := (*reflect.SliceHeader)(unsafe.Pointer(&nameSlice))
-	src := (*PX_char)(unsafe.Pointer(cName))
 	dst := (*PX_char)(unsafe.Pointer(sh.Data))
+	src := (*PX_char)(unsafe.Pointer(cName))
 	PX_strcpy(dst, src, size)
 	name = &nameSlice
 	return int(cRet)

@@ -20,7 +20,6 @@ func main() {
 	window := SDL_CreateWindow("SDL2-Go Basic Window",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHigth, SDL_WINDOW_SHOWN)
 	defer SDL_DestroyWindow(window)
-
 	log.Info("window title: {}", SDL_GetWindowTitle(window))
 
 	renderer := SDL_CreateRenderer(window, -1, 0)
