@@ -7,6 +7,9 @@
 package main
 
 import (
+	"io/ioutil"
+
+	. "github.com/chunqian/sdl2-go/mix"
 	. "github.com/chunqian/sdl2-go/sdl"
 	log "github.com/chunqian/tinylog"
 )
@@ -17,11 +20,21 @@ const windowHigth = 600
 func main() {
 	SDL_Init(SDL_INIT_EVERYTHING)
 
-	window := SDL_CreateWindow("SDL2-Go Basic Window",
+	window := SDL_CreateWindow("SDL2-Go Mix Wav",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHigth, SDL_WINDOW_SHOWN)
 	defer SDL_DestroyWindow(window)
 
 	log.Info("window title: {}", SDL_GetWindowTitle(window))
+
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096)
+	defer Mix_CloseAudio()
+
+	data, _ := ioutil.ReadFile("./examples/res/test.wav")
+
+	chunk := Mix_QuickLoad_WAV(data)
+	defer Mix_FreeChunk(chunk)
+
+	Mix_PlayChannel(1, chunk, 0)
 
 	renderer := SDL_CreateRenderer(window, -1, 0)
 	defer SDL_DestroyRenderer(renderer)

@@ -23,3 +23,5 @@ test-mix:
 
 test-examples:
 	go build -o ./examples/bin/basic_window ./examples/basic_window/
+	go build -o ./examples/bin/audio_wav ./examples/audio_wav/
+	go build -o ./examples/bin/mix_wav ./examples/mix_wav/
